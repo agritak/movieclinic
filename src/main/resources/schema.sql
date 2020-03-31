@@ -15,6 +15,8 @@ CREATE TABLE categories(
     );
 
 CREATE TABLE movie_category(
-    movie_id INT,
-    category_id INT
+    movie_id INT NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (movie_id) REFERENCES movies(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
     );
