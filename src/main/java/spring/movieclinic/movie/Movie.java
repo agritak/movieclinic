@@ -21,7 +21,6 @@ public class Movie {
     @Size(max = 250, message = ("The maximum length of the description is 250 symbols."))
     private String plot;
     //private Set<Category> categories;
-    @Column(name = "movie_year")
     @NotNull
     private Integer year;
     @Column(name = "picture_url")
