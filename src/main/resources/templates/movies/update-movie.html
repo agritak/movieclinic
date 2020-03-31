@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>New Movie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-5">
+    <h2 class="mb-5">Update Movie</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="#" th:action="@{/movies/update/{movieId}(movieId=${movie.id})}" th:object="${movie}"
+                  method="post">
+                <div class="validationError" th:if="${#fields.hasErrors()}">
+                    Please correct the problems below and resubmit.
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="title" class="col-form-label">Title</label>
+                        <input type="text" th:field="*{title}" class="form-control" id="title"
+                               placeholder="Title">
+                        <div class="validationError" th:if="${#fields.hasErrors('title')}"
+                             th:errors="*{title}">Title Error
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="plot" class="col-form-label">Plot</label>
+                        <textarea type="text" th:field="*{plot}" class="form-control" id="plot"
+                                  placeholder="Description"></textarea>
+                        <div class="validationError" th:if="${#fields.hasErrors('plot')}"
+                             th:errors="*{plot}">Plot Error
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="year" class="col-form-label">Year</label>
+                        <input type="number" th:field="*{year}" class="form-control" id="year"
+                               placeholder="YYYY">
+                        <div class="validationError" th:if="${#fields.hasErrors('year')}"
+                             th:errors="*{year}">Year Error
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="picture" class="col-form-label">Picture</label>
+                        <input type="text" th:field="*{pictureURL}" class="form-control" id="picture"
+                               placeholder="Picture URL">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="trailer" class="col-form-label">Trailer</label>
+                        <input type="text" th:field="*{trailerURL}" class="form-control" id="trailer"
+                               placeholder="Trailer URL">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-5">
+                            <input type="submit" class="btn btn-primary" value="Update Movie">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
