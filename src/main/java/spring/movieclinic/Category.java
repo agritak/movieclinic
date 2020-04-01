@@ -31,6 +31,13 @@ public class Category {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Set<Movie> movies;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object o) {
