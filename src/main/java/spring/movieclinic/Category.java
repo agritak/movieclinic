@@ -38,15 +38,18 @@ public class Category {
         if (!(o instanceof Category)) return false;
         Category category = (Category) o;
         return Objects.equals(id, category.id) &&
-                Objects.equals(name, category.name) &&
-                Objects.equals(description, category.description) &&
-                Objects.equals(pictureURL, category.pictureURL) &&
-                Objects.equals(movies, category.movies);
+                Objects.equals(name, category.name)
+                // &&
+//                Objects.equals(description, category.description) &&
+//                Objects.equals(pictureURL, category.pictureURL) &&
+//                Objects.equals(movies, category.movies)
+                ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, pictureURL, movies);
+        return Objects.hash(id, name);
+        // return Objects.hash(id, name, description, pictureURL, movies);
     }
 }
 
