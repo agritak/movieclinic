@@ -1,6 +1,7 @@
-package spring.movieclinic;
+package spring.movieclinic.category;
 
 import org.springframework.data.repository.CrudRepository;
+import spring.movieclinic.category.Category;
 
 import java.util.List;
 
