@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Movies</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
-          crossorigin="anonymous">
-</head>
+<div th:replace="fragments/head :: head ('Movies list')"></div>
+
 <body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div th:switch="${movies}" class="container">
     <div class="row">
@@ -31,8 +22,8 @@
                     <tr>
                         <th>Title</th>
                         <th>Plot</th>
-                        <!--                        <th>Categories</th>-->
                         <th>Year</th>
+                        <th>Categories</th>
                         <th>Picture</th>
                         <th>Trailer</th>
                         <th>Edit</th>
@@ -41,20 +32,22 @@
                     </thead>
                     <tbody>
                     <tr th:each="movie : ${movies}">
-                        <td th:text="${movie.title}"></td>
-                        <td align="justify" th:text="${movie.plot}"></td>
-                        <!--                        <td th:each="${category : ${movies.categories}}">
-<span th:text"${category}"><span></td>-->
+                        <td th:text="${movie.name}"></td>
+                        <td align="justify" th:text="${movie.description}"></td>
                         <td th:text="${movie.year}"></td>
                         <td>
-                            <div th:if="${movie.pictureURL != null && !(''.equals(movie.pictureURL))}">
-                                <a th:href="${movie.pictureURL}" class="btn btn-primary">
-                                    <i class="far fa-image ml-2"></i>
-                                </a>
-                            </div>
+                            <span th:each="category : ${movie.categories}"
+                                  th:text="${category.name } + ' '">Category
+                            </span>
                         </td>
                         <td>
-                            <div th:if="${movie.trailerURL != null && !(''.equals(movie.trailerURL))}">
+                            <a th:if="${movie.pictureURL != null && !(''.equals(movie.pictureURL))}"
+                               th:href="${movie.pictureURL}" class="btn btn-primary">
+                                <i class="far fa-image ml-2"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <div th:if="${movie.trailerURL != null && !((movie.trailerURL).isEmpty())}">
                                 <a th:href="${movie.trailerURL}" class="btn btn-primary">
                                     <i class="far fa-play-circle ml-2"></i>
                                 </a>
