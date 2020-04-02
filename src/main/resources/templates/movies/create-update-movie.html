@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head ('Movie Form')"></div>
+
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-5">
+    <h2 class="mb-5">
+        <th:block th:with="text=${movie['new']} ? 'New Movie' : 'Update Movie'"
+                  th:text="${text}">Movie
+        </th:block>
+    </h2>
+    <div class="row">
+        <div class="col-md-12">
+            <form th:object="${movie}" method="post">
+                <div class="validationError"
+                     th:if="${#fields.hasErrors()}">
+                    Please correct the problems below and resubmit.
+                </div>
+                <div class="row">
+                    <input th:replace="~{fragments/input-form :: input-validated ('text', 'Title', 'name')}"/>
+                    <div class="form-group col-md-12">
+                        <label class="col-form-label">Categories</label><br/>
+                        <span th:each="category : ${movie.categories}" th:text="${category.name } + ' '"></span>
+                    </div>
+                    <textarea th:replace="~{fragments/input-form :: textarea-validated ('Description', 'description')}"></textarea>
+                    <input th:replace="~{fragments/input-form :: input-validated ('number', 'Year', 'year')}" />
+                    <input th:replace="~{fragments/input-form :: input-validated ('url', 'Picture URL', 'pictureURL')}"/>
+                    <input th:replace="~{fragments/input-form :: input-validated ('url', 'Trailer URL', 'trailerURL')}"/>
+                    <div class="row">
+                        <div class="col-md-12 mt-5">
+                        <button
+                            th:with="text=${movie['new']} ? 'Add Movie' : 'Update Movie'"
+                            class="btn btn-primary" type="submit" th:text="${text}">Submit
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
