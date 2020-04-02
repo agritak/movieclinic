@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:fragment="input-validated (type, label, name)">
+    <div class="form-group col-md-12">
+        <label class="col-form-label" th:text="${label}">Label</label>
+        <div th:switch="${type}">
+            <input th:case="'text'" class="form-control" type="text" th:field="*{__${name}__}"
+                   th:placeholder="${label}">
+            <input th:case="'number'" class="form-control" type="number" th:field="*{__${name}__}" placeholder="YYYY">
+            <input th:case="'url'" class="form-control" type="url" th:field="*{__${name}__}" th:placeholder="${label}">
+        </div>
+        <div class="validationError" th:if="${#fields.hasErrors(name)}"
+             th:errors="*{__${name}__}">Error
+        </div>
+    </div>
+</th:block>
+
+<div th:fragment="textarea-validated (label, name)">
+    <div class="form-group col-md-12">
+        <label class="col-form-label" th:text="${label}">Label</label>
+        <textarea type="text" th:field="*{__${name}__}" class="form-control"
+                  th:placeholder="${label}"></textarea>
+        <div class="validationError" th:if="${#fields.hasErrors(name)}"
+             th:errors="*{__${name}__}">Error
+        </div>
+    </div>
+</div>
+
+</html>
+
