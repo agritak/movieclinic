@@ -3,7 +3,9 @@ package spring.movieclinic.movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class MoviesService {
@@ -11,42 +13,33 @@ public class MoviesService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public Iterable<Movie> movies() {
-        if (movieRepository.findByOrderByTitleAsc().isEmpty()) {
+    public List<Movie> movies() {
+        if (movieRepository.findByOrderByNameAsc().isEmpty()) {
             return null;
         }
-        return movieRepository.findByOrderByTitleAsc();
+        return movieRepository.findByOrderByNameAsc();
     }
 
-    public Movie create(Movie movie) {
+    public void create(Movie movie) {
         if (movieRepository.count() > 0) {
             for (Movie m : movies()) {
                 if (m.equals(movie)) {
-                    return null;
+                    return;
                 }
             }
         }
-
         movieRepository.save(movie);
-        return movie;
     }
 
     public void update(Integer id, Movie movie) {
-        Optional<Movie> optional = movieRepository.findById(id);
-        if (optional.isPresent()) {
-            Movie m = optional.get();
-            m.setTitle(movie.getTitle());
-            m.setPlot(movie.getPlot());
-            m.setYear(movie.getYear());
-            m.setPictureURL(movie.getPictureURL());
-            m.setTrailerURL(movie.getTrailerURL());
-            movieRepository.save(m);
-        }
+        Movie m = findById(id);
+        movie.setId(id);
+        movie.setCategories(m.getCategories());
+        movieRepository.save(movie);
     }
 
     public void delete(Integer id) {
-        movieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
+        findById(id);
         movieRepository.deleteById(id);
     }
 
@@ -55,7 +48,7 @@ public class MoviesService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
     }
 
-    public Iterable<Movie> search(String keyword) {
-        return movieRepository.findByTitleContains(keyword);
+    public List<Movie> search(String keyword) {
+        return movieRepository.findByNameContains(keyword);
     }
 }

@@ -1,30 +1,27 @@
 package spring.movieclinic.movie;
 
 import lombok.Data;
+import spring.movieclinic.category.Category;
+import spring.movieclinic.model.ItemEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "movies")
-public class Movie {
+public class Movie extends ItemEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @NotBlank
-    private String title;
-    @Size(max = 250, message = ("The maximum length of the description is 250 symbols."))
-    private String plot;
-    //private Set<Category> categories;
+    @ManyToMany
+    @JoinTable(
+            name = "movie_category",
+            joinColumns = @JoinColumn(name = "movie_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
     @NotNull
     private Integer year;
-    @Column(name = "picture_url")
-    private String pictureURL;
     @Column(name = "trailer_url")
     private String trailerURL;
     //private String director;
@@ -35,13 +32,13 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return Objects.equals(getTitle().toLowerCase(), movie.getTitle().toLowerCase()) &&
+        return Objects.equals(getName().toLowerCase(), movie.getName().toLowerCase()) &&
                 Objects.equals(getYear(), movie.getYear());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getYear());
+        return Objects.hash(getName(), getYear());
     }
 
 }

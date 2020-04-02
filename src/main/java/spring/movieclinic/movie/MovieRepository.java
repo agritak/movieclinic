@@ -5,7 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface MovieRepository extends CrudRepository<Movie, Integer> {
-    List<Movie> findByTitleContains(String name);
+    List<Movie> findByNameContains(String name);
 
-    List<Movie> findByOrderByTitleAsc();
+    List<Movie> findByOrderByNameAsc();
+
 }
