@@ -1,20 +1,21 @@
 package spring.movieclinic.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
 public class ItemEntity extends BaseEntity {
     @NotBlank
+    @Column(unique = true)
     private String name;
     @Size(max = 500, message = "Maximum length of description is 500 symbols.")
     private String description;
