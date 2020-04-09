@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head ('Category details')"></div>
+
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5" style="margin-top:60px">
+    <h2 th:text="${category.name}">Category</h2>
+    <p align="justify" th:text="${category.description}">Description</p>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Movies</h2>
+            <a th:href="@{{categoryId}/movies/new(categoryId=${category.id})}" class="btn btn-primary">
+                <i class="fas fa-plus ml-2"></i>
+            </a>
+            <div th:unless="${#lists.isEmpty(category.movies)}">
+                <table class="table table-hover table-striped table-responsive-md">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Plot</th>
+                        <th>Year</th>
+                        <th>Categories</th>
+                        <th>Picture</th>
+                        <th>Trailer</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="movie : ${category.movies}">
+                        <td th:text="${movie.name}"></td>
+                        <td align="justify" th:text="${movie.description}"></td>
+                        <td th:text="${movie.year}"></td>
+                        <td>
+                            <span th:each="category : ${movie.categories}"
+                                  th:text="${category.name } + ' '">
+                            </span>
+                            <!--                            <ul style="list-style-type:none; padding:0; text-align:center;">-->
+                            <!--                                <li th:each="category : ${movie.categories}"-->
+                            <!--                                    th:text="${category.name } + ' '">-->
+                            <!--                                    Category-->
+                            <!--                                </li>-->
+                            <!--                            </ul>-->
+                        </td>
+                        <td>
+                            <a th:if="${!#strings.isEmpty(movie.pictureURL)}"
+                               th:href="${movie.pictureURL}" class="btn btn-primary">
+                                <i class="far fa-image ml-2"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:if="${!#strings.isEmpty(movie.trailerURL)}"
+                               th:href="${movie.trailerURL}" class="btn btn-primary">
+                                <i class="far fa-play-circle ml-2"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{{categoryId}/movies/update/{movieId}(categoryId=${categoryId},movieId=${movie.id})}"
+                               class="btn btn-primary">
+                                <i class="fas fa-pencil-alt ml-2"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{{categoryId}/movies/delete/{movieId}(categoryId=${category.id}, movieId=${movie.id})}"
+                               class="btn btn-primary">
+                                <i class="fas fa-trash-alt ml-2"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
