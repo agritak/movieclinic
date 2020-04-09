@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Setter
+@Getter
 @Entity
 @Table(name = "movies")
 public class Movie extends ItemEntity {
