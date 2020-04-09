@@ -6,7 +6,7 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container my-5">
+<div class="container my-5" style="margin-top:60px">
     <h2 class="mb-5">
         <th:block th:with="text=${movie['new']} ? 'New Movie' : 'Update Movie'"
                   th:text="${text}">Movie
@@ -23,19 +23,24 @@
                     <input th:replace="~{fragments/input-form :: input-validated ('text', 'Title', 'name')}"/>
                     <div class="form-group col-md-12">
                         <label class="col-form-label">Categories</label><br/>
-                        <span th:each="category : ${movie.categories}" th:text="${category.name } + ' '"></span>
+                        <i>Hold ctrl to select more than one option:</i>
+                        <select multiple class="form-control" th:field="${movie.categories}">
+                            <option th:each="option : ${options}"
+                                    th:value="${{option}}"
+                                    th:text="${option.name}">Category
+                            </option>
+                        </select>
                     </div>
-                    <textarea th:replace="~{fragments/input-form :: textarea-validated ('Description', 'description')}"></textarea>
-                    <input th:replace="~{fragments/input-form :: input-validated ('number', 'Year', 'year')}" />
+                    <textarea
+                            th:replace="~{fragments/input-form :: textarea-validated ('Description', 'description')}"></textarea>
+                    <input th:replace="~{fragments/input-form :: input-validated ('number', 'Year', 'year')}"/>
                     <input th:replace="~{fragments/input-form :: input-validated ('url', 'Picture URL', 'pictureURL')}"/>
                     <input th:replace="~{fragments/input-form :: input-validated ('url', 'Trailer URL', 'trailerURL')}"/>
-                    <div class="row">
-                        <div class="col-md-12 mt-5">
+                    <div class="col-md-12 mt-5">
                         <button
-                            th:with="text=${movie['new']} ? 'Add Movie' : 'Update Movie'"
-                            class="btn btn-primary" type="submit" th:text="${text}">Submit
+                                th:with="text=${movie['new']} ? 'Add Movie' : 'Update Movie'"
+                                class="btn btn-primary" type="submit" th:text="${text}">Submit
                         </button>
-                        </div>
                     </div>
                 </div>
             </form>
