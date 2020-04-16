@@ -4,7 +4,7 @@
 <div th:replace="fragments/head :: head ('Movie Form')"></div>
 
 <body>
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/navbar :: navbar-cms}"></div>
 
 <div class="container my-5" style="margin-top:60px">
     <h2 class="mb-5">
@@ -22,8 +22,8 @@
                 <div class="row">
                     <input th:replace="~{fragments/input-form :: input-validated ('text', 'Title', 'name')}"/>
                     <div class="form-group col-md-12">
-                        <label class="col-form-label">Categories</label><br/>
-                        <i>Hold ctrl to select more than one option:</i>
+                        <label class="col-form-label">Categories</label>
+                        <p><i>Hold ctrl to select more than one option:</i></p>
                         <select multiple class="form-control" th:field="${movie.categories}">
                             <option th:each="option : ${options}"
                                     th:value="${{option}}"
@@ -38,7 +38,7 @@
                     <input th:replace="~{fragments/input-form :: input-validated ('url', 'Trailer URL', 'trailerURL')}"/>
                     <div class="col-md-12 mt-5">
                         <button
-                                th:with="text=${movie['new']} ? 'Add Movie' : 'Update Movie'"
+                                th:with="text=${movie.new} ? 'Add Movie' : 'Update Movie'"
                                 class="btn btn-primary" type="submit" th:text="${text}">Submit
                         </button>
                     </div>
