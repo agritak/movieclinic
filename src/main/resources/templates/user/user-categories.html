@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="fragments/head :: head ('Categories')"></div>
+<body>
+<div th:replace="~{fragments/navbar :: navbar-user}"></div>
+<div class="container category">
+    <div th:each="category : ${categories}">
+        <div class="col-md-12">
+            <a th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id})}">
+                <h2 class="align-row" th:text="${category.name}">Category</h2>
+            </a>
+            <div th:each="movie, iter : ${category.movies}"
+                 th:if="${iter.index} < 5">
+                <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
+                    <div align="center" class="col-md-2">
+                        <div class="img-with-text">
+                            <img alt="image" height="253" th:src="${movie.pictureURL}" width="170"/>
+                            <label th:text="${movie.name}">Title</label>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
