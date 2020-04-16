@@ -66,4 +66,11 @@ public class CategoriesController {
         model.addAttribute("categories", categoriesService.categories());
         return "categories/categories-list";
     }
+
+    @GetMapping("categories/{categoryId}")
+    public String showCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
+        Category category = categoriesService.findById(categoryId);
+        model.addAttribute("category", category);
+        return "categories/category-details";
+    }
 }
