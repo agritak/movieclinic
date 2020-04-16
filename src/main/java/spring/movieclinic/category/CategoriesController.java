@@ -69,8 +69,7 @@ public class CategoriesController {
 
     @GetMapping("categories/{categoryId}")
     public String showCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
-        Category category = categoriesService.findById(categoryId);
-        model.addAttribute("category", category);
+        model.addAttribute("category", categoriesService.findById(categoryId));
         return "categories/category-details";
     }
 }
