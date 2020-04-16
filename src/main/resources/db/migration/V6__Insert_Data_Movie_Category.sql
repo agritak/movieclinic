@@ -57,7 +57,7 @@ INSERT INTO movie_category VALUES ( 1, 4);
     INSERT INTO movie_category VALUES ( 17, 4);
     INSERT INTO movie_category VALUES ( 17, 7);
 
-    INSERT INTO movie_category VALUES ( 18, 1);
+    INSERT INTO movie_category VALUES ( 18, 3);
     INSERT INTO movie_category VALUES ( 18, 2);
     INSERT INTO movie_category VALUES ( 18, 4);
 
