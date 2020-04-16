@@ -1,7 +1,6 @@
 package spring.movieclinic.movie;
 
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public class MoviesService {
 
     private final MovieRepository movieRepository;
 
-    List<Movie> movies() {
+    public List<Movie> movies() {
         return movieRepository.findByOrderByNameAsc();
     }
 
@@ -31,7 +30,7 @@ public class MoviesService {
         movieRepository.deleteById(id);
     }
 
-    Movie findById(Integer id) {
+    public Movie findById(Integer id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
     }
