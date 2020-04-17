@@ -1,6 +1,7 @@
 package spring.movieclinic.movie;
 
 import lombok.*;
+import org.hibernate.search.annotations.*;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.model.ItemEntity;
 
@@ -12,18 +13,23 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
+@Indexed
 @Table(name = "movies")
 public class Movie extends ItemEntity {
 
     @ManyToMany
+    @IndexedEmbedded
+    @Analyzer(definition = "movieAnalyzer")
     @JoinTable(
             name = "movie_category",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
+
     @NotNull
     @Column(unique = true)
     private Integer year;
+
     @Column(name = "trailer_url")
     private String trailerURL;
     //private String director;

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head ('Search results')"></div>
+
+<body>
+<div th:replace="~{fragments/navbar :: navbar-cms}"></div>
+
+<div class="container" style="margin-top:60px">
+    <div class="row">
+        <div class="col-md-12 my-5">
+            <h1>Search results:</h1>
+            <div th:if="${#lists.isEmpty(searchResultsCategories) and #lists.isEmpty(searchResultsMovies)}">
+                <h2>No movies found!</h2>
+            </div>
+            <table th:unless="${#lists.isEmpty(searchResultsCategories)}"
+                   class="table table-hover table-striped table-responsive-md">
+                <h2>Categories:</h2>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Movies</th>
+                    <th>Picture</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tr th:each="category : ${searchResultsCategories}">
+                    <td>
+                        <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}"
+                           th:text="${category.name}">
+                        </a>
+                    </td>
+                    <td align="justify" th:text="${category.description}"></td>
+                    <td align="center" th:text="${#lists.size(category.movies)}">[movies count]</td>
+                    <td>
+                        <a th:if="${!#strings.isEmpty(category.pictureURL)}"
+                           th:href="${category.pictureURL}" class="btn btn-primary">
+                            <i class="far fa-image ml-2"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/categories/update/{categoryId}(categoryId=${category.id})}"
+                           class="btn btn-primary">
+                            <i class="fas fa-pencil-alt ml-2"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"
+                           class="btn btn-primary">
+                            <i class="fas fa-trash-alt ml-2"></i>
+                        </a>
+                    </td>
+            </table>
+
+            <table th:unless="${#lists.isEmpty(searchResultsMovies)}"
+                   class="table table-hover table-striped table-responsive-md">
+                <thead>
+                <h2 style="margin-top:60px">Movies:</h2>
+                <tr>
+                    <th>Title</th>
+                    <th>Plot</th>
+                    <th>Year</th>
+                    <th>Categories</th>
+                    <th>Picture</th>
+                    <th>Trailer</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="movie : ${searchResultsMovies}">
+                    <td th:text="${movie.name}"></td>
+                    <td align="justify" th:text="${movie.description}"></td>
+                    <td th:text="${movie.year}"></td>
+                    <td>
+                            <span th:each="category : ${movie.categories}"
+                                  th:text="${category.name } + ' '">Category
+                            </span>
+                    </td>
+                    <td>
+                        <a th:if="${!#strings.isEmpty(movie.pictureURL)}"
+                           th:href="${movie.pictureURL}" class="btn btn-primary">
+                            <i class="far fa-image ml-2"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <div th:if="${!#strings.isEmpty(movie.trailerURL)}">
+                            <a th:href="${movie.trailerURL}" class="btn btn-primary">
+                                <i class="far fa-play-circle ml-2"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <a th:href="@{/movies/{movieId}(movieId=${movie.id})}"
+                           class="btn btn-primary">
+                            <i class="fas fa-pencil-alt ml-2"></i>
+                        </a>
+                    </td>
+                    <td><a th:href="@{/movies/delete/{movieId}(movieId=${movie.id})}" class="btn btn-primary">
+                        <i class="fas fa-trash-alt ml-2"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

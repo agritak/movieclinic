@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="navbar-cms">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
@@ -12,7 +12,7 @@
                 <li><a th:href="@{/categories/new}">ADD NEW CATEGORY</a></li>
                 <li><a th:href="@{/movies}">MOVIES</a></li>
             </ul>
-            <form class="navbar-form navbar-right" action="#">
+            <form class="navbar-form navbar-right" th:action="@{/search/search-results}" th:object="${searchResultsMovies}">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search" name="search">
                 </div>
