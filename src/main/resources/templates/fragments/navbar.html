@@ -11,6 +11,7 @@
                 <li><a th:href="@{/categories}">CATEGORIES</a></li>
                 <li><a th:href="@{/categories/new}">ADD NEW CATEGORY</a></li>
                 <li><a th:href="@{/movies}">MOVIES</a></li>
+                <li><a th:href="@{/omdb/find}">SEARCH MOVIE IN DATABASE</a></li>
             </ul>
             <form class="navbar-form navbar-right" th:action="@{/search/search-results}" th:object="${searchResultsMovies}">
                 <div class="form-group">
