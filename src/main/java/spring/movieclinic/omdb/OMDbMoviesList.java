@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 public class OMDbMoviesList {
     @JsonProperty("Search")
-    List<OMDbMovie> OMDbMovies = new ArrayList<>();
+    private List<OMDbMovie> OMDbMovies = new ArrayList<>();
 }
