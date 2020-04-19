@@ -11,3 +11,9 @@ margin-left: 20px;
 .description {
 max-width: 920px;
 }
+
+.validation-error {
+	color: steelblue;
+	text-align: center;
+}
+
