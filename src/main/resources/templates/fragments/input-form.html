@@ -9,7 +9,7 @@
             <input th:case="'number'" class="form-control" type="number" th:field="*{__${name}__}" placeholder="YYYY">
             <input th:case="'url'" class="form-control" type="url" th:field="*{__${name}__}" th:placeholder="${label}">
         </div>
-        <div class="validationError" th:if="${#fields.hasErrors(name)}"
+        <div class="validation-error" th:if="${#fields.hasErrors(name)}"
              th:errors="*{__${name}__}">Error
         </div>
     </div>
@@ -20,11 +20,26 @@
         <label class="col-form-label" th:text="${label}">Label</label>
         <textarea type="text" th:field="*{__${name}__}" class="form-control"
                   th:placeholder="${label}"></textarea>
-        <div class="validationError" th:if="${#fields.hasErrors(name)}"
+        <div class="validation-error" th:if="${#fields.hasErrors(name)}"
              th:errors="*{__${name}__}">Error
         </div>
     </div>
 </div>
 
+<div th:fragment="omdb-search-form">
+    <div class="container" style="margin-top:80px">
+        <div class="row">
+            <div class="col-md-12">
+                <form th:action="@{/omdb/search}" th:method="get" th:object="${movie}">
+                    <div class="form-group">
+                        <h3>Find movie by title:</h3>
+                        <input aria-label="Search" class="form-control" placeholder="Movie Title"
+                               th:field="*{name}" type="text">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </html>
 
