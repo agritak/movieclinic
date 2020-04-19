@@ -14,15 +14,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OMDbController {
     private final OMDbService omdbSearchService;
 
-    // /omdb/search?title=
+    @GetMapping("omdb/find")
+    public String searchForm(Model model) {
+        model.addAttribute("movie", new OMDbMovie());
+        return "omdb/omdb-form";
+    }
+
+    // /omdb/search?name=
     @GetMapping("omdb/search")
-    public String searchForMovies(@RequestParam String title, Model model) {
-        model.addAttribute("movies", omdbSearchService.findMovies(title));
+    public String searchForMovies(@RequestParam String name, Model model) {
+        model.addAttribute("movie", new OMDbMovie());
+        model.addAttribute("movies", omdbSearchService.findMovies(name));
         return "omdb/omdb-search";
     }
 
     @GetMapping("omdb/save/{id}")
     public String saveMovie(@PathVariable("id") String id, Model model) {
+        model.addAttribute("movie", new OMDbMovie());
         model.addAttribute("movies", omdbSearchService.saveMovie(id));
         return "omdb/omdb-search";
     }
