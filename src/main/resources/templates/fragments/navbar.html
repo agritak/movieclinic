@@ -15,7 +15,7 @@
             </ul>
             <form class="navbar-form navbar-right" th:action="@{/search/search-results}" th:object="${searchResultsMovies}">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
+                    <input required type="text" class="form-control" placeholder="Search" name="search">
                 </div>
                 <button class="btn btn-default" type="submit">Search</button>
             </form>
@@ -31,9 +31,9 @@
                 <li><a th:href="@{/webpage/categories}">CATEGORIES</a></li>
                 <li><a th:href="@{/webpage/guide}">CATEGORIES GUIDE</a></li>
             </ul>
-            <form action="#" class="navbar-form navbar-right">
+            <form class="navbar-form navbar-right" th:action="@{/webpage/search/user-search-results}" th:object="${searchResultsMovies}">
                 <div class="form-group">
-                    <input class="form-control" name="search" placeholder="Search" type="text">
+                    <input required class="form-control" name="search" placeholder="Search" type="text">
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
