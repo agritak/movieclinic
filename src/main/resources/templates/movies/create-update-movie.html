@@ -6,16 +6,16 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar-cms}"></div>
 
-<div class="container my-5" style="margin-top:60px">
+<div class="container my-5" style="margin-top:80px">
     <h2 class="mb-5">
-        <th:block th:with="text=${movie['new']} ? 'New Movie' : 'Update Movie'"
+        <th:block th:with="text=${frontMovie.new} ? 'New Movie' : 'Update Movie'"
                   th:text="${text}">Movie
         </th:block>
     </h2>
     <div class="row">
         <div class="col-md-12">
-            <form th:object="${movie}" method="post">
-                <div class="validationError"
+            <form method="post" th:object="${frontMovie}">
+                <div class="validation-error"
                      th:if="${#fields.hasErrors()}">
                     Please correct the problems below and resubmit.
                 </div>
@@ -24,12 +24,15 @@
                     <div class="form-group col-md-12">
                         <label class="col-form-label">Categories</label>
                         <p><i>Hold ctrl to select more than one option:</i></p>
-                        <select multiple class="form-control" th:field="${movie.categories}">
+                        <select class="form-control" multiple th:field="${frontMovie.categories}">
                             <option th:each="option : ${options}"
                                     th:value="${{option}}"
                                     th:text="${option.name}">Category
                             </option>
                         </select>
+                        <div class="validation-error" th:errors="${frontMovie.categories}"
+                             th:if="${#fields.hasErrors('categories')}">Error
+                        </div>
                     </div>
                     <textarea
                             th:replace="~{fragments/input-form :: textarea-validated ('Description', 'description')}"></textarea>
@@ -38,7 +41,7 @@
                     <input th:replace="~{fragments/input-form :: input-validated ('url', 'Trailer URL', 'trailerURL')}"/>
                     <div class="col-md-12 mt-5">
                         <button
-                                th:with="text=${movie.new} ? 'Add Movie' : 'Update Movie'"
+                                th:with="text=${frontMovie.new} ? 'Add Movie' : 'Update Movie'"
                                 class="btn btn-primary" type="submit" th:text="${text}">Submit
                         </button>
                     </div>
