@@ -20,12 +20,22 @@ class SearchController {
     String search(@RequestParam(value = "search") String query, Model model) {
 
         List<Category> searchResultsCategories = searchService.searchCategories(query);
+        model.addAttribute("query", query);
         model.addAttribute("searchResultsCategories", searchResultsCategories);
 
         List<Movie> searchResultsMovies = searchService.searchMovies(query);
         model.addAttribute("searchResultsMovies", searchResultsMovies);
 
         return "search/search-results";
+    }
 
+    @GetMapping("/webpage/search/user-search-results")
+    String userSideSearch(@RequestParam(value = "search") String query, Model model) {
+
+        List<Movie> searchResultsMovies = searchService.searchMovies(query);
+        model.addAttribute("query", query);
+        model.addAttribute("searchResultsMovies", searchResultsMovies);
+
+        return "search/user-search-results";
     }
 }
