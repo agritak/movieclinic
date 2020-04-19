@@ -13,47 +13,7 @@
             <a href="/categories/new" class="btn btn-primary">
                 <i class="fas fa-plus ml-2"></i>
             </a>
-            <table class="table table-hover table-striped table-responsive-md">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Movies</th>
-                    <th>Picture</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="category : ${categories}">
-                    <td>
-                        <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}"
-                           th:text="${category.name}">
-                        </a>
-                    </td>
-                    <td align="justify" th:text="${category.description}"></td>
-                    <td align="center" th:text="${#lists.size(category.movies)}">[movies count]</td>
-                    <td>
-                        <a th:if="${!#strings.isEmpty(category.pictureURL)}"
-                           th:href="${category.pictureURL}" class="btn btn-primary">
-                            <i class="far fa-image ml-2"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <a th:href="@{/categories/update/{categoryId}(categoryId=${category.id})}"
-                           class="btn btn-primary">
-                            <i class="fas fa-pencil-alt ml-2"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <a th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"
-                           class="btn btn-primary">
-                            <i class="fas fa-trash-alt ml-2"></i>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div th:insert="fragments/category-table :: category-table(${categories})"></div>
         </div>
     </div>
 </div>

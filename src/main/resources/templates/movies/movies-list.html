@@ -15,54 +15,7 @@
                     <i class="fas fa-plus ml-2"></i>
                 </a>
             </div>
-            <table class="table table-hover table-striped table-responsive-md">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Plot</th>
-                    <th>Year</th>
-                    <th>Categories</th>
-                    <th>Picture</th>
-                    <th>Trailer</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="movie : ${movies}">
-                    <td th:text="${movie.name}"></td>
-                    <td align="justify" th:text="${movie.description}"></td>
-                    <td th:text="${movie.year}"></td>
-                    <td>
-                        <span th:each="category : ${movie.categories}"
-                              th:text="${category.name } + ' '">
-                            Category
-                        </span>
-                    </td>
-                    <td>
-                        <a th:if="${!#strings.isEmpty(movie.pictureURL)}"
-                           th:href="${movie.pictureURL}" class="btn btn-primary">
-                            <i class="far fa-image ml-2"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <div th:if="${!#strings.isEmpty(movie.trailerURL)}">
-                            <a th:href="${movie.trailerURL}" class="btn btn-primary">
-                                <i class="far fa-play-circle ml-2"></i>
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" th:href="@{/movies/{movieId}(movieId=${movie.id})}">
-                            <i class="fas fa-pencil-alt ml-2"></i>
-                        </a>
-                    </td>
-                    <td><a th:href="@{/movies/delete/{movieId}(movieId=${movie.id})}" class="btn btn-primary">
-                        <i class="fas fa-trash-alt ml-2"></i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div th:insert="fragments/movie-table :: movie-table(${movies})"></div>
         </div>
     </div>
 </div>
