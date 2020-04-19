@@ -26,19 +26,18 @@ public class MoviesController {
         return "movies/movies-list";
     }
 
-
     @GetMapping("/new")
-    public String showMovieForm(Movie movie, Model model) {
+    public String showMovieForm(Model model) {
+        model.addAttribute("frontMovie", new FrontMovie());
         model.addAttribute("options", categoriesService.categories());
         return "movies/create-update-movie";
     }
 
     @PostMapping("/new")
-    public String addMovie(@Valid Movie movie,
+    public String addMovie(@Valid FrontMovie movie,
                            BindingResult result,
                            Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("movie", movie);
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
         } else {
@@ -50,19 +49,17 @@ public class MoviesController {
 
     @GetMapping("/{movieId}")
     public String showUpdateForm(@PathVariable("movieId") Integer id, Model model) {
-        Movie movie = moviesService.findById(id);
-        model.addAttribute("movie", movie);
+        model.addAttribute("frontMovie", moviesService.findById(id));
         model.addAttribute("options", categoriesService.categories());
         return "movies/create-update-movie";
     }
 
     @PostMapping("/{movieId}")
     public String updateMovie(@PathVariable("movieId") Integer id,
-                              @Valid Movie movie,
+                              @Valid FrontMovie movie,
                               BindingResult result,
                               Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("movie", movie);
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
         }
