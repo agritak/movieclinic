@@ -15,14 +15,26 @@ public class MoviesService {
         return movieRepository.findByOrderByNameAsc();
     }
 
-    void create(Movie movie) {
-        movieRepository.save(movie);
+    void create(FrontMovie movie) {
+        Movie m = new Movie();
+        m.setName(movie.getName());
+        m.setDescription(movie.getDescription());
+        m.setYear(movie.getYear());
+        m.setPictureURL(movie.getPictureURL());
+        m.setTrailerURL(movie.getTrailerURL());
+        m.setCategories(movie.getCategories());
+        movieRepository.save(m);
     }
 
-    void update(Integer id, Movie movie) {
-        //Movie m = findById(id);
-        movie.setId(id);
-        movieRepository.save(movie);
+    void update(Integer id, FrontMovie movie) {
+        Movie m = findById(id);
+        m.setName(movie.getName());
+        m.setDescription(movie.getDescription());
+        m.setYear(movie.getYear());
+        m.setPictureURL(movie.getPictureURL());
+        m.setTrailerURL(movie.getTrailerURL());
+        m.setCategories(movie.getCategories());
+        movieRepository.save(m);
     }
 
     void delete(Integer id) {
