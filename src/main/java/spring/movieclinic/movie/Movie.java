@@ -1,12 +1,14 @@
 package spring.movieclinic.movie;
 
-import lombok.*;
-import org.hibernate.search.annotations.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.model.ItemEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,6 @@ public class Movie extends ItemEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
-    @NotNull
     @Column(unique = true)
     private Integer year;
 
