@@ -14,12 +14,10 @@ public class OMDbMovie {
     @JsonProperty("Plot")
     private String description;
     @JsonProperty("Year")
-    private String year;
+    private Integer year;
     @JsonProperty("Genre")
     private String categories;
     @JsonProperty("Poster")
     private String pictureURL;
-    @JsonProperty("Type")
-    private String type;
 
 }
