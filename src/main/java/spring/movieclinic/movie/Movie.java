@@ -48,8 +48,8 @@ public class Movie extends ItemEntity {
     }
 
     public void addCategory(Category category) {
-        if (this.isNew()) {
-            setCategoriesNew();
+        if (categories == null) {
+            categories = new HashSet<>();
         }
         categories.add(category);
     }
