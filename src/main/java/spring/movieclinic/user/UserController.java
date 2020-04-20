@@ -12,7 +12,7 @@ import spring.movieclinic.movie.MoviesService;
 
 import java.util.Collections;
 import java.util.List;
-
+//TODO lieka jauna tukša rinda
 
 @Controller
 @AllArgsConstructor
@@ -24,6 +24,8 @@ public class UserController {
     @GetMapping
     public String index(Model model) {
         List<Movie> movies = moviesService.movies();
+        //TODO shufflingu tad labāk pārnest uz moviesService. (vari izveidot metodi moviesShuffled())
+        // Vispār visu biznesa loģiku vajadzētu realizēt servisā
         Collections.shuffle(movies);
         model.addAttribute("movies", movies);
         return "user/user-home";

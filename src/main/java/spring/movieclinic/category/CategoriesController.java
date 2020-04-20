@@ -15,6 +15,7 @@ public class CategoriesController {
 
     private final CategoriesService categoriesService;
 
+    //TODO šo konstruktoru var nodzēst un uz klases izmantot @AllArgsConstructor (tā kā citās vietās projektā)
     @Autowired
     public CategoriesController(CategoriesService categoriesService) {
         this.categoriesService = categoriesService;

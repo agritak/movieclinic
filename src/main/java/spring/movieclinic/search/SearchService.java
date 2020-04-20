@@ -19,6 +19,7 @@ class SearchService {
     @PersistenceContext
     private final EntityManager entityManager;
 
+    //TODO šo var izdzēst un vienkārši izmantot @AllArgsConstructor
     @Autowired
     SearchService(EntityManagerFactory entityManagerFactory) {
         this.entityManager = entityManagerFactory.createEntityManager();

@@ -11,13 +11,16 @@ public class CategoriesService {
     private CategoryRepository categoryRepository;
 
     public Iterable<Category> categories() {
+        //TODO šo koda daļu arī var dzēst ārā
         if(categoryRepository.findByOrderByNameAsc().isEmpty()) {
             return null;
         }
+        //TODO vajag atstāt tikai šo
         return categoryRepository.findByOrderByNameAsc();
     }
 
     public Category create (Category category) {
+        //TODO nav saprotams, kādēļ nepieciešams šis if bloks, var dzēst ārā.
         if(categoryRepository.count() > 0) {
             for (Category c : categories()) {
                 if(c.equals(category)) {
@@ -29,6 +32,7 @@ public class CategoriesService {
         return category;
     }
 
+    //TODO lūdzu salabojam formatējumuju
     public void update (Integer id, Category category) {
         category.setId(id);
         categoryRepository.save(category);

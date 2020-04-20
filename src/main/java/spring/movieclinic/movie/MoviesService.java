@@ -17,12 +17,14 @@ public class MoviesService {
 
     void create(FrontMovie movie) {
         Movie m = new Movie();
+        //TODO duplicate code start (vajadzētu iznest uz atsevišķu metodi)
         m.setName(movie.getName());
         m.setDescription(movie.getDescription());
         m.setYear(movie.getYear());
         m.setPictureURL(movie.getPictureURL());
         m.setTrailerURL(movie.getTrailerURL());
         m.setCategories(movie.getCategories());
+        //TODO duplicate code end
         movieRepository.save(m);
     }
 
