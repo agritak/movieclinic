@@ -3,6 +3,7 @@ package spring.movieclinic.movie;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,7 +39,6 @@ public class MoviesService {
     }
 
     void delete(Integer id) {
-        //findById(id);
         movieRepository.deleteById(id);
     }
 
@@ -47,7 +47,9 @@ public class MoviesService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
     }
 
-    List<Movie> search(String keyword) {
-        return movieRepository.findByNameContains(keyword);
+    public List<Movie> moviesShuffled() {
+        List<Movie> movies = movies();
+        Collections.shuffle(movies);
+        return movies;
     }
 }
