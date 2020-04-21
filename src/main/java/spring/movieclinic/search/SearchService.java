@@ -3,31 +3,31 @@ package spring.movieclinic.search;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+
+import lombok.RequiredArgsConstructor;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.movie.Movie;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
-@Transactional
+@Service
+@RequiredArgsConstructor
 class SearchService {
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private final EntityManager entityManager;
+    private FullTextEntityManager fullTextEntityManager;
 
-    //TODO šo var izdzēst un vienkārši izmantot @AllArgsConstructor
-    @Autowired
-    SearchService(EntityManagerFactory entityManagerFactory) {
-        this.entityManager = entityManagerFactory.createEntityManager();
-    }
-
-    void initializeSearch() {
+    @PostConstruct
+    public void initializeSearch() {
         try {
-            FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+            fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
             fullTextEntityManager.createIndexer().startAndWait();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -35,8 +35,6 @@ class SearchService {
     }
 
     List<Movie> searchMovies(String text) {
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
         QueryBuilder queryBuilder = fullTextEntityManager
                 .getSearchFactory()
                 .buildQueryBuilder()
@@ -56,9 +54,6 @@ class SearchService {
     }
 
     List<Category> searchCategories(String text) {
-
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
         QueryBuilder queryBuilder = fullTextEntityManager
                 .getSearchFactory()
                 .buildQueryBuilder()
