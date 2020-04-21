@@ -3,11 +3,10 @@ package spring.movieclinic.omdb;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class OMDbMoviesList {
+public class OmdbMoviesList {
     @JsonProperty("Search")
-    private List<OMDbMovie> OMDbMovies = new ArrayList<>();
+    private List<OmdbMovie> omdbMovies;
 }
