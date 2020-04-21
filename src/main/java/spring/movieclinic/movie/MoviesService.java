@@ -16,26 +16,12 @@ public class MoviesService {
         return movieRepository.findByOrderByNameAsc();
     }
 
-    void create(FrontMovie movie) {
-        Movie m = new Movie();
-        m.setName(movie.getName());
-        m.setDescription(movie.getDescription());
-        m.setYear(movie.getYear());
-        m.setPictureURL(movie.getPictureURL());
-        m.setTrailerURL(movie.getTrailerURL());
-        m.setCategories(movie.getCategories());
-        movieRepository.save(m);
+    void create(FrontMovie frontMovie) {
+        movieRepository.save(frontMovieToMovie(frontMovie, new Movie()));
     }
 
-    void update(Integer id, FrontMovie movie) {
-        Movie m = findById(id);
-        m.setName(movie.getName());
-        m.setDescription(movie.getDescription());
-        m.setYear(movie.getYear());
-        m.setPictureURL(movie.getPictureURL());
-        m.setTrailerURL(movie.getTrailerURL());
-        m.setCategories(movie.getCategories());
-        movieRepository.save(m);
+    void update(Integer id, FrontMovie frontMovie) {
+        movieRepository.save(frontMovieToMovie(frontMovie, findById(id)));
     }
 
     void delete(Integer id) {
@@ -51,5 +37,15 @@ public class MoviesService {
         List<Movie> movies = movies();
         Collections.shuffle(movies);
         return movies;
+    }
+
+    private Movie frontMovieToMovie(FrontMovie frontMovie, Movie movie) {
+        movie.setName(frontMovie.getName());
+        movie.setDescription(frontMovie.getDescription());
+        movie.setYear(frontMovie.getYear());
+        movie.setPictureURL(frontMovie.getPictureURL());
+        movie.setTrailerURL(frontMovie.getTrailerURL());
+        movie.setCategories(frontMovie.getCategories());
+        return movie;
     }
 }

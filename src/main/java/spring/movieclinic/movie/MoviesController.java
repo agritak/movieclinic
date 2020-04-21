@@ -34,14 +34,14 @@ public class MoviesController {
     }
 
     @PostMapping("/new")
-    public String addMovie(@Valid FrontMovie movie,
+    public String addMovie(@Valid FrontMovie frontMovie,
                            BindingResult result,
                            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
         } else {
-            moviesService.create(movie);
+            moviesService.create(frontMovie);
             model.addAttribute("movies", moviesService.movies());
             return "movies/movies-list";
         }
@@ -56,14 +56,14 @@ public class MoviesController {
 
     @PostMapping("/{movieId}")
     public String updateMovie(@PathVariable("movieId") Integer id,
-                              @Valid FrontMovie movie,
+                              @Valid FrontMovie frontMovie,
                               BindingResult result,
                               Model model) {
         if (result.hasErrors()) {
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
         }
-        moviesService.update(id, movie);
+        moviesService.update(id, frontMovie);
         model.addAttribute("movies", moviesService.movies());
         return "movies/movies-list";
     }
