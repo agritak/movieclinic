@@ -22,17 +22,16 @@ public class OmdbController {
 
     // /omdb/search?name=
     @GetMapping("omdb/search")
-    public String searchForMovies(@RequestParam String name, Model model) {
+    public String searchForMovies(@RequestParam String title, Model model) {
         model.addAttribute("movie", new OmdbMovie());
-        model.addAttribute("movies", omdbSearchService.findMovies(name));
+        model.addAttribute("movies", omdbSearchService.findMovies(title));
         return "omdb/omdb-search";
     }
 
     @GetMapping("omdb/save/{id}")
     public String saveMovie(@PathVariable("id") String id, Model model) {
-        model.addAttribute("movie", new OmdbMovie());
         model.addAttribute("movies", omdbSearchService.saveMovie(id));
-        return "omdb/omdb-search";
+        return "movies/movies-list";
     }
 }
 
