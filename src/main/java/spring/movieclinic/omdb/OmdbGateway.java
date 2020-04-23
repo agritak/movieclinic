@@ -28,10 +28,8 @@ public class OmdbGateway {
                 .queryParam(QUERY_PARAM_APIKEY, API_KEY)
                 .build();
         OmdbMoviesList response = restTemplate.getForObject(uriComponents.toUri(), OmdbMoviesList.class);
-        if (response == null) {
-            return new ArrayList<>();
-        }
-        return response.getOmdbMovies();
+        assert response != null;
+        return response.getOmdbMovies() == null ? new ArrayList<>() : response.getOmdbMovies();
     }
 
     OmdbMovie getBy(String id) {
