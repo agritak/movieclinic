@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="fragments/head :: head ('Search results')"></div>
+<div th:replace="fragments/head :: head ('Movie')"></div>
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
 
@@ -24,15 +24,12 @@
                             </a>
                             </span>
                             <p class="card-text" th:text="${movie.description}"></p>
-                            <hr>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>
 </body>
 </html>
