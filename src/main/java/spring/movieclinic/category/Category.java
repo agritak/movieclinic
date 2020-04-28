@@ -7,6 +7,7 @@ import spring.movieclinic.model.ItemEntity;
 import spring.movieclinic.movie.Movie;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -17,7 +18,11 @@ import java.util.Set;
 public class Category extends ItemEntity {
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Movie> movies;
+    private Set<Movie> movies = new HashSet<>();
+
+    //metodi, kas uztaisa hashset
+    //if movies = null; create hashset
+
 }
 
 

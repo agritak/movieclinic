@@ -1,5 +1,6 @@
 package spring.movieclinic.category;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
+@AllArgsConstructor
 public class CategoriesController {
 
     private final CategoriesService categoriesService;
-
-    @Autowired
-    public CategoriesController(CategoriesService categoriesService) {
-        this.categoriesService = categoriesService;
-    }
 
     @GetMapping("/categories")
     public String index(Model model) {
@@ -33,14 +30,29 @@ public class CategoriesController {
 
     @PostMapping("/categories/new")
     public String addCategory(@Valid Category category, BindingResult result, Model model) {
-        if(result.hasErrors()) {
-            return "categories/create-category.html";
+        if (result.hasErrors()) {
+//            model.addAttribute("category", categoriesService.categories());
+            return "categories/create-category";
         } else {
             categoriesService.create(category);
             model.addAttribute("categories", categoriesService.categories());
             return "categories/categories-list";
         }
     }
+
+//public String addMovie(@Valid Movie movie,
+//                           BindingResult result,
+//                           Model model) {
+//        if (result.hasErrors()) {
+//            model.addAttribute("movie", movie);
+//            model.addAttribute("options", categoriesService.categories());
+//            return "movies/create-update-movie";
+//        } else {
+//            moviesService.create(movie);
+//            model.addAttribute("movies", moviesService.movies());
+//            return "movies/movies-list";
+//        }
+//    }
 
     @GetMapping("/categories/update/{categoryId}")
     public String showUpdateForm(@PathVariable("categoryId") Integer id, Model model) {
