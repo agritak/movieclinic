@@ -25,14 +25,14 @@ public class CategoriesController {
 
     @GetMapping("categories/new")
     public String showCategoryForm(Category category) {
-        return "categories/create-category";
+        return "categories/create-category_2.html";
     }
 
     @PostMapping("/categories/new")
     public String addCategory(@Valid Category category, BindingResult result, Model model) {
         if (result.hasErrors()) {
 //            model.addAttribute("category", categoriesService.categories());
-            return "categories/create-category";
+            return "categories/create-category_2.html";
         } else {
             categoriesService.create(category);
             model.addAttribute("categories", categoriesService.categories());
