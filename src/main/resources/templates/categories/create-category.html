@@ -38,13 +38,13 @@
                                         class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-8">
-                                    <label for="description" class="col-form-label">Description</label> <input
+                                    <label for="description" class="col-form-label">Description</label> <textarea
                                         type="text" th:field="*{description}" class="form-control" id="description"
-                                        placeholder="Description"> <span
+                                        placeholder="Description" ><span
                                         th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
                                         class="text-danger"></span>
+                                </textarea>
                                 </div>
-
                                 <div class="form-group col-md-8">
                                     <label for="pictureURL" class="col-form-label">Picture URL</label> <input
                                         type="text" th:field="*{pictureURL}" class="form-control"
