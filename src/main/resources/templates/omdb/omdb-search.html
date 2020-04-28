@@ -25,17 +25,13 @@
                     </thead>
                     <tbody>
                     <tr th:each="movie : ${movies}">
-                        <td th:text="${movie.name}"></td>
-                        <td align="justify" th:text="${movie.description}"></td>
+                        <td th:text="${movie.title}"></td>
+                        <td align="justify" th:text="${movie.plot}"></td>
                         <td th:text="${movie.year}"></td>
-                        <td th:text="${movie.categories}">
-                            <!--                            <span th:each="category : ${movie.categories}"-->
-                            <!--                                  th:text="${category.name } + ' '">Category-->
-                            <!--                            </span>-->
-                        </td>
+                        <td th:text="${movie.genre}"></td>
                         <td>
                             <a class="btn btn-primary"
-                               th:href="${movie.pictureURL}" th:if="${!#strings.isEmpty(movie.pictureURL)}">
+                               th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
                                 <i class="far fa-image ml-2"></i>
                             </a>
                         </td>

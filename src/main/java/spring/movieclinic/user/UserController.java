@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import spring.movieclinic.category.CategoriesService;
-import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MoviesService;
-
-import java.util.Collections;
-import java.util.List;
 
 
 @Controller
@@ -23,9 +19,7 @@ public class UserController {
 
     @GetMapping
     public String index(Model model) {
-        List<Movie> movies = moviesService.movies();
-        Collections.shuffle(movies);
-        model.addAttribute("movies", movies);
+        model.addAttribute("movies", moviesService.moviesShuffled());
         return "user/user-home";
     }
 
