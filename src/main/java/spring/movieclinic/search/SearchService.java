@@ -1,78 +1,74 @@
 package spring.movieclinic.search;
 
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import spring.movieclinic.category.Category;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import spring.movieclinic.movie.Movie;
+import spring.movieclinic.movie.MovieRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-@Transactional
+@Service
+@AllArgsConstructor
 class SearchService {
 
-    @PersistenceContext
-    private final EntityManager entityManager;
+    private final MovieRepository movieRepository;
+    private final String[] stopWords = new String[]{"a", "an", "and", "as", "at", "be", "by", "if", "in","is",
+            "no", "of", "on", "or", "the", "to"};
 
-    @Autowired
-    SearchService(EntityManagerFactory entityManagerFactory) {
-        this.entityManager = entityManagerFactory.createEntityManager();
+    Set<Movie> searchOnSeveralFields(Movie movie) {
+
+        Set<Movie> orderedByRelevance = new LinkedHashSet<>();
+
+        List<Movie> byName = checkQueryIfValid(movie.getName()) ?
+                new ArrayList<>() : movieRepository.findByNameContains(movie.getName().trim());
+
+        List<Movie> byDescription = checkQueryIfValid(movie.getDescription()) ?
+                new ArrayList<>() : movieRepository.findByDescriptionContains(movie.getDescription().trim());
+        getCommonResults(byDescription, byName, orderedByRelevance);
+
+        List<Movie> byYear = movie.getYear() == null ?
+                new ArrayList<>() : movieRepository.findByYear(movie.getYear());
+        getCommonResults(byYear, byName, orderedByRelevance);
+        getCommonResults(byYear, byDescription, orderedByRelevance);
+
+        List<Movie> byCategories = movie.getCategories() == null ?
+                new ArrayList<>() :movieRepository.findByCategoriesIn(movie.getCategories());
+        getCommonResults(byCategories, byName, orderedByRelevance);
+        getCommonResults(byCategories, byDescription, orderedByRelevance);
+        getCommonResults(byCategories, byYear, orderedByRelevance);
+
+        orderedByRelevance.addAll(byName);
+        orderedByRelevance.addAll(byDescription);
+        orderedByRelevance.addAll(byYear);
+        orderedByRelevance.addAll(byCategories);
+
+        return orderedByRelevance;
     }
 
-    void initializeSearch() {
-        try {
-            FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-            fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    Boolean checkQueryIfValid(String query) {
+        return query.trim().isEmpty() || checkForStopWords(query.trim()).equals("");
+    }
+
+    private String checkForStopWords(String trimmedQuery) {
+        for(String word:stopWords) {
+            if(trimmedQuery.equals(word)) {
+                return "";
+            }
         }
+        return trimmedQuery;
     }
 
-    List<Movie> searchMovies(String text) {
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
-        QueryBuilder queryBuilder = fullTextEntityManager
-                .getSearchFactory()
-                .buildQueryBuilder()
-                .forEntity(Movie.class)
-                .get();
-
-        org.apache.lucene.search.Query query = queryBuilder
-                .keyword()
-                .onFields("name", "description", "categories.name")
-                .matching(text)
-                .createQuery();
-
-        org.hibernate.search.jpa.FullTextQuery jpaQuery
-                = fullTextEntityManager.createFullTextQuery(query, Movie.class);
-
-        return jpaQuery.getResultList();
-    }
-
-    List<Category> searchCategories(String text) {
-
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
-        QueryBuilder queryBuilder = fullTextEntityManager
-                .getSearchFactory()
-                .buildQueryBuilder()
-                .forEntity(Category.class)
-                .get();
-
-        org.apache.lucene.search.Query query = queryBuilder
-                .keyword()
-                .onFields("name")
-                .matching(text)
-                .createQuery();
-
-        org.hibernate.search.jpa.FullTextQuery jpaQuery
-                = fullTextEntityManager.createFullTextQuery(query, Category.class);
-
-        return jpaQuery.getResultList();
+    private void getCommonResults(List<Movie> currentList, List<Movie> previousList, Set<Movie> mostRelevant) {
+        if(!currentList.isEmpty() && !previousList.isEmpty()) {
+            for (Movie movie:currentList) {
+                if(previousList.contains(movie)) {
+                    mostRelevant.add(movie);
+                }
+            }
+            currentList.removeAll(mostRelevant);
+        }
     }
 }
