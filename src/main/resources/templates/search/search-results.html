@@ -10,12 +10,8 @@
     <div class="row">
         <div class="col-md-12 my-5">
             <h1>Search results for '<span th:text="${query}"></span>' :</h1>
-            <div th:if="${#lists.isEmpty(searchResultsCategories) and #lists.isEmpty(searchResultsMovies)}">
+            <div th:if="${#lists.isEmpty(searchResultsMovies)}">
                 <h2>No movies found!</h2>
-            </div>
-            <div th:unless="${#lists.isEmpty(searchResultsCategories)}">
-                <h2 style="margin-top:60px">Categories:</h2>
-                <div th:insert="fragments/category-table :: category-table(${searchResultsCategories})"></div>
             </div>
             <div th:unless="${#lists.isEmpty(searchResultsMovies)}">
                 <h2 style="margin-top:60px">Movies:</h2>
