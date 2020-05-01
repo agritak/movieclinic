@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="advanced-search-form(movie)">
+    <div class="container" style="margin-top:60px">
+        <h2>Advanced search</h2>
+        <form class="form-horizontal col-md-7" th:action="@{/webpage/search/user-search-results}" th:object="${movie}">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{name}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Year</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" min="1888" max="2020" th:field="*{year}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Categories</label>
+                <div class="col-sm-10">
+                    <p><i>Hold ctrl to select more than one option:</i></p>
+                    <select class="form-control" multiple th:field="*{categories}">
+                        <option th:each="option : ${options}"
+                                th:value="${{option}}"
+                                th:text="${option.name}">Category
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Description (key words)</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" th:field="*{description}"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</th:block>
+</html>

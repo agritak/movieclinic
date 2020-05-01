@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/head :: head ('Advanced search')"></div>
+<body>
+<div th:replace="~{fragments/navbar :: navbar-user}"></div>
+<div th:insert="fragments/advanced-search-form :: advanced-search-form(${movie})"></div>
+</body>
+</html>
