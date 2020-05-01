@@ -47,14 +47,14 @@ public class MoviesController {
         }
     }
 
-    @GetMapping("/{movieId}")
+    @GetMapping("update/{movieId}")
     public String showUpdateForm(@PathVariable("movieId") Integer id, Model model) {
         model.addAttribute("frontMovie", moviesService.findById(id));
         model.addAttribute("options", categoriesService.categories());
         return "movies/create-update-movie";
     }
 
-    @PostMapping("/{movieId}")
+    @PostMapping("update/{movieId}")
     public String updateMovie(@PathVariable("movieId") Integer id,
                               @Valid FrontMovie frontMovie,
                               BindingResult result,
