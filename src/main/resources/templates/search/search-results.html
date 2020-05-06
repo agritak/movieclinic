@@ -10,12 +10,12 @@
     <div class="row">
         <div class="col-md-12 my-5">
             <h1>Search results for '<span th:text="${query}"></span>' :</h1>
-            <div th:if="${#lists.isEmpty(searchResultsMovies)}">
+            <div th:if="${#lists.isEmpty(searchResults)}">
                 <h2>No movies found!</h2>
             </div>
-            <div th:unless="${#lists.isEmpty(searchResultsMovies)}">
+            <div th:unless="${#lists.isEmpty(searchResults)}">
                 <h2 style="margin-top:60px">Movies:</h2>
-                <div th:insert="fragments/movie-table :: movie-table(${searchResultsMovies})"></div>
+                <div th:insert="fragments/movie-table :: movie-table(${searchResults})"></div>
             </div>
         </div>
     </div>
