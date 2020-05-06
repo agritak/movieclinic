@@ -21,6 +21,11 @@ public class Category extends ItemEntity {
     //metodi, kas uztaisa hashset
     //if movies = null; create hashset
 
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }
 
 
