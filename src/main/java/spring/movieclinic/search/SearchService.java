@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MovieRepository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,37 +16,56 @@ class SearchService {
     private final String[] stopWords = new String[]{"a", "an", "and", "as", "at", "be", "by", "if", "in","is",
             "no", "of", "on", "or", "the", "to"};
 
-    Set<Movie> searchOnSeveralFields(Movie movie) {
-
-        Set<Movie> orderedByRelevance = new LinkedHashSet<>();
-
-        List<Movie> byName = checkQueryIfValid(movie.getName()) ?
-                new ArrayList<>() : movieRepository.findByNameContains(movie.getName().trim());
-
-        List<Movie> byDescription = checkQueryIfValid(movie.getDescription()) ?
-                new ArrayList<>() : movieRepository.findByDescriptionContains(movie.getDescription().trim());
-        getCommonResults(byDescription, byName, orderedByRelevance);
-
-        List<Movie> byYear = movie.getYear() == null ?
-                new ArrayList<>() : movieRepository.findByYear(movie.getYear());
-        getCommonResults(byYear, byName, orderedByRelevance);
-        getCommonResults(byYear, byDescription, orderedByRelevance);
-
-        List<Movie> byCategories = movie.getCategories() == null ?
-                new ArrayList<>() :movieRepository.findByCategoriesIn(movie.getCategories());
-        getCommonResults(byCategories, byName, orderedByRelevance);
-        getCommonResults(byCategories, byDescription, orderedByRelevance);
-        getCommonResults(byCategories, byYear, orderedByRelevance);
-
-        orderedByRelevance.addAll(byName);
-        orderedByRelevance.addAll(byDescription);
-        orderedByRelevance.addAll(byYear);
-        orderedByRelevance.addAll(byCategories);
-
-        return orderedByRelevance;
+    List<Movie> getSearchBarResults(String query) {
+        return checkQueryIfNotValid(query) ? Collections.emptyList() :
+                movieRepository.findByNameContains(query.trim());
     }
 
-    Boolean checkQueryIfValid(String query) {
+    List<Movie> getAdvancedSearchResults(String query, Movie movie) {
+        return query == null ? advancedSearch(movie) : getSearchBarResults(query);
+    }
+
+    String getQueryToDisplay(String query, Movie movie) {
+        return query != null ? query : advancedSearchQuery(movie);
+    }
+
+    private List<Movie> advancedSearch(Movie movie) {
+
+        List<Movie> listOfFound = new ArrayList<>();
+
+        listOfFound.addAll(checkQueryIfNotValid(movie.getName()) ?
+                Collections.emptyList() : movieRepository.findByNameContains(movie.getName().trim()));
+        listOfFound.addAll(movie.getYear() == null ?
+                Collections.emptyList() : movieRepository.findByYear(movie.getYear()));
+        listOfFound.addAll(movie.getCategories() == null ?
+                Collections.emptyList() :movieRepository.findByCategoriesIn(movie.getCategories()));
+        listOfFound.addAll(checkQueryIfNotValid(movie.getDescription()) ?
+                Collections.emptyList() : movieRepository.findByDescriptionContains(movie.getDescription().trim()));
+
+        Map<Movie, Integer> result = mapOfFound(listOfFound).entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        return new ArrayList<>(result.keySet());
+    }
+
+    private Map<Movie, Integer> mapOfFound(List<Movie> listOfFound) {
+
+        Map<Movie, Integer> mapOfFound = new LinkedHashMap<>();
+        if(!listOfFound.isEmpty()) {
+            for (Movie mov:listOfFound) {
+                int numberOfFieldsCorrespondsTo = 0;
+                mapOfFound.put(mov, !mapOfFound.containsKey(mov) ? ++numberOfFieldsCorrespondsTo : mapOfFound.get(mov) + 1);
+            }
+        }
+        return mapOfFound;
+    }
+
+    private Boolean checkQueryIfNotValid(String query) {
         return query.trim().isEmpty() || checkForStopWords(query.trim()).equals("");
     }
 
@@ -61,14 +78,10 @@ class SearchService {
         return trimmedQuery;
     }
 
-    private void getCommonResults(List<Movie> currentList, List<Movie> previousList, Set<Movie> mostRelevant) {
-        if(!currentList.isEmpty() && !previousList.isEmpty()) {
-            for (Movie movie:currentList) {
-                if(previousList.contains(movie)) {
-                    mostRelevant.add(movie);
-                }
-            }
-            currentList.removeAll(mostRelevant);
-        }
+    private String advancedSearchQuery(Movie movie) {
+        return (!movie.getName().isEmpty() ? "Title: " + movie.getName() + " " : "") +
+                (movie.getYear() != null ? "Year: " + movie.getYear() + " " : "") +
+                (!movie.getCategories().isEmpty()? "Category: " + movie.getCategories() + " " : "") +
+                (!movie.getDescription().isEmpty()? "Description: " + movie.getDescription() : "");
     }
 }
