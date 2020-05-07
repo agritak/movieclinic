@@ -4,10 +4,10 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
 
-<div class="container" style="margin-top: 80px">
+<div id="movies">
     <div class="row">
         <div class="col-md-12">
-            <div class="card" style="padding:20px">
+            <div class="card">
                 <div class="row no-gutters">
                     <div class="col-md-4">
                         <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}"
@@ -24,7 +24,6 @@
                             </a>
                             </span>
                             <p class="card-text" th:text="${movie.description}"></p>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,19 +1,105 @@
-.category {
-margin-top: 70px;
-margin-left: 255px;
-margin-right: 255px;
+/* navbar parts and fixed container width for all views */
+
+.logo {
+font-size: 30px;
 }
 
-.align-row {
-margin-left: 20px;
+.navbar-default .navbar-nav > li > a:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    text-decoration:none;
 }
 
-.description {
-max-width: 920px;
+/* buttons */
+
+.btn-primary {
+    color: #fff;
+    background-color: #23527c;
+    border-color: #23527c;
 }
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.btn-add {
+    float: right;
+    margin: 19px 15px 0 0;
+}
+
+/* style for movies, categories tables */
+
+.heading {
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+/* validation error style */
 
 .validation-error {
-	color: steelblue;
-	text-align: center;
+    color: steelblue;
+    text-align: center;
 }
+
+
+/* style for user views */
+
+a {
+    color: #23527c;
+}
+
+a:active, a:hover {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+#movies {
+    width: 80%;
+    margin: 35px auto;
+}
+
+.category-name {
+    margin: 25px 30px 0px 25px;
+    font-size: 30px;
+}
+
+.category-description {
+    text-align: justify;
+    margin: 15px 30px 10px 20px;;
+}
+
+.movie {
+    display: inline-block;
+    width: 190px;
+    height: 345px;
+    margin-left: 18px;
+    margin-top: 10px;
+    vertical-align: top;
+    text-align: center;
+}
+
+.movie img.poster {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 2px;
+    width: 190px;
+    height: 283px;
+    background-color: white;
+}
+
+.movie img.poster:hover {
+    box-shadow: 0 0 2px 1px #66afe9;
+}
+
+.movie a .title {
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+
+
+
+
 

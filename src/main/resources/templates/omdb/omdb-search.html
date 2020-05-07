@@ -6,46 +6,43 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar-cms}"></div>
 <div th:replace="~{fragments/input-form :: omdb-search-form}"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3 align="center" th:if="${#lists.isEmpty(movies)}">no movies found</h3>
-            <div th:if="${!#lists.isEmpty(movies)}">
-                <h3 class="my-5">Movies found:</h3>
-                <table class="table table-hover table-striped table-responsive-md">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Plot</th>
-                        <th>Year</th>
-                        <th>Categories</th>
-                        <th>Picture</th>
-                        <th>Add</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="movie : ${movies}">
-                        <td th:text="${movie.title}"></td>
-                        <td align="justify" th:text="${movie.plot}"></td>
-                        <td th:text="${movie.year}"></td>
-                        <td th:text="${movie.genre}"></td>
-                        <td>
-                            <a class="btn btn-primary"
-                               th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
-                                <i class="far fa-image ml-2"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn btn-primary" th:href="@{/omdb/save/{id}(id=${movie.id})}" type="submit">
-                                <i class="fas fa-plus ml-2"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div id="movies">
+    <h3 align="center" th:if="${#lists.isEmpty(movies)}">no movies found</h3>
+    <div th:if="${!#lists.isEmpty(movies)}">
+        <h3 class="my-5">Movies found:</h3>
+        <table class="table table-hover table-striped table-responsive-md">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Plot</th>
+                <th>Year</th>
+                <th>Categories</th>
+                <th>Poster</th>
+                <th>Add</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movie : ${movies}">
+                <td th:text="${movie.title}"></td>
+                <td align="justify" th:text="${movie.plot}"></td>
+                <td th:text="${movie.year}"></td>
+                <td th:text="${movie.genre}"></td>
+                <td>
+                    <a class="btn btn-primary"
+                       th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
+                        <i class="far fa-image ml-2"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" th:href="@{/omdb/save/{id}(id=${movie.id})}" type="submit">
+                        <i class="fas fa-plus ml-2"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+
 </body>
 </html>

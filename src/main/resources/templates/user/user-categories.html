@@ -3,21 +3,17 @@
 <div th:replace="fragments/head :: head ('Categories')"></div>
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
-<div class="container category">
+<div id="movies">
     <div th:each="category : ${categories}">
-        <div class="col-md-12">
+        <div class="category" th:unless="${#lists.isEmpty(category.movies)}">
             <a th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id})}">
-                <h2 class="align-row" th:text="${category.name}">Category</h2>
+                <h2 class="category-name" th:text="${category.name}">Category</h2>
             </a>
-            <div th:each="movie, iter : ${category.movies}"
+            <div class="movie" th:each="movie, iter : ${category.movies}"
                  th:if="${iter.index} < 5">
                 <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
-                    <div align="center" class="col-md-2">
-                        <div class="img-with-text">
-                            <img alt="image" height="253" th:src="${movie.pictureURL}" width="170"/>
-                            <label th:text="${movie.name}">Title</label>
-                        </div>
-                    </div>
+                    <img alt="poster" class="poster" th:src="${movie.pictureURL}"/>
+                    <label class="title" th:text="${movie.name}">Title</label>
                 </a>
             </div>
         </div>

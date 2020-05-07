@@ -3,23 +3,14 @@
 <div th:replace="fragments/head :: head ('Category')"></div>
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
-<div class="container category">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="align-row" th:text="${category.name}">Category</h2>
-            <p align="justify" class="description align-row" th:text="${category.description}">Description</p>
-            <br/>
-            <a th:each="movie, iter : ${category.movies}"
-               th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
-                <div align="center" class="col-md-2">
-                    <img height="253" th:src="${movie.pictureURL}" width="170">
-                    <label th:text="${movie.name}">Title</label>
-                </div>
-                <div th:if="(${iter.index} + 1) mod 5 == 0">
-                    <div class="row"></div>
-                </div>
-            </a>
-        </div>
+<div id="movies">
+    <h2 class="category-name" th:text="${category.name}">Category</h2>
+    <p class="category-description" th:text="${category.description}">Description</p>
+    <div class="movie" th:each="movie, iter : ${category.movies}">
+        <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
+            <img class="poster" th:src="${movie.pictureURL}">
+            <label class="title" th:text="${movie.name}">Title</label>
+        </a>
     </div>
 </div>
 </body>
