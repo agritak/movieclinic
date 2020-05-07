@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="advanced-search-form(movie)">
-    <div class="container" style="margin-top:60px">
+    <div id="movies">
         <h2>Advanced search</h2>
         <form class="form-horizontal col-md-7" th:action="@{/webpage/search/user-search-results}" th:object="${movie}">
             <div class="form-group">

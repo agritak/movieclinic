@@ -5,15 +5,12 @@
 
 <body>
 <div th:replace="~{fragments/navbar :: navbar-cms}"></div>
-<div class="container my-5" style="margin-top:80px">
+<div id="movies">
     <h2 th:text="${category.name}">Category</h2>
     <p align="justify" th:text="${category.description}">Description</p>
     <div class="row">
         <div class="col-md-12">
             <h2>Movies</h2>
-            <!--            <a th:href="@{/movies/new}" class="btn btn-primary">-->
-            <!--                <i class="fas fa-plus ml-2"></i>-->
-            <!--            </a>-->
             <div th:unless="${#lists.isEmpty(category.movies)}">
                 <table class="table table-hover table-striped table-responsive-md">
                     <thead>
@@ -22,10 +19,8 @@
                         <th>Plot</th>
                         <th>Year</th>
                         <th>Categories</th>
-                        <th>Picture</th>
+                        <th>Poster</th>
                         <th>Trailer</th>
-                        <!--                        <th>Edit</th>-->
-                        <!--                        <th>Delete</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -50,18 +45,6 @@
                                 <i class="far fa-play-circle ml-2"></i>
                             </a>
                         </td>
-                        <!--                        <td>-->
-                        <!--                            <a th:href="@{/movies/{movieId}(movieId=${movie.id})}"-->
-                        <!--                               class="btn btn-primary">-->
-                        <!--                                <i class="fas fa-pencil-alt ml-2"></i>-->
-                        <!--                            </a>-->
-                        <!--                        </td>-->
-                        <!--                        <td>-->
-                        <!--                            <a th:href="@{/movies/delete/{movieId}(movieId=${movie.id})}"-->
-                        <!--                               class="btn btn-primary">-->
-                        <!--                                <i class="fas fa-trash-alt ml-2"></i>-->
-                        <!--                            </a>-->
-                        <!--                        </td>-->
                     </tr>
                     </tbody>
                 </table>
