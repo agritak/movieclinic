@@ -26,6 +26,8 @@ public class Category extends ItemEntity {
     public String toString() {
         return this.getName();
     }
+
+
 }
 
 
