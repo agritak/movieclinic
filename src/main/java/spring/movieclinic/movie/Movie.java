@@ -30,14 +30,7 @@ public class Movie extends ItemEntity {
     //private String director;
     //private List<String> cast;
 
-    Set<Category> getCategoriesInternal() {
-        if (this.categories == null) {
-            this.categories = new HashSet<>();
-        }
-        return this.categories;
-    }
-
-    void setCategoriesNew() {
+    public void setCategoriesNew() {
         categories = new HashSet<>();
     }
 
@@ -47,12 +40,4 @@ public class Movie extends ItemEntity {
         }
         categories.add(category);
     }
-
-    void removeCategory(Category category) {
-        if (this.isNew()) {
-            getCategoriesInternal();
-        }
-        categories.remove(category);
-    }
-
 }

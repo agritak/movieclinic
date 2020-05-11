@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import spring.movieclinic.category.CategoriesService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -18,7 +19,6 @@ import javax.validation.Valid;
 public class MoviesController {
     private final MoviesService moviesService;
     private final CategoriesService categoriesService;
-
 
     @GetMapping
     public String showList(Model model) {
@@ -37,19 +37,18 @@ public class MoviesController {
     public String addMovie(@Valid FrontMovie frontMovie,
                            BindingResult result,
                            Model model) {
-        if (result.hasErrors()) {
+        if (validation(frontMovie, result)) {
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
-        } else {
-            moviesService.create(frontMovie);
-            model.addAttribute("movies", moviesService.movies());
-            return "movies/movies-list";
         }
+        moviesService.create(frontMovie);
+        model.addAttribute("movies", moviesService.movies());
+        return "movies/movies-list";
     }
 
     @GetMapping("update/{movieId}")
     public String showUpdateForm(@PathVariable("movieId") Integer id, Model model) {
-        model.addAttribute("frontMovie", moviesService.findById(id));
+        model.addAttribute("frontMovie", moviesService.findMovie(id));
         model.addAttribute("options", categoriesService.categories());
         return "movies/create-update-movie";
     }
@@ -59,7 +58,7 @@ public class MoviesController {
                               @Valid FrontMovie frontMovie,
                               BindingResult result,
                               Model model) {
-        if (result.hasErrors()) {
+        if (validation(frontMovie, result)) {
             model.addAttribute("options", categoriesService.categories());
             return "movies/create-update-movie";
         }
@@ -74,5 +73,14 @@ public class MoviesController {
         moviesService.delete(movieId);
         model.addAttribute("movies", moviesService.movies());
         return "movies/movies-list";
+    }
+
+    private Boolean validation(FrontMovie frontMovie, BindingResult result) {
+        Optional<Movie> optional = moviesService.movieExists(frontMovie.getName(), frontMovie.getYear());
+        if ((optional.isPresent() && !optional.get().getId().equals(frontMovie.getId()))
+                || (frontMovie.isNew() && optional.isPresent())) {
+            result.rejectValue("name", "duplicate", "this movie already exists");
+        }
+        return result.hasErrors();
     }
 }

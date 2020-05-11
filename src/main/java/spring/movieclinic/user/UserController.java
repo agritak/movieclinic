@@ -37,7 +37,7 @@ public class UserController {
 
     @GetMapping("/movie/{id}")
     public String showMovie(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("movie", moviesService.findById(id));
+        model.addAttribute("movie", moviesService.findMovie(id));
         return "user/user-movie";
     }
 }
