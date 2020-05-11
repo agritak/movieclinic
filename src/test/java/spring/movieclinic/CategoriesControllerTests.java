@@ -147,18 +147,6 @@ public class CategoriesControllerTests {
 
     }
 
-    @Test
-    public void showUpdateForm_categoryNotFound() {
-        Model model = new BindingAwareConcurrentModel();
-        Integer id = 1;
-
-       when(repository.findById(id)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> categoriesController.showUpdateForm(id, model))
-                .isEqualToComparingFieldByField(new IllegalArgumentException("Invalid user Id:" + id));
-
-        verify(repository).findById(id);
-    }
 
     @Test
     public void updateCategory_withValidationErrors() {

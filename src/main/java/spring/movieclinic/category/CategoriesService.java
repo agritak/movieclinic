@@ -31,9 +31,10 @@ public class CategoriesService {
         }
 
     public void delete (Integer id) {
-        categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+//        categoryRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
         categoryRepository.deleteById(id);
+
     }
 
     public Category findById(Integer id) {
