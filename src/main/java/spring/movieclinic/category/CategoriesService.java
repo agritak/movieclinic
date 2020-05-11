@@ -25,14 +25,14 @@ public class CategoriesService {
 
     }
 
-     void update (Integer id, Category category) {
+     public void update (Integer id, Category category) {
         category.setId(id);
         categoryRepository.save(category);
         }
 
-     void delete (Integer id) {
-//        categoryRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+    public void delete (Integer id) {
+        categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
         categoryRepository.deleteById(id);
     }
 
