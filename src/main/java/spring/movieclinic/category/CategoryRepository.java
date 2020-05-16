@@ -1,5 +1,7 @@
 package spring.movieclinic.category;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -16,4 +18,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     Set<Category> findByNameIn(List<String> names);
 
     Set<Category> findByIdIn(Set<Integer> ids);
+
+    Page<Category> findAll(Pageable pageable);
+
 }

@@ -12,7 +12,7 @@
             <div class="movie" th:each="movie, iter : ${category.movies}"
                  th:if="${iter.index} < 5">
                 <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
-                    <img alt="poster" class="poster" th:src="${movie.pictureURL}"/>
+                    <img class="poster" th:src="${movie.pictureURL}"/>
                     <label class="title" th:text="${movie.name}">Title</label>
                 </a>
             </div>

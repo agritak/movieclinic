@@ -5,9 +5,13 @@ import lombok.Setter;
 import spring.movieclinic.model.ItemEntity;
 import spring.movieclinic.movie.Movie;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -25,6 +29,12 @@ public class Category extends ItemEntity {
     @Override
     public String toString() {
         return this.getName();
+    }
+
+    public List<Movie> sortMoviesByName() {
+        return this.movies.stream()
+                .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
+                .collect(Collectors.toList());
     }
 
 

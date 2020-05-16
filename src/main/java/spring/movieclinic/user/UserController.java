@@ -1,13 +1,21 @@
 package spring.movieclinic.user;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import spring.movieclinic.category.CategoriesService;
+import spring.movieclinic.category.Category;
+import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MoviesService;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 
 @Controller
@@ -18,8 +26,13 @@ public class UserController {
     private final CategoriesService categoriesService;
 
     @GetMapping
-    public String index(Model model) {
-        model.addAttribute("movies", moviesService.moviesShuffled());
+    public String index(@RequestParam(defaultValue = "1") Integer page,
+                        @RequestParam(defaultValue = "25") Integer size,
+                        @RequestParam(defaultValue = "year") String sort,
+                        Model model) {
+        Page<Movie> paging = moviesService.paginateMovies(
+                PageRequest.of(page - 1, size, Sort.by(DESC, sort)));
+        model.addAttribute("paging", paging);
         return "user/user-home";
     }
 
@@ -30,14 +43,21 @@ public class UserController {
     }
 
     @GetMapping("/categories/{categoryId}")
-    public String showCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
-        model.addAttribute("category", categoriesService.findById(categoryId));
+    public String showCategory(@PathVariable("categoryId") Integer categoryId,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "20") Integer size,
+                               Model model) {
+        Category category = categoriesService.findById(categoryId);
+        Page<Movie> paging = moviesService.paginateAnyMoviesList(
+                PageRequest.of(page - 1, size), category.sortMoviesByName());
+        model.addAttribute("category", category);
+        model.addAttribute("paging", paging);
         return "user/user-category";
     }
 
     @GetMapping("/movie/{id}")
     public String showMovie(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("movie", moviesService.findMovie(id));
+        model.addAttribute("movie", moviesService.findMovieById(id));
         return "user/user-movie";
     }
 }

@@ -1,6 +1,7 @@
 package spring.movieclinic.movie;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.model.ItemEntity;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "movies")
+@NoArgsConstructor
 public class Movie extends ItemEntity {
 
     @ManyToMany
@@ -20,24 +22,23 @@ public class Movie extends ItemEntity {
             name = "movie_category",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
-
+    @OrderBy("name")
+    private Set<Category> categories = new HashSet<>();
     @Column(unique = true)
     private Integer year;
-
     @Column(name = "trailer_url")
     private String trailerURL;
-    //private String director;
-    //private List<String> cast;
 
-    public void setCategoriesNew() {
-        categories = new HashSet<>();
+    public Movie(FrontMovie frontMovie, Set<Category> categories) {
+        update(frontMovie, categories);
     }
 
-    public void addCategory(Category category) {
-        if (categories == null) {
-            categories = new HashSet<>();
-        }
-        categories.add(category);
+    public void update(FrontMovie frontMovie, Set<Category> categories) {
+        this.setName(frontMovie.getName());
+        this.setDescription(frontMovie.getDescription());
+        this.setYear(frontMovie.getYear());
+        this.setCategories(categories);
+        this.setPictureURL(frontMovie.getPictureURL());
+        this.setTrailerURL(frontMovie.getTrailerURL());
     }
 }
