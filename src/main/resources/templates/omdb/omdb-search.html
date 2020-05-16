@@ -9,40 +9,49 @@
 <div id="movies">
     <h3 align="center" th:if="${#lists.isEmpty(movies)}">no movies found</h3>
     <div th:if="${!#lists.isEmpty(movies)}">
-        <h3 class="my-5">Movies found:</h3>
-        <table class="table table-hover table-striped table-responsive-md">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Plot</th>
-                <th>Year</th>
-                <th>Categories</th>
-                <th>Poster</th>
-                <th>Add</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="movie : ${movies}">
-                <td th:text="${movie.title}"></td>
-                <td align="justify" th:text="${movie.plot}"></td>
-                <td th:text="${movie.year}"></td>
-                <td th:text="${movie.genre}"></td>
-                <td>
-                    <a class="btn btn-primary"
-                       th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
-                        <i class="far fa-image ml-2"></i>
-                    </a>
-                </td>
-                <td>
-                    <a class="btn btn-primary" th:href="@{/omdb/save/{id}(id=${movie.id})}" type="submit">
-                        <i class="fas fa-plus ml-2"></i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <h3>Movies found:</h3>
+        <form method="post" th:action="@{/omdb/save}">
+            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="reset">Reset</button>
+            <table class="table table-hover table-striped table-responsive-md">
+                <thead>
+                <tr>
+                    <th>Add</th>
+                    <th>Title</th>
+                    <th>Plot</th>
+                    <th>Year</th>
+                    <th>Categories</th>
+                    <th>Poster</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="movie : ${movies}">
+                    <td>
+                        <div th:if="${movie.exists}">
+                            <input checked class="checkbox" disabled type="checkbox"/>
+                        </div>
+                        <div th:unless="${movie.exists}">
+                            <input class="checkbox" id="1"
+                                   name="movies"
+                                   th:value="${movie.base64Movie}"
+                                   type="checkbox"/>
+                        </div>
+                    </td>
+                    <td th:text="${movie.title}"></td>
+                    <td align="justify" th:text="${movie.plot}"></td>
+                    <td th:text="${movie.year}"></td>
+                    <td th:text="${movie.genre}"></td>
+                    <td>
+                        <a class="btn btn-primary"
+                           th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
+                            <i class="far fa-image ml-2"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </div>
-
 </body>
 </html>

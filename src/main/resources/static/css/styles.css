@@ -29,6 +29,18 @@ font-size: 30px;
     margin: 19px 15px 0 0;
 }
 
+/* paging */
+.paging-centered {
+    text-align: center;
+}
+
+/* forms */
+.form-centered {
+    width: 50%;
+    margin: auto;
+    min-width: 540px;
+}
+
 /* style for movies, categories tables */
 
 .heading {
@@ -42,7 +54,6 @@ font-size: 30px;
     color: steelblue;
     text-align: center;
 }
-
 
 /* style for user views */
 
@@ -73,7 +84,7 @@ a:active, a:hover {
 .movie {
     display: inline-block;
     width: 190px;
-    height: 345px;
+    min-height: 345px;
     margin-left: 18px;
     margin-top: 10px;
     vertical-align: top;
