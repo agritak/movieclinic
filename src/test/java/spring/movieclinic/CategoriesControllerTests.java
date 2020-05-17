@@ -88,18 +88,35 @@ public class CategoriesControllerTests {
         Model model = mock(Model.class);
         BindingResult bindingResult = mock(BindingResult.class);
 
-        when(bindingResult.hasErrors()).thenReturn(false);
         when(service.categories()).thenReturn(expectedCategories);
         String actual = categoriesController.addCategory(category, bindingResult, model);
 
         assertThat(actual).isEqualTo("categories/categories-list");
 
-        verify(bindingResult).hasErrors();
         verify(service).create(category);
         verify(service).categories();
         verifyNoMoreInteractions(service);
 
         verify(model).addAttribute("categories", expectedCategories);
+
+    }
+
+    @Test
+    public void addCategory_withValidationErrors() {
+        Integer id = 1;
+        Category category = category(id, "action");
+
+        Model model = mock(Model.class);
+        BindingResult bindingResult = mock(BindingResult.class);
+
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        String actual = categoriesController.addCategory(category, bindingResult, model);
+
+        assertThat(actual).isEqualTo("categories/create-category.html");
+
+        verify(bindingResult).hasErrors();
+        verifyNoInteractions(repository, model);
 
     }
 
