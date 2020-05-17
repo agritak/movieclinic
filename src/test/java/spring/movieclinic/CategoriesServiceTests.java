@@ -5,6 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareConcurrentModel;
 import spring.movieclinic.category.CategoriesService;
@@ -12,6 +16,7 @@ import spring.movieclinic.category.Category;
 import spring.movieclinic.category.CategoryRepository;
 import spring.movieclinic.model.ItemEntity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +25,7 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,6 +49,20 @@ public class CategoriesServiceTests {
         verify(repository).findByOrderByNameAsc();
 
     }
+
+    @Test
+     public void paginateCategories() {
+        int pageNumber = 0;
+        int pageSize = 1;
+        Integer id = 1;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Category category = category(1, "action");
+        Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category));
+        when(repository.findAll(pageable)).thenReturn(categoryPage);
+        service.paginateCategories(pageable);
+        Page<Category> categories = repository.findAll(pageable);
+        assertEquals(categories.getNumberOfElements(), 1);
+   }
 
     @Test
     public void create() {
