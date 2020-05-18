@@ -16,7 +16,7 @@ class SearchController {
     private final SearchService searchService;
 
     @GetMapping("search/search-results")
-    String search(@RequestParam(value = "search") String query, Model model) {
+    String adminSideSearch(@RequestParam(value = "search") String query, Model model) {
         model.addAttribute("query", query);
         model.addAttribute("searchResults", searchService.getSearchBarResults(query));
         return "search/search-results";
@@ -26,7 +26,7 @@ class SearchController {
     String userSideSearch(@RequestParam(value = "search", required = false) String query, Movie movie, Model model) {
         model.addAttribute("options", categoriesService.categories());
         model.addAttribute("query", searchService.getQueryToDisplay(query, movie));
-        model.addAttribute("searchResults", searchService.getAdvancedSearchResults(query, movie));
+        model.addAttribute("searchResults", searchService.getUserSearchResults(query, movie));
         return "search/user-search-results";
     }
 
@@ -36,5 +36,4 @@ class SearchController {
         model.addAttribute("movie", new Movie());
         return "search/advanced-search";
     }
-
 }
