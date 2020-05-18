@@ -7,6 +7,7 @@ import spring.movieclinic.category.Category;
 import spring.movieclinic.model.ItemEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +29,8 @@ public class Movie extends ItemEntity {
     private Integer year;
     @Column(name = "trailer_url")
     private String trailerURL;
+    @Column(name = "picture_url")
+    private String pictureURL;
 
     public Movie(FrontMovie frontMovie, Set<Category> categories) {
         update(frontMovie, categories);

@@ -6,7 +6,6 @@
             <th>Name</th>
             <th>Description</th>
             <th>Movies</th>
-            <th>Picture</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -20,12 +19,6 @@
             </td>
             <td align="justify" th:text="${category.description}"></td>
             <td align="center" th:text="${#lists.size(category.movies)}">[movies count]</td>
-            <td>
-                <a th:if="${!#strings.isEmpty(category.pictureURL)}"
-                   th:href="${category.pictureURL}" class="btn btn-primary">
-                    <i class="far fa-image ml-2"></i>
-                </a>
-            </td>
             <td>
                 <a th:href="@{/categories/update/{categoryId}(categoryId=${category.id})}"
                    class="btn btn-primary">

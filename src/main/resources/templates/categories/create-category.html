@@ -48,13 +48,6 @@
                                         th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
                                         class="text-danger"></span>
                                 </div>
-                                <div class="form-group col-md-8">
-                                    <label for="pictureURL" class="col-form-label">Picture URL</label> <input
-                                        type="text" th:field="*{pictureURL}" class="form-control"
-                                        id="pictureURL" placeholder="PictureURL"> <span
-                                        th:if="${#fields.hasErrors('pictureURL')}" th:errors="*{pictureURL}"
-                                        class="text-danger"></span>
-                                </div>
 
                                 <div class="col-md-6">
                                     <input type="submit" class="btn btn-primary" value="Add Category">

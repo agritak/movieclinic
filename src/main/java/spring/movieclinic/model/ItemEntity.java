@@ -22,8 +22,8 @@ public class ItemEntity extends BaseEntity {
     @Size(max = 500, message = "the maximum number of characters is 500")
     private String description;
 
-    @Column(name = "picture_url")
-    @NotBlank(message = "Picture is mandatory")
-    private String pictureURL;
+//    @Column(name = "picture_url")
+//    @NotBlank(message = "Picture is mandatory")
+//    private String pictureURL;
 
 }
