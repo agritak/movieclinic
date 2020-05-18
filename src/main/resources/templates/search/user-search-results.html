@@ -10,12 +10,12 @@
             <!--            <h1>Search results for '<span th:text="${query}"></span>' :</h1>-->
             <h1>Search results for:</h1>
             <h2>'<span th:text="${query}"></span>'</h2>
-            <div th:if="${paging.totalElements == 0}">
+            <div th:if="${#lists.isEmpty(searchResults)}">
                 <h2>No movies found! Try again!</h2>
                 <div th:insert="fragments/advanced-search-form :: advanced-search-form(${movie})"></div>
             </div>
-            <div th:unless="${paging.totalElements == 0}">
-                <div th:each="movie : ${paging.content}">
+            <div th:unless="${#lists.isEmpty(searchResults)}">
+                <div th:each="movie : ${searchResults}">
                     <div class="card mb-3" style="padding:20px">
                         <div class="row no-gutters">
                             <div class="col-md-2">
@@ -41,28 +41,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="paging-centered">
-        <ul class="pagination" th:each="i : ${#numbers.sequence(1, paging.totalPages)}"
-            th:if="${paging.totalPages gt 1}">
-            <li th:if="${i == 1 && paging.number gt 0}">
-                <a aria-label="Previous"
-                   data-toggle="tooltip"
-                   th:href="@{/webpage/search/user-search-results (search=${query}, size=${paging.size}, page=${paging.number})}"
-                   title="Previous Page">&laquo;</a>
-            </li>
-            <li th:class="${i == paging.number + 1} ? 'active'">
-                <a th:href="@{/webpage/search/user-search-results (search=${query}, size=${paging.size}, page=${i})}"
-                   th:text=${i} type="submit">
-                </a>
-            </li>
-            <li th:if="${i == paging.totalPages && paging.number lt paging.totalPages - 1}">
-                <a aria-label="Next"
-                   data-toggle="tooltip"
-                   th:href="@{/webpage/search/user-search-results (search=${query}, size=${paging.size}, page=${paging.number + 2})}"
-                   title="Next Page">&raquo;</a>
-            </li>
-        </ul>
     </div>
 </div>
 </body>
