@@ -20,7 +20,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/webpage")
+@RequestMapping
 public class UserController {
     private final MoviesService moviesService;
     private final CategoriesService categoriesService;

@@ -29,12 +29,15 @@
 <div th:fragment="omdb-search-form">
     <div id="movies">
         <div class="form-centered">
-            <form th:action="@{/omdb/search}" th:method="get">
+            <form th:action="@{/admin/omdb/search}" th:method="get">
+                <h3 class="form-group">Find movie by title:</h3>
                 <div class="form-group">
-                    <h3>Find movie by title:</h3>
                     <input class="form-control" name="title"
                            placeholder="Movie Title" required type="text">
                 </div>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
             </form>
         </div>
     </div>

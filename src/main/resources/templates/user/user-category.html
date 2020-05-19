@@ -7,7 +7,7 @@
     <h2 class="category-name" th:text="${category.name}">Category</h2>
     <p class="category-description" th:text="${category.description}">Description</p>
     <div class="movie" th:each="movie : ${paging.content}">
-        <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
+        <a th:href="@{/movie/{id}(id = ${movie.id})}">
             <img class="poster" th:src="${movie.pictureURL}">
             <label class="title" th:text="${movie.name}">Title</label>
         </a>
@@ -18,18 +18,18 @@
             <li th:if="${i == 1 && paging.number gt 0}">
                 <a aria-label="Previous"
                    data-toggle="tooltip"
-                   th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${paging.number})}"
+                   th:href="@{/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${paging.number})}"
                    title="Previous Page">&laquo;</a>
             </li>
             <li th:class="${i == paging.number + 1} ? 'active'">
-                <a th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${i})}"
+                <a th:href="@{/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${i})}"
                    th:text=${i}>
                 </a>
             </li>
             <li th:if="${i == paging.totalPages && paging.number lt paging.totalPages - 1}">
                 <a aria-label="Next"
                    data-toggle="tooltip"
-                   th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${paging.number + 2})}"
+                   th:href="@{/categories/{categoryId}(categoryId=${category.id}, size=${paging.size}, page=${paging.number + 2})}"
                    title="Next Page">&raquo;</a>
             </li>
         </ul>

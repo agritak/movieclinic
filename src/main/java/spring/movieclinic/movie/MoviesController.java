@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/movies")
+@RequestMapping("admin/movies")
 public class MoviesController {
     private final MoviesService moviesService;
     private final CategoriesService categoriesService;
@@ -46,7 +46,7 @@ public class MoviesController {
             return "movies/create-update-movie";
         }
         moviesService.create(frontMovie);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
 
     @GetMapping("update/{movieId}")
@@ -66,13 +66,13 @@ public class MoviesController {
             return "movies/create-update-movie";
         }
         moviesService.update(id, frontMovie);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
 
     @GetMapping("/delete/{movieId}")
     public String deleteMovie(@PathVariable("movieId") Integer movieId) {
         moviesService.delete(movieId);
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
 
     private boolean validate(FrontMovie frontMovie, BindingResult result) {

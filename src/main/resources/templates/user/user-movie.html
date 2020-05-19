@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}"
+                        <a th:href="@{/movie/{id}(id = ${movie.id})}"
                            th:if="${!#strings.isEmpty(movie.pictureURL)}">
                             <img class="col-md-12" th:src="${movie.pictureURL}">
                         </a>
@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <h2 class="card-title" th:text="|${movie.name} (${movie.year})|"></h2>
                             <span class="text-muted" th:each="category : ${movie.categories}">
-                            <a th:href="@{/webpage/categories/{categoryId}(categoryId=${category.id})}"
+                            <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}"
                                th:text="${category.name} + ' '">Categories
                             </a>
                             </span>

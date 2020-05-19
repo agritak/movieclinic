@@ -1,6 +1,7 @@
 package spring.movieclinic.movie;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
 import java.util.Set;
@@ -17,7 +18,9 @@ public class FrontMovie {
     @Min(value = 1888, message = "must be equal or greater than 1888")
     @Max(value = 2020, message = "must be equal or less than 2020")
     private Integer year;
+    @URL
     private String pictureURL;
+    @URL
     private String trailerURL;
 
     public boolean isNew() {
