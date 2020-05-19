@@ -2,6 +2,8 @@ package spring.movieclinic.category;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import spring.movieclinic.movie.Movie;
@@ -24,5 +26,9 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     Set<Category> findByIdIn(Set<Integer> ids);
 
     Page<Category> findAll(Pageable pageable);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM categories WHERE id = ?")
+    void deleteById(Integer id);
 
 }

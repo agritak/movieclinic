@@ -13,20 +13,20 @@
         <tbody>
         <tr th:each="category : ${categories}">
             <td>
-                <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}"
+                <a th:href="@{categories/{categoryId}(categoryId=${category.id})}"
                    th:text="${category.name}">
                 </a>
             </td>
             <td align="justify" th:text="${category.description}"></td>
             <td align="center" th:text="${#lists.size(category.movies)}">[movies count]</td>
             <td>
-                <a th:href="@{/categories/update/{categoryId}(categoryId=${category.id})}"
+                <a th:href="@{categories/update/{categoryId}(categoryId=${category.id})}"
                    class="btn btn-primary">
                     <i class="fas fa-pencil-alt ml-2"></i>
                 </a>
             </td>
             <td>
-                <a th:href="@{/categories/delete/{categoryId}(categoryId=${category.id})}"
+                <a th:href="@{categories/delete/{categoryId}(categoryId=${category.id})}"
                    class="btn btn-primary">
                     <i class="fas fa-trash-alt ml-2"></i>
                 </a>

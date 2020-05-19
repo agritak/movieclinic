@@ -34,7 +34,7 @@ public class CategoriesController {
 
   //  private final CategoryRepository repository;
 
-    @GetMapping("/categories")
+    @GetMapping("admin/categories")
     public String index(@RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "name") String sort,
@@ -57,12 +57,12 @@ public class CategoriesController {
     //    }
 
 
-    @GetMapping("/categories/new")
+    @GetMapping("/admin/categories/new")
     public String showCategoryForm(Category category) {
         return "categories/create-category.html";
     }
 
-    @PostMapping("/categories/new")
+    @PostMapping("/admin/categories/new")
     public String addCategory(@Valid Category category, BindingResult result, Model model) {
         if (result.hasErrors()) {
           //  model.addAttribute("category", categoriesService.categories());
@@ -70,13 +70,13 @@ public class CategoriesController {
         } else {
             categoriesService.create(category);
             model.addAttribute("categories", categoriesService.categories());
-            return "redirect:/categories";
+            return "redirect:/admin/categories";
        //     return "categories/categories-list";
         }
     }
 
 
-    @GetMapping("/categories/update/{categoryId}")
+    @GetMapping("/admin/categories/update/{categoryId}")
     public String showUpdateForm(@PathVariable("categoryId") Integer id, Model model) {
 //        Category category = repository.findById(id)
 //                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
@@ -87,7 +87,7 @@ public class CategoriesController {
         return "categories/update-categories";
     }
 
-    @PostMapping("/categories/update/{categoryId}")
+    @PostMapping("/admin/categories/update/{categoryId}")
     public String updateCategory(@PathVariable("categoryId") Integer id,
                                  @Valid Category category, BindingResult result, Model model) {
         if(result.hasErrors()) {
@@ -95,18 +95,25 @@ public class CategoriesController {
         }
         categoriesService.update(id, category);
         model.addAttribute("categories", categoriesService.categories());
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
          // return "categories/categories-list";
     }
 
-    @GetMapping("/categories/delete/{categoryId}")
+    @GetMapping("/admin/categories/delete/{categoryId}")
     public String deleteCategory(@PathVariable("categoryId") Integer id, Model model) {
         categoriesService.delete(id);
         model.addAttribute("categories", categoriesService.categories());
-        return "categories/categories-list";
+     //   return "categories/categories-list";
+        return "redirect:/admin/categories";
     }
 
-    @GetMapping("categories/{categoryId}")
+//    @GetMapping("/categories/delete/{categoryId}")
+//    public String deleteCategory(@PathVariable("categoryId") Integer id, Model model) {
+//        categoriesService.delete(id);
+//        return "redirect:/categories";
+//    }
+
+    @GetMapping("/admin/categories/{categoryId}")
     public String showCategory(@PathVariable("categoryId") Integer categoryId,
                                @RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "10") Integer size,

@@ -27,8 +27,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-md-10">
-                        <!--					<form action="#" th:action="@{/new}"-->
-                        <form method="post" th:object="${category}">
+                        					<form action="#" th:action="@{/admin/categories/new}"
+                          th:object="${category}"  method="post">
                             <div class="validation-error"
                                  th:if="${#fields.hasErrors()}">
                                 Please correct the problems below and resubmit.

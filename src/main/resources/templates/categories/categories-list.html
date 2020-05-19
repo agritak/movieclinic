@@ -8,7 +8,7 @@
 
 <div id="movies">
     <h2 class="heading">Categories</h2>
-    <a class="btn btn-primary btn-add" href="/categories/new"
+    <a class="btn btn-primary btn-add" href="/admin/categories/new"
        aria-label="Add" title="Add New Category" data-toggle="tooltip">
         <i class="fas fa-plus ml-2"></i>
     </a>
@@ -17,16 +17,16 @@
         <ul class="pagination" th:if="${paging.totalPages gt 1}"
             th:each="i : ${#numbers.sequence(1, paging.totalPages)}">
             <li th:if="${i == 1 && paging.number gt 0}">
-                <a th:href="@{/categories (size=${paging.size}, page=${paging.number})}"
+                <a th:href="@{/admin/categories (size=${paging.size}, page=${paging.number})}"
                    aria-label="Previous" title="Previous Page" data-toggle="tooltip">&laquo;</a>
             </li>
             <li th:class="${i == paging.number + 1} ? 'active'">
-                <a th:href="@{/categories (size=${paging.size}, page=${i})}"
+                <a th:href="@{/admin/categories (size=${paging.size}, page=${i})}"
                    th:text=${i}>
                 </a>
             </li>
             <li th:if="${i == paging.totalPages && paging.number lt paging.totalPages - 1}">
-                <a th:href="@{/categories (size=${paging.size}, page=${paging.number + 2})}"
+                <a th:href="@{/admin/categories (size=${paging.size}, page=${paging.number + 2})}"
                    aria-label="Next" title="Next Page" data-toggle="tooltip">&raquo;</a>
             </li>
         </ul>

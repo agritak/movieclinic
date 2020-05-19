@@ -14,7 +14,6 @@ import org.springframework.validation.support.BindingAwareConcurrentModel;
 import spring.movieclinic.category.CategoriesService;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.category.CategoryRepository;
-import spring.movieclinic.model.ItemEntity;
 
 import java.util.Collections;
 import java.util.List;
