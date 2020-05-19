@@ -1,7 +1,5 @@
 package spring.movieclinic.omdb;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.movieclinic.category.Category;
@@ -9,7 +7,10 @@ import spring.movieclinic.category.CategoryRepository;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MovieRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,10 +19,11 @@ public class OmdbService {
     private final OmdbGateway omdbGateway;
     private final CategoryRepository categoryRepository;
     private final MovieRepository movieRepository;
+    private final OmdbConverter omdbConverter;
 
     List<OmdbOption> findMovies(String title) {
         List<OmdbOption> list = markExistingOmdbOptions(getFullData(omdbGateway.searchBy(title.trim())));
-        list.forEach(OmdbOption::tobase64Movie);
+        list.forEach(omdbConverter::toBase64Movie);
         return list;
     }
 
@@ -29,7 +31,7 @@ public class OmdbService {
         List<OmdbOption> selected = form
                 .getMovies()
                 .stream()
-                .map(this::fromBase64)
+                .map(omdbConverter::fromBase64Movie)
                 .collect(Collectors.toList());
 
         selected.forEach(m -> m.setExists(false));
@@ -73,19 +75,6 @@ public class OmdbService {
             }
         }
         movieRepository.saveAll(movies);
-    }
-
-    private OmdbOption fromBase64(String base64Movie) {
-        ObjectMapper mapper = new ObjectMapper();
-        OmdbOption option = new OmdbOption();
-        byte[] decodedBytes = Base64.getDecoder().decode(base64Movie);
-        String decodedString = new String(decodedBytes);
-        try {
-            option = mapper.readValue(decodedString, OmdbOption.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return option;
     }
 
     private Set<Category> genreToCategories(String genre) {

@@ -1,13 +1,10 @@
 package spring.movieclinic.omdb;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.movie.Movie;
 
-import java.util.Base64;
 import java.util.Set;
 
 @Data
@@ -40,16 +37,6 @@ public class OmdbOption {
         movie.setCategories(categories);
         movie.setPictureURL(poster);
         return movie;
-    }
-
-    public void tobase64Movie() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(this);
-            this.setBase64Movie(Base64.getEncoder().encodeToString(json.getBytes()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
     }
 
 }

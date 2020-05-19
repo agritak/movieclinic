@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring.movieclinic.movie.MoviesService;
 
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
+@RequestMapping("admin/")
 public class OmdbController {
     private final OmdbService omdbService;
     private final MoviesService moviesService;
@@ -38,7 +40,7 @@ public class OmdbController {
         }
         omdbService.saveMovies(movies);
         model.addAttribute("movies", moviesService.getMoviesByNameAsc());
-        return "redirect:/movies";
+        return "redirect:/admin/movies";
     }
 }
 
