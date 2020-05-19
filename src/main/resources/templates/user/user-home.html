@@ -4,11 +4,13 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
 <div id="movies">
-    <div class="movie" th:each="movie : ${paging.content}">
-        <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
-            <img class="poster" th:src="${movie.pictureURL}"/>
-            <label class="title" th:text="${movie.name}">Title</label>
-        </a>
+    <div class="container">
+        <div class="movie" th:each="movie : ${paging.content}">
+            <a th:href="@{/webpage/movie/{id}(id = ${movie.id})}">
+                <img class="poster" th:src="${movie.pictureURL}"/>
+                <label class="title" th:text="${movie.name}">Title</label>
+            </a>
+        </div>
     </div>
     <div class="paging-centered">
         <ul class="pagination" th:each="i : ${#numbers.sequence(1, paging.totalPages)}"
