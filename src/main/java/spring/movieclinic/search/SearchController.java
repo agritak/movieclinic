@@ -15,14 +15,14 @@ class SearchController {
     private final CategoriesService categoriesService;
     private final SearchService searchService;
 
-    @GetMapping("search/search-results")
+    @GetMapping("admin/search/search-results")
     String adminSideSearch(@RequestParam(value = "search") String query, Model model) {
         model.addAttribute("query", query);
         model.addAttribute("searchResults", searchService.getSearchBarResults(query));
         return "search/search-results";
     }
 
-    @GetMapping("/webpage/search/user-search-results")
+    @GetMapping("/search/user-search-results")
     String userSideSearch(@RequestParam(value = "search", required = false) String query, Movie movie, Model model) {
         model.addAttribute("options", categoriesService.categories());
         model.addAttribute("query", searchService.getQueryToDisplay(query, movie));
@@ -30,7 +30,7 @@ class SearchController {
         return "search/user-search-results";
     }
 
-    @GetMapping("/webpage/advanced")
+    @GetMapping("/advanced")
     String showAdvancedSearchForm(Model model) {
         model.addAttribute("options", categoriesService.categories());
         model.addAttribute("movie", new Movie());

@@ -2,7 +2,7 @@
 <th:block th:fragment="advanced-search-form(movie)">
     <div id="movies">
         <h2>Advanced search</h2>
-        <form class="form-horizontal col-md-7" th:action="@{/webpage/search/user-search-results}" th:object="${movie}">
+        <form class="form-horizontal col-md-7" th:action="@{/search/user-search-results}" th:object="${movie}">
             <div class="form-group">
                 <label class="control-label col-sm-2">Title</label>
                 <div class="col-sm-10">
