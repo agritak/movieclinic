@@ -3,7 +3,6 @@ package spring.movieclinic.search;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.movieclinic.category.Category;
-import spring.movieclinic.model.ItemEntity;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MovieRepository;
 
@@ -51,7 +50,7 @@ class SearchService {
                 (!movie.getCategories().isEmpty()? "Category: " +
                         movie.getCategories()
                                 .stream()
-                                .map(ItemEntity::getName)
+                                .map(Category::getName)
                                 .collect(Collectors.joining(", ")) + " " : "") +
                 (!movie.getDescription().isEmpty()? "Description: " + movie.getDescription() : "");
     }
@@ -99,29 +98,15 @@ class SearchService {
     List<Movie> getResultsWhenCategoriesNotEmpty(Movie movie, List<Movie> listOfFound) {
         return movie.getCategories().size() == 1 ?
                 listOfFound :
-                new ArrayList<>(getMostRelevantWhenMultipleCategories(listOfFound).entrySet()
-                        .stream()
-                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (oldValue, newValue) -> oldValue, LinkedHashMap::new)).keySet());
+                getMostRelevantWhenMultipleCategories(listOfFound);
     }
 
-    Map<Movie, Integer> getMostRelevantWhenMultipleCategories(List<Movie> listOfFound) {
-
-        Map<Movie, Integer> mapOfFound = new LinkedHashMap<>();
-        Map<Movie, Integer> mostRelevant = new LinkedHashMap<>();
-
-        for (Movie mov:listOfFound) {
-            int matchingRequestedCategories = 0;
-            mapOfFound.put(mov, !mapOfFound.containsKey(mov) ? ++matchingRequestedCategories : mapOfFound.get(mov) + 1);
-        }
-        for(Map.Entry<Movie, Integer> entry : mapOfFound.entrySet()) {
-            if (entry.getValue() > 1) {
-                mostRelevant.put(entry.getKey(), entry.getValue());
-            }
-        }
-        return mostRelevant;
+    List<Movie> getMostRelevantWhenMultipleCategories(List<Movie> listOfFound) {
+        return listOfFound
+                .stream()
+                .filter(movie -> Collections.frequency(listOfFound, movie) > 1)
+                .sorted(Comparator.comparing(movie -> Collections.frequency(listOfFound, movie)).reversed())
+                .distinct()
+                .collect(Collectors.toList());
     }
 }
