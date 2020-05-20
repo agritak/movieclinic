@@ -36,7 +36,6 @@ class SearchServiceTest {
         List<Movie> actual = searchService.getSearchBarResults(query);
 
         assertThat(actual).isEqualTo(expected);
-
     }
 
     @Test
@@ -51,26 +50,10 @@ class SearchServiceTest {
         List<Movie> actual = searchService.getSearchBarResults(query);
 
         assertThat(actual).isEqualTo(expected);
+
         verify(movieRepository).findByNameContains(query);
         verifyNoMoreInteractions(movieRepository);
-
     }
-
-//    @Test
-//    void getQueryToDisplay_whenQueryIsNull() {
-//
-//        Movie movie = mock(Movie.class);
-////        Movie movie = movie(1, "Life is Beautiful");
-//        String expectedQueryToDisplay = "Title: life";
-//
-//        when(searchService.advancedSearchQuery(movie)).thenReturn(expectedQueryToDisplay);
-//
-//        String actual = searchService.getQueryToDisplay(null, movie);
-//
-//        assertThat(actual).isEqualTo(expectedQueryToDisplay);
-//
-////        verifyNoMoreInteractions(movie);
-//    }
 
     @Test
     void getQueryToDisplay_whenQueryIsNotNull() {
@@ -85,21 +68,33 @@ class SearchServiceTest {
         verifyNoMoreInteractions(movie);
     }
 
-//    @Test
-//    void getUserSearchResults_whenQueryIsNull() {
-//
-//        Movie movie = mock(Movie.class);
-//
-//        List<Movie> expected = asList(
-//                movie(1, "Life is Beautiful"),
-//                movie(2, "A Bug's Life"));
-//
-//        when(searchService.getAdvancedSearchResults(movie)).thenReturn(expected);
-//
-//        List<Movie> actual = searchService.getUserSearchResults(null, movie);
-//
-//        assertThat(actual).isEqualTo(expected);
-//    }
+    @Test
+    void getQueryToDisplay_whenQueryIsNull() {
+
+        Movie movie = movie("life", null, Collections.emptySet(), "");
+
+        String expectedQueryToDisplay = "Title: life ";
+
+        String actual = searchService.getQueryToDisplay(null, movie);
+
+        assertThat(actual).isEqualTo(expectedQueryToDisplay);
+    }
+
+    @Test
+    void getUserSearchResults_whenQueryIsNull() {
+
+        Movie movie = movie("life", null, Collections.emptySet(), "");
+
+        List<Movie> expected = asList(
+                movie(1, "Life is Beautiful"),
+                movie(2, "A Bug's Life"));
+
+        when(searchService.getAdvancedSearchResults(movie)).thenReturn(expected);
+
+        List<Movie> actual = searchService.getUserSearchResults(null, movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
 
     @Test
     void getUserSearchResults_whenQueryIsNotNull() {
@@ -159,6 +154,9 @@ class SearchServiceTest {
 
     @Test
     void advancedSearchQuery() {
+
+
+
     }
 
     @Test
@@ -173,19 +171,21 @@ class SearchServiceTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-//    @Test
-//    void getAdvancedSearchResults_whenNotEmptySearch() {
-//
-//        Movie movie = movie("life", null, Collections.emptySet(), "");
-//
-//        List<Movie> expected = asList(
-//                movie(1, "Life is Beautiful"),
-//                movie(2, "A Bug's Life"));
-//
-//        List<Movie> actual = searchService.getAdvancedSearchResults(movie);
-//
-//        assertThat(actual).isEqualTo(expected);
-//    }
+    @Test
+    void getAdvancedSearchResults_whenNotEmptySearch() {
+
+        Movie movie = movie("life", null, Collections.emptySet(), "");
+
+        List<Movie> expected = asList(
+                movie(1, "Life is Beautiful"),
+                movie(2, "A Bug's Life"));
+
+        when(searchService.advancedSearchResultsWhenInputNotEmpty(movie)).thenReturn(expected);
+
+        List<Movie> actual = searchService.getAdvancedSearchResults(movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
 
     @Test
     void checkForEmptySearch_whenEmptyInputMovie() {
@@ -281,16 +281,68 @@ class SearchServiceTest {
         assertThat(actual).isEqualTo(listOfFound);
     }
 
-//    @Test
-//    void getResultsWhenListOfFoundNotEmpty_whenNotEmptyCategories() {
-//    }
+    @Test
+    void getResultsWhenListOfFoundNotEmpty_whenNotEmptyCategories() {
+
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+
+        Movie movie = movie("", null, categorySet, "war");
+
+        List<Movie> listOfFound = asList(
+                movie(1, "Life is Beautiful"),
+                movie(3, "A Bug's Life"));
+
+        List<Movie> actual = searchService.getResultsWhenListOfFoundNotEmpty(movie, listOfFound);
+
+        assertThat(actual).isEqualTo(listOfFound);
+    }
 
     @Test
-    void getResultsWhenCategoriesNotEmpty_() {
+    void getResultsWhenCategoriesNotEmpty_whenCategoriesSizeEqualsOne() {
+
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+
+        Movie movie = movie("", null, categorySet, "war");
+
+        List<Movie> listOfFound = asList(
+                movie(1, "Life is Beautiful"),
+                movie(3, "A Bug's Life"));
+
+        List<Movie> actual = searchService.getResultsWhenCategoriesNotEmpty(movie, listOfFound);
+
+        assertThat(actual).isEqualTo(listOfFound);
+    }
+
+    @Test
+    void getResultsWhenCategoriesNotEmpty_whenCategoriesSizeNotEqualsOne() {
+
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+        categorySet.add(category(2, "Animation"));
+
+        Movie movie = movie("", null, categorySet, "war");
+
+        List<Movie> listOfFound = asList(
+                movie(1, "Life is Beautiful"),
+                movie(3, "A Bug's Life"));
+
+        List<Movie> actual = searchService.getResultsWhenCategoriesNotEmpty(movie, listOfFound);
+
+        assertThat(actual).isEqualTo(new ArrayList<>());
     }
 
     @Test
     void getMostRelevantWhenMultipleCategories() {
+
+        List<Movie> listOfFound = asList(
+                movie(1, "Life is Beautiful"),
+                movie(3, "A Bug's Life"));
+
+        List<Movie> actual = searchService.getMostRelevantWhenMultipleCategories(listOfFound);
+
+        assertThat(actual).isEqualTo(new ArrayList<>());
     }
 
     private Movie movie(Integer id , String name) {
