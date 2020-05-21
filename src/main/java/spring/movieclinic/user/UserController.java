@@ -21,55 +21,43 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Controller
 @AllArgsConstructor
 @RequestMapping
-public final class UserController {
+public class UserController {
     private final MoviesService moviesService;
     private final CategoriesService categoriesService;
 
     @GetMapping
-    public String index(@RequestParam(
-                                defaultValue = "1") final Integer page,
-                        @RequestParam(
-                                defaultValue = "25") final Integer size,
-                        @RequestParam(
-                                defaultValue = "year") final String sort,
-                                                        final Model model) {
+    public String index(@RequestParam(defaultValue = "1") Integer page,
+                        @RequestParam(defaultValue = "25") Integer size,
+                        @RequestParam(defaultValue = "year") String sort,
+                        Model model) {
         Page<Movie> paging = moviesService.paginateMovies(
-                PageRequest.of(page - 1, size,
-                        Sort.by(DESC, sort)));
+                PageRequest.of(page - 1, size, Sort.by(DESC, sort)));
         model.addAttribute("paging", paging);
         return "user/user-home";
     }
 
     @GetMapping("/categories")
-    public String showCategories(final Model model) {
-        model.addAttribute("categories",
-                categoriesService.categories());
+    public String showCategories(Model model) {
+        model.addAttribute("categories", categoriesService.categories());
         return "user/user-categories";
     }
 
     @GetMapping("/categories/{categoryId}")
-    public String showCategory(@PathVariable(
-                                    "categoryId") final Integer categoryId,
-                               @RequestParam(
-                                       defaultValue = "1") final Integer page,
-                               @RequestParam(
-                                       defaultValue = "20") final Integer size,
-                               final Model model) {
+    public String showCategory(@PathVariable("categoryId") Integer categoryId,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "20") Integer size,
+                               Model model) {
         Category category = categoriesService.findById(categoryId);
         Page<Movie> paging = moviesService.paginateAnyMoviesList(
-                PageRequest.of(page - 1, size),
-                category.sortMoviesByName());
+                PageRequest.of(page - 1, size), category.sortMoviesByName());
         model.addAttribute("category", category);
         model.addAttribute("paging", paging);
         return "user/user-category";
     }
 
     @GetMapping("/movie/{id}")
-    public String showMovie(@PathVariable("id")
-                                final Integer id,
-                                final Model model) {
-        model.addAttribute("movie",
-                moviesService.findMovieById(id));
+    public String showMovie(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("movie", moviesService.findMovieById(id));
         return "user/user-movie";
     }
 }

@@ -14,7 +14,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public final boolean isNew() {
+    public boolean isNew() {
         return this.id == null;
     }
 

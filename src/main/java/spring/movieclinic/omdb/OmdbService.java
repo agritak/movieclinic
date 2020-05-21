@@ -15,20 +15,19 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public final class OmdbService {
+public class OmdbService {
     private final OmdbGateway omdbGateway;
     private final CategoryRepository categoryRepository;
     private final MovieRepository movieRepository;
     private final OmdbConverter omdbConverter;
 
-    List<OmdbOption> findMovies(final String title) {
-        List<OmdbOption> list = markExistingOmdbOptions(
-                getFullData(omdbGateway.searchBy(title.trim())));
+    List<OmdbOption> findMovies(String title) {
+        List<OmdbOption> list = markExistingOmdbOptions(getFullData(omdbGateway.searchBy(title.trim())));
         list.forEach(omdbConverter::toBase64Movie);
         return list;
     }
 
-    void saveMovies(final OmdbSelection form) {
+    void saveMovies(OmdbSelection form) {
         List<OmdbOption> selected = form
                 .getMovies()
                 .stream()
@@ -39,17 +38,14 @@ public final class OmdbService {
         saveChosen(markExistingOmdbOptions(selected));
     }
 
-    private List<OmdbOption> getFullData(
-            final List<OmdbDraft> found) {
+    private List<OmdbOption> getFullData(List<OmdbDraft> found) {
         List<OmdbOption> options = new ArrayList<>(found.size());
         found.forEach(draft -> omdbGateway.getBy(draft.getId())
-                .ifPresent(movie ->
-                        options.add(new OmdbOption(movie))));
+                .ifPresent(movie -> options.add(new OmdbOption(movie))));
         return options;
     }
 
-    private List<OmdbOption> markExistingOmdbOptions(
-            final List<OmdbOption> options) {
+    private List<OmdbOption> markExistingOmdbOptions(List<OmdbOption> options) {
         List<String> names = new ArrayList<>();
         List<Integer> years = new ArrayList<>();
         for (OmdbOption movie : options) {
@@ -71,22 +67,19 @@ public final class OmdbService {
         return options;
     }
 
-    private void saveChosen(final List<OmdbOption> found) {
+    private void saveChosen(List<OmdbOption> found) {
         List<Movie> movies = new ArrayList<>();
         for (OmdbOption option : found) {
             if (!option.getExists()) {
-                movies.add(option.toMovie(
-                        genreToCategories(option.getGenre())));
+                movies.add(option.toMovie(genreToCategories(option.getGenre())));
             }
         }
         movieRepository.saveAll(movies);
     }
 
-    private Set<Category> genreToCategories(final String genre) {
+    private Set<Category> genreToCategories(String genre) {
         String[] genres = genre.split(", ");
         List<String> categories = Arrays.asList(genres);
         return categoryRepository.findByNameIn(categories);
-
     }
-
 }

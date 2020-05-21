@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
-public final class OmdbDraft {
+public class OmdbDraft {
     @JsonProperty("imdbID")
     private String id;
     private String title;

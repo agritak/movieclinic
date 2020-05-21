@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public final class OmdbOption {
+public class OmdbOption {
     private String id;
     private String title;
     private String plot;
@@ -19,7 +19,7 @@ public final class OmdbOption {
     private Boolean exists;
     private String base64Movie;
 
-    public OmdbOption(final OmdbMovie omdbMovie) {
+    public OmdbOption(OmdbMovie omdbMovie) {
         this.setId(omdbMovie.getId());
         this.setTitle(omdbMovie.getTitle());
         this.setPlot(omdbMovie.getPlot());
@@ -29,7 +29,7 @@ public final class OmdbOption {
         this.setExists(false);
     }
 
-    public Movie toMovie(final Set<Category> categories) {
+    public Movie toMovie(Set<Category> categories) {
         Movie movie = new Movie();
         movie.setName(title);
         movie.setDescription(plot);

@@ -1,7 +1,6 @@
 INSERT INTO categories
     VALUES (null,
     	'Action',
-    	null,
     	'A film genre in which the protagonist or protagonists are thrust into a
         series of events that typically include violence, extended fighting, physical feats,
         and frantic chases. Action films tend to feature a resourceful hero struggling against
@@ -12,7 +11,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Adventure',
-    	null,
     	'Adventure films typically use their action scenes to display and explore exotic
         locations in an energetic way. Main plot elements include quests for lost continents
         and exotic setting; struggles and situations that confront the main characters,
@@ -24,7 +22,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Animation',
-    	null,
     	'Animation films are animated feature films. In traditional animation, images are drawn
         or painted by hand on transparent celluloid sheets to be photographed and exhibited on film.
         Today most animations are made with computer-generated imagery (CGI).'
@@ -33,14 +30,12 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Comedy',
-    	null,
     	'A genre of films that is generally intended to be humorous or amusing by inducing laughter.'
         );
 
     INSERT INTO categories
     VALUES (null,
     	'Crime',
-    	null,
     	'A film genre inspired by and analogous to the crime fiction literary genre. Films of this
         genre generally involve various aspects of crime and its detection.'
         );
@@ -48,7 +43,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Documentary',
-    	null,
     	'A non-fictional, motion picture intended to \"document reality, primarily for the purposes
         of instruction, education, or maintaining a historical record\". Documentary has been
         described as \"a filmmaking practice, a cinematic tradition, and mode of audience
@@ -58,7 +52,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Drama',
-    	null,
     	'A genre of narrative fiction (or semi-fiction) intended to be more serious than humorous
         in tone.'
         );
@@ -66,7 +59,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Fantasy',
-    	null,
     	'A genre with fantastic themes, usually magic, supernatural events, mythology, folklore,
         or exotic fantasy worlds. Fantasy films often have an element of magic, myth, wonder,
         escapism, and the extraordinary.'
@@ -75,14 +67,12 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Family',
-    	null,
     	'Films of different genres that are designed for watching with the whole family.'
         );
 
     INSERT INTO categories
     VALUES (null,
     	'Horror',
-    	null,
     	'A film that seeks to elicit fear for entertainment purposes. Horror films often aim
         to evoke viewers nightmares, fears, revulsions and terror of the unknown. Plots within
         the horror genre often involve the intrusion of an evil force, event, or personage
@@ -93,7 +83,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Sci-Fi',
-    	null,
     	'Science fiction (sometimes called sci-fi or just SF) is a genre of speculative fiction that
         typically deals with imaginative and futuristic concepts such as advanced science and
         technology, space exploration, time travel, parallel universes, and extraterrestrial life.'
@@ -102,7 +91,6 @@ INSERT INTO categories
     INSERT INTO categories
     VALUES (null,
     	'Thriller',
-    	null,
     	'Also known as suspense film, is a broad film genre that evokes
         excitement and suspense in the audience. Tension is created by delaying what the audience
         sees as inevitable, and is built through situations that are menacing or where escape

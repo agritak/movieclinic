@@ -8,21 +8,20 @@ import org.springframework.stereotype.Component;
 import java.util.Base64;
 
 @Component
-public final class OmdbConverter {
-   private ObjectMapper mapper = new ObjectMapper();
+public class OmdbConverter {
+    ObjectMapper mapper = new ObjectMapper();
 
 
-    public void toBase64Movie(final OmdbOption omdbOption) {
+    public void toBase64Movie(OmdbOption omdbOption) {
         try {
             String json = mapper.writeValueAsString(omdbOption);
-            omdbOption.setBase64Movie(Base64.getEncoder()
-                    .encodeToString(json.getBytes()));
+            omdbOption.setBase64Movie(Base64.getEncoder().encodeToString(json.getBytes()));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
-    public OmdbOption fromBase64Movie(final String base64Movie) {
+    public OmdbOption fromBase64Movie(String base64Movie) {
         OmdbOption option = new OmdbOption();
         byte[] decodedBytes = Base64.getDecoder().decode(base64Movie);
         String decodedString = new String(decodedBytes);
