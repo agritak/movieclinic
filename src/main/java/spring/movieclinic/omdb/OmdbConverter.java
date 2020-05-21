@@ -1,36 +1,45 @@
 package spring.movieclinic.omdb;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 @Component
+@RequiredArgsConstructor
 public class OmdbConverter {
-    ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
 
-
-    public void toBase64Movie(OmdbOption omdbOption) {
+    Optional<String> toBase64(Object object) {
         try {
-            String json = mapper.writeValueAsString(omdbOption);
-            omdbOption.setBase64Movie(Base64.getEncoder().encodeToString(json.getBytes()));
+            return Optional.of(encode(mapper.writeValueAsString(object)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return empty();
     }
 
-    public OmdbOption fromBase64Movie(String base64Movie) {
-        OmdbOption option = new OmdbOption();
-        byte[] decodedBytes = Base64.getDecoder().decode(base64Movie);
-        String decodedString = new String(decodedBytes);
+    <T> Optional<T> fromBase64(String base64, Class<T> clazz) {
         try {
-            option = mapper.readValue(decodedString, OmdbOption.class);
+            return Optional.of(mapper.readValue(decode(base64), clazz));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return option;
+        return empty();
+    }
+
+    private String encode(String value) {
+        return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
+    private String decode(String base64) {
+        return new String(Base64.getDecoder().decode(base64));
     }
 
 }
+

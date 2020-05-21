@@ -1,6 +1,5 @@
 package spring.movieclinic.omdb;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import spring.movieclinic.movie.MoviesService;
 
 import javax.validation.Valid;
-
 
 @Controller
 @AllArgsConstructor
