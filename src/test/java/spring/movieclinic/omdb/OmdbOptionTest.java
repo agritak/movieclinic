@@ -11,10 +11,11 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OmdbOptionTest {
+
     private OmdbOption option;
 
     @BeforeEach
-    public void setUp() {
+    public void init() {
         option = new OmdbOption();
         option.setTitle("Interstellar");
         option.setYear(2014);

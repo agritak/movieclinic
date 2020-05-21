@@ -1,6 +1,5 @@
 package spring.movieclinic.user;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +14,6 @@ import spring.movieclinic.category.Category;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MoviesService;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,12 +23,15 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
+
     @Mock
     private MoviesService moviesService;
     @Mock
     private CategoriesService categoriesService;
+
     @InjectMocks
     private UserController userController;
+
     private Model model;
 
     @BeforeEach
@@ -41,7 +42,7 @@ public class UserControllerTest {
     @Test
     public void index() {
         int page = 1;
-        int size = 10;
+        int size = 20;
         String sort = "year";
 
         List<Movie> list = Collections.emptyList();
@@ -61,19 +62,22 @@ public class UserControllerTest {
 
     @Test
     public void showCategories() {
-        String expected = "user/user-categories";
-        List<Category> categories = Arrays.asList(
-                category("action"),
-                category("adventure"));
+        int page = 1;
+        int size = 5;
+        String sort = "name";
 
-        when(categoriesService.categories()).thenReturn(categories);
+        List<Category> list = Collections.emptyList();
+        Page<Category> paging = new PageImpl<>(list);
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
 
-        String actual = userController.showCategories(model);
+        when(categoriesService.paginateCategories(pageable)).thenReturn(paging);
 
-        assertThat(model.getAttribute("categories")).isEqualTo(categories);
-        assertThat(actual).isEqualTo(expected);
+        String actual = userController.showCategories(page, size, model);
 
-        verify(categoriesService).categories();
+        assertThat(actual).isEqualTo("user/user-categories");
+        assertThat(model.getAttribute("paging")).isEqualTo(paging);
+
+        verify(categoriesService).paginateCategories(pageable);
         verifyNoMoreInteractions(categoriesService);
     }
 
@@ -81,18 +85,16 @@ public class UserControllerTest {
     public void showCategory() {
         Integer id = 1;
         int page = 1;
-        int size = 10;
+        int size = 20;
 
-        Category category = mock(Category.class);
+        Category category = new Category();
 
         Pageable pageable = PageRequest.of(page - 1, size);
-
-        List<Movie> movies = Lists.newArrayList(new Movie());
-        Page<Movie> paging = new PageImpl<>(movies);
+        List<Movie> list = Collections.emptyList();
+        Page<Movie> paging = new PageImpl<>(list);
 
         when(categoriesService.findById(id)).thenReturn(category);
-        when(category.sortMoviesByName()).thenReturn(movies);
-        when(moviesService.paginateAnyMoviesList(pageable, movies)).thenReturn(paging);
+        when(moviesService.paginateAnyMoviesList(pageable, category.getMovies())).thenReturn(paging);
 
         String actual = userController.showCategory(id, page, size, model);
 
@@ -101,11 +103,9 @@ public class UserControllerTest {
         assertThat(model.getAttribute("category")).isEqualTo(category);
 
         verify(categoriesService).findById(id);
-        verify(moviesService).paginateAnyMoviesList(pageable, movies);
-        verify(category).sortMoviesByName();
-        verifyNoMoreInteractions(categoriesService, moviesService, category);
+        verify(moviesService).paginateAnyMoviesList(pageable, category.getMovies());
+        verifyNoMoreInteractions(categoriesService, moviesService);
     }
-
 
     @Test
     public void showMovie() {
@@ -123,11 +123,4 @@ public class UserControllerTest {
         verify(moviesService).findMovieById(id);
         verifyNoMoreInteractions(moviesService);
     }
-
-    private Category category(String name) {
-        Category category = new Category();
-        category.setName(name);
-        return category;
-    }
-
 }

@@ -18,9 +18,12 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class OmdbGatewayTest {
+
     private static final String API_KEY = "5ca97d27";
+
     @Mock
     private RestTemplate restTemplate;
+
     @InjectMocks
     private OmdbGateway gateway;
 

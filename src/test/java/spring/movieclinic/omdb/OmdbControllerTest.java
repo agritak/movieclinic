@@ -20,12 +20,15 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class OmdbControllerTest {
+
     @Mock
-    MoviesService moviesService;
+    private MoviesService moviesService;
     @Mock
     private OmdbService omdbService;
+
     @InjectMocks
     private OmdbController omdbController;
+
     private Model model;
 
     @BeforeEach
@@ -65,7 +68,7 @@ public class OmdbControllerTest {
         OmdbSelection list = new OmdbSelection();
         List<Movie> movies = Arrays.asList(movie("Hachi"), movie("Seven Pounds"));
 
-        doNothing().when(omdbService).saveMovies(list);
+        when(result.hasErrors()).thenReturn(false);
         when(moviesService.getMoviesByNameAsc()).thenReturn(movies);
 
         String actual = omdbController.saveMovie(list, result, model);
@@ -73,9 +76,26 @@ public class OmdbControllerTest {
         assertThat(model.getAttribute("movies")).isEqualTo(movies);
         assertThat(actual).isEqualTo(expected);
 
+        verify(result).hasErrors();
         verify(omdbService).saveMovies(list);
         verify(moviesService).getMoviesByNameAsc();
-        verifyNoMoreInteractions(omdbService, moviesService);
+        verifyNoMoreInteractions(omdbService, moviesService, result);
+    }
+
+    @Test
+    public void saveMovie_hasErrors() {
+        BindingResult result = mock(BindingResult.class);
+        OmdbSelection selection = new OmdbSelection();
+        String expected = "omdb/omdb-form";
+
+        when(result.hasErrors()).thenReturn(true);
+
+        String actual = omdbController.saveMovie(selection, result, model);
+
+        assertThat(actual).isEqualTo(expected);
+
+        verify(result).hasErrors();
+        verifyNoInteractions(omdbService, moviesService);
     }
 
     OmdbOption omdbOption(String title) {

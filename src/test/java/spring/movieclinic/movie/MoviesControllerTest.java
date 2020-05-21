@@ -23,21 +23,29 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MoviesControllerTest {
+
     private static final Integer ID = 1;
+
     @Mock
-    MoviesService moviesService;
+    private MoviesService moviesService;
     @Mock
-    CategoriesService categoriesService;
+    private CategoriesService categoriesService;
+
     @InjectMocks
-    MoviesController moviesController;
+    private MoviesController moviesController;
+
     private List<Category> categories;
     private FrontMovie frontMovie;
     private Model model;
 
     @BeforeEach
     void init() {
-        frontMovie = frontMovie("Movie", 2012);
+        frontMovie = new FrontMovie();
+        frontMovie.setName("Movie");
+        frontMovie.setYear(2012);
+
         model = new BindingAwareConcurrentModel();
+
         categories = Arrays.asList(
                 category("Action"),
                 category("Adventure"));
@@ -98,14 +106,13 @@ public class MoviesControllerTest {
 
     @Test
     public void addMovie_movieExists() {
-        Movie movie = movie("Movie", 2012);
+        Movie movie = movie(2012);
         movie.setId(ID);
 
         BindingResult result = mock(BindingResult.class);
 
         when(moviesService.findMovieByNameAndYear(any(String.class), any(Integer.class))).thenReturn(Optional.of(movie));
         when(result.hasErrors()).thenReturn(true);
-        //doNothing().when(result).rejectValue("name", "duplicate", "this movie already exists");
         when(categoriesService.categories()).thenReturn(categories);
 
         String actual = moviesController.addMovie(frontMovie, result, model);
@@ -141,7 +148,7 @@ public class MoviesControllerTest {
 
     @Test
     public void showUpdateForm() {
-        Movie movie = movie("Movie", 2020);
+        Movie movie = movie(2020);
 
         when(moviesService.findMovieById(ID)).thenReturn(movie);
         when(categoriesService.categories()).thenReturn(categories);
@@ -163,7 +170,6 @@ public class MoviesControllerTest {
 
         when(moviesService.findMovieByNameAndYear(any(String.class), any(Integer.class))).thenReturn(Optional.empty());
         when(result.hasErrors()).thenReturn(false);
-        doNothing().when(moviesService).update(ID, frontMovie);
 
         String actual = moviesController.updateMovie(ID, frontMovie, result, model);
 
@@ -178,13 +184,12 @@ public class MoviesControllerTest {
     @Test
     public void updateMovie_movieExists() {
         frontMovie.setId(ID);
-        Movie movie = movie("Movie", 2012);
+        Movie movie = movie(2012);
         movie.setId(2);
 
         BindingResult result = mock(BindingResult.class);
 
         when(moviesService.findMovieByNameAndYear(any(String.class), any(Integer.class))).thenReturn(Optional.of(movie));
-        //doNothing().when(result).rejectValue("name", "duplicate", "this movie already exists");
         when(result.hasErrors()).thenReturn(true);
         when(categoriesService.categories()).thenReturn(categories);
 
@@ -202,8 +207,6 @@ public class MoviesControllerTest {
 
     @Test
     void deleteMovie() {
-        //doNothing().when(moviesService).delete(ID);
-
         String actual = moviesController.deleteMovie(ID);
 
         assertThat(actual).isEqualTo("redirect:/admin/movies");
@@ -212,16 +215,9 @@ public class MoviesControllerTest {
         verifyNoMoreInteractions(moviesService);
     }
 
-    private Movie movie(String name, Integer year) {
+    private Movie movie(Integer year) {
         Movie movie = new Movie();
-        movie.setName(name);
-        movie.setYear(year);
-        return movie;
-    }
-
-    private FrontMovie frontMovie(String name, Integer year) {
-        FrontMovie movie = new FrontMovie();
-        movie.setName(name);
+        movie.setName("Movie");
         movie.setYear(year);
         return movie;
     }
@@ -231,5 +227,4 @@ public class MoviesControllerTest {
         category.setName(name);
         return category;
     }
-
 }

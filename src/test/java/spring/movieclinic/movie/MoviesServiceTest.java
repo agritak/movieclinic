@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,17 +24,22 @@ import static org.mockito.Mockito.*;
 public class MoviesServiceTest {
 
     private static final Integer ID = 1;
-    private final ArgumentCaptor<Movie> anyMovie = ArgumentCaptor.forClass(Movie.class);
-    private FrontMovie frontMovie;
-    private FrontMovie updatedFrontMovie;
-    private Movie newMovie;
-    private Movie movie;
+
     @Mock
     private MovieRepository movieRepository;
     @Mock
     private CategoryRepository categoryRepository;
+
     @InjectMocks
     private MoviesService moviesService;
+
+    @Captor
+    private ArgumentCaptor<Movie> captor;
+
+    private FrontMovie frontMovie;
+    private FrontMovie updatedFrontMovie;
+    private Movie newMovie;
+    private Movie movie;
 
     @BeforeEach
     public void setUp() {
@@ -58,7 +64,7 @@ public class MoviesServiceTest {
 
     @Test
     public void paginateMovies() {
-        Pageable pageable = mock(Pageable.class); //or PageRequest.of(1, 10, Sort.by("name"));
+        Pageable pageable = mock(Pageable.class);
         List<Movie> list = Collections.emptyList();
         Page<Movie> expected = new PageImpl<>(list);
 
@@ -142,18 +148,18 @@ public class MoviesServiceTest {
 
         Set<Integer> ids = new HashSet<>();
         ids.add(1);
-
-        Movie newMovie = new Movie(frontMovie, categories);
-
         frontMovie.setCategories(ids);
-        movie.setCategories(categories);
 
         when(categoryRepository.findByIdIn(ids)).thenReturn(categories);
 
         moviesService.create(frontMovie);
 
+        verify(movieRepository).save(captor.capture());
+        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(frontMovie, "categories");
+        assertThat(captor.getValue().getCategories()).isEqualTo(categories);
+
         verify(categoryRepository).findByIdIn(ids);
-        verify(movieRepository).save(newMovie);
+        verify(movieRepository).save(any(Movie.class));
         verifyNoMoreInteractions(movieRepository, categoryRepository);
     }
 
@@ -161,8 +167,8 @@ public class MoviesServiceTest {
     public void create_noIdIsPassed() {
         moviesService.create(updatedFrontMovie);
 
-        verify(movieRepository).save(anyMovie.capture());
-        assertThat(anyMovie.getValue().getId()).isNull();
+        verify(movieRepository).save(captor.capture());
+        assertThat(captor.getValue().getId()).isNull();
         verifyNoMoreInteractions(movieRepository);
     }
 
@@ -170,28 +176,24 @@ public class MoviesServiceTest {
     @Test
     public void update() {
         Optional<Movie> expected = Optional.of(movie);
-        Set<Category> categories = new HashSet<>();
         updatedFrontMovie.setCategories(new HashSet<>());
 
         when(movieRepository.findById(ID)).thenReturn(expected);
         when(categoryRepository.findByIdIn(updatedFrontMovie.getCategories())).thenReturn(new HashSet<Category>());
-        //when(movieRepository.save(movie)).thenReturn(movie);
 
         moviesService.update(ID, updatedFrontMovie);
 
-        verify(movieRepository).save(anyMovie.capture());
-        assertThat(anyMovie.getValue().getId()).isEqualTo(ID);
+        verify(movieRepository).save(captor.capture());
+        assertThat(captor.getValue().getId()).isEqualTo(ID);
 
         verify(movieRepository).findById(ID);
         verify(movieRepository).save(movie);
-        verify(categoryRepository).findByIdIn(new HashSet<Integer>());
+        verify(categoryRepository).findByIdIn(new HashSet<>());
         verifyNoMoreInteractions(movieRepository, categoryRepository);
     }
 
     @Test
     public void delete() {
-        doNothing().when(movieRepository).deleteById(ID);
-
         moviesService.delete(ID);
 
         verify(movieRepository).deleteById(ID);

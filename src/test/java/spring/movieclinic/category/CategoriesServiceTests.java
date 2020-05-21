@@ -1,4 +1,4 @@
-package spring.movieclinic;
+package spring.movieclinic.category;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,17 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.ui.Model;
-import org.springframework.validation.support.BindingAwareConcurrentModel;
-import spring.movieclinic.category.CategoriesService;
-import spring.movieclinic.category.Category;
-import spring.movieclinic.category.CategoryRepository;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
