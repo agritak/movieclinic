@@ -1,6 +1,5 @@
 package spring.movieclinic.search;
 
-import org.apache.naming.java.javaURLContextFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +30,7 @@ class SearchServiceTest {
     void getSearchBarResults_whenQueryIsNotValid() {
 
         String query = " and";
+
         List<Movie> expected = Collections.emptyList();
 
         List<Movie> actual = searchService.getSearchBarResults(query);
@@ -42,9 +42,11 @@ class SearchServiceTest {
     void getSearchBarResults_whenQueryIsValid() {
 
         String query = "life";
+
         List<Movie> expected = asList(
                 movie(1, "Life is Beautiful"),
                 movie(2, "A Bug's Life"));
+
         when(movieRepository.findByNameContains(query)).thenReturn(expected);
 
         List<Movie> actual = searchService.getSearchBarResults(query);
@@ -59,13 +61,11 @@ class SearchServiceTest {
     void getQueryToDisplay_whenQueryIsNotNull() {
 
         String query = "life";
-        Movie movie = mock(Movie.class);
+        Movie movie = movie("", null, Collections.emptySet(), "");
 
         String actual = searchService.getQueryToDisplay(query, movie);
 
         assertThat(actual).isEqualTo(query);
-
-        verifyNoMoreInteractions(movie);
     }
 
     @Test
@@ -152,11 +152,94 @@ class SearchServiceTest {
         assertThat(actual).isEqualTo(trimmedQuery);
     }
 
+    /////////
+
     @Test
-    void advancedSearchQuery() {
+    void advancedSearchQuery_whenNameIsNotEmpty() {
 
+        Movie movie = movie("life", null, Collections.emptySet(), "");
 
+        String expected = "Title: " + movie.getName() + " ";
 
+        String actual = searchService.advancedSearchQuery(movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void advancedSearchQuery_whenNameIsEmpty() {
+
+        Movie movie = movie("", null, Collections.emptySet(), "");
+
+        assertThat(searchService.advancedSearchQuery(movie)).isEqualTo("");
+    }
+
+    @Test
+    void advancedSearchQuery_whenYearIsNotNull() {
+
+        Movie movie = movie("", 1998, Collections.emptySet(), "");
+
+        String expected = "Year: " + movie.getYear() + " ";
+
+        String actual = searchService.advancedSearchQuery(movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void advancedSearchQuery_whenYearIsNull() {
+
+        Movie movie = movie("", null, Collections.emptySet(), "");
+
+        assertThat(searchService.advancedSearchQuery(movie)).isEqualTo("");
+    }
+
+    @Test
+    void advancedSearchQuery_whenCategoriesIsNotEmpty() {
+
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+        categorySet.add(category(2, "Animation"));
+
+        Movie movie = movie("", null, categorySet, "");
+
+        String expected = "Category: " + movie.getCategories()
+                        .stream()
+                        .map(Category::getName)
+                        .collect(Collectors.joining(", ")) + " ";
+
+        String actual = searchService.advancedSearchQuery(movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void advancedSearchQuery_whenCategoriesIsEmpty() {
+
+        Movie movie = movie("", null, Collections.emptySet(), "");
+        String actual = searchService.advancedSearchQuery(movie);
+
+        assertThat(searchService.advancedSearchQuery(movie)).isEqualTo("");
+    }
+
+    @Test
+    void advancedSearchQuery_whenDescriptionIsNotEmpty() {
+
+        Movie movie = movie("", null, Collections.emptySet(), "war");
+
+        String expected = "Description: " + movie.getDescription();
+
+        String actual = searchService.advancedSearchQuery(movie);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void advancedSearchQuery_whenDescriptionIsEmpty() {
+
+        Movie movie = movie("", null, Collections.emptySet(), "");
+
+        assertThat(searchService.advancedSearchQuery(movie)).isEqualTo("");
     }
 
     @Test
@@ -327,10 +410,15 @@ class SearchServiceTest {
         List<Movie> listOfFound = asList(
                 movie(1, "Life is Beautiful"),
                 movie(3, "A Bug's Life"));
+        List<Movie> sortedListOfFound = listOfFound.stream()
+                .filter(mov -> Collections.frequency(listOfFound, mov) > 1)
+                .sorted(Comparator.comparing(mov -> Collections.frequency(listOfFound, mov)).reversed())
+                .distinct()
+                .collect(Collectors.toList());
 
         List<Movie> actual = searchService.getResultsWhenCategoriesNotEmpty(movie, listOfFound);
 
-        assertThat(actual).isEqualTo(new ArrayList<>());
+        assertThat(actual).isEqualTo(sortedListOfFound);
     }
 
     @Test
