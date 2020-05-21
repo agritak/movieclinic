@@ -1,7 +1,7 @@
 package spring.movieclinic.category;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import spring.movieclinic.movie.Movie;
 
 import javax.persistence.*;
@@ -11,10 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "categories")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,7 @@ public class Category {
 
     @Column(unique = true)
     @NotBlank(message = "Name is mandatory")
+    @EqualsAndHashCode.Include
     private String name;
 
     @NotBlank(message = "Description is mandatory")

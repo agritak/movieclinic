@@ -1,26 +1,26 @@
 package spring.movieclinic.movie;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import spring.movieclinic.category.Category;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @Entity
-@NoArgsConstructor
 @Table(name = "movies")
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
-
+    @EqualsAndHashCode.Include
     private String name;
 
     private String description;
@@ -34,6 +34,7 @@ public class Movie {
     private Set<Category> categories = new HashSet<>();
 
     @Column(unique = true)
+    @EqualsAndHashCode.Include
     private Integer year;
 
     @Column(name = "picture_url")
