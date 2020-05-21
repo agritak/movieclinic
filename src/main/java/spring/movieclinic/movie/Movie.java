@@ -6,7 +6,13 @@ import lombok.Setter;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.model.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,10 +21,10 @@ import java.util.Set;
 @Entity
 @Table(name = "movies")
 @NoArgsConstructor
-public class Movie extends BaseEntity {
+public final class Movie extends BaseEntity {
 
     @Column(unique = true)
-    public String name;
+    private String name;
 
     private String description;
 
@@ -39,11 +45,15 @@ public class Movie extends BaseEntity {
     @Column(name = "trailer_url")
     private String trailerURL;
 
-    public Movie(FrontMovie frontMovie, Set<Category> categories) {
+    public Movie(final FrontMovie frontMovie,
+                 final Set<Category> categories1) {
+        this.categories = categories1;
         update(frontMovie, categories);
     }
 
-    public void update(FrontMovie frontMovie, Set<Category> categories) {
+    public void update(final FrontMovie frontMovie,
+                       final Set<Category> categories1) {
+        this.categories = categories1;
         this.setName(frontMovie.getName());
         this.setDescription(frontMovie.getDescription());
         this.setYear(frontMovie.getYear());
@@ -51,4 +61,5 @@ public class Movie extends BaseEntity {
         this.setPictureURL(frontMovie.getPictureURL());
         this.setTrailerURL(frontMovie.getTrailerURL());
     }
+
 }

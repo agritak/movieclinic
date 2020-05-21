@@ -17,29 +17,37 @@ import javax.validation.Valid;
 @Controller
 @AllArgsConstructor
 @RequestMapping("admin/")
-public class OmdbController {
+public final class OmdbController {
     private final OmdbService omdbService;
     private final MoviesService moviesService;
 
     @GetMapping("omdb/find")
     public String searchForm() {
+
         return "omdb/omdb-form";
     }
 
     // /omdb/search?title=
     @GetMapping("omdb/search")
-    public String searchForMovies(@RequestParam String title, Model model) {
-        model.addAttribute("movies", omdbService.findMovies(title));
+    public String searchForMovies(
+            @RequestParam final String title,
+                                  final Model model) {
+        model.addAttribute("movies",
+                omdbService.findMovies(title));
         return "omdb/omdb-search";
     }
 
     @PostMapping("omdb/save")
-    public String saveMovie(@Valid OmdbSelection movies, BindingResult result, Model model) {
+    public String saveMovie(
+            @Valid final OmdbSelection movies,
+                            final BindingResult result,
+                            final Model model) {
         if (result.hasErrors()) {
             return "omdb/omdb-form";
         }
         omdbService.saveMovies(movies);
-        model.addAttribute("movies", moviesService.getMoviesByNameAsc());
+        model.addAttribute("movies",
+                moviesService.getMoviesByNameAsc());
         return "redirect:/admin/movies";
     }
 }

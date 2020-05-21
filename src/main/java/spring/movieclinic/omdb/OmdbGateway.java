@@ -14,8 +14,9 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @AllArgsConstructor
-public class OmdbGateway {
-    private static final String URL = "http://www.omdbapi.com/";
+public final class OmdbGateway {
+    private static final String URL =
+            "http://www.omdbapi.com/";
     private static final String QUERY_PARAM_I = "i";
     private static final String QUERY_PARAM_S = "s";
     private static final String QUERY_PARAM_TYPE = "type";
@@ -24,23 +25,27 @@ public class OmdbGateway {
     private static final String API_KEY = "5ca97d27";
     private final RestTemplate restTemplate;
 
-    List<OmdbDraft> searchBy(String title) {
-        UriComponents uriComponents = UriComponentsBuilder.fromUriString(URL)
+    List<OmdbDraft> searchBy(final String title) {
+        UriComponents uriComponents =
+                UriComponentsBuilder.fromUriString(URL)
                 .queryParam(QUERY_PARAM_S, title)
                 .queryParam(QUERY_PARAM_TYPE, QUERY_PARAM_TYPE_MOVIE)
                 .queryParam(QUERY_PARAM_APIKEY, API_KEY)
                 .build();
-        return ofNullable(restTemplate.getForObject(uriComponents.toUri(), OmdbDraftsList.class))
+        return ofNullable(restTemplate.getForObject(
+                uriComponents.toUri(), OmdbDraftsList.class))
                 .map(OmdbDraftsList::getOmdbDrafts)
                 .orElse(emptyList());
     }
 
-    Optional<OmdbMovie> getBy(String id) {
-        UriComponents uriComponents = UriComponentsBuilder.fromUriString(URL)
+    Optional<OmdbMovie> getBy(final String id) {
+        UriComponents uriComponents =
+                UriComponentsBuilder.fromUriString(URL)
                 .queryParam(QUERY_PARAM_I, id)
                 .queryParam(QUERY_PARAM_APIKEY, API_KEY)
                 .build();
-        return ofNullable(restTemplate.getForObject(uriComponents.toUri(), OmdbMovie.class));
+        return ofNullable(restTemplate.getForObject(
+                uriComponents.toUri(), OmdbMovie.class));
     }
 
 }

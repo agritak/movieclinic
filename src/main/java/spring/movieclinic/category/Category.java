@@ -20,14 +20,16 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Table(name = "categories")
-public class Category extends BaseEntity {
+public final class Category extends BaseEntity {
 
     @Column(unique = true)
     @NotBlank(message = "Name is mandatory")
-    public String name;
+    private String name;
+
+    private static final int TOP = 500;
 
     @NotBlank(message = "Description is mandatory")
-    @Size(max = 500, message = "the maximum number of characters is 500")
+    @Size(max = TOP, message = "the maximum number of characters is 500")
     private String description;
 
     @ManyToMany(mappedBy = "categories")

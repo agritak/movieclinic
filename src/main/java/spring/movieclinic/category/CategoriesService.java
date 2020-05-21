@@ -8,57 +8,49 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class CategoriesService {
+public final class CategoriesService {
 
     @Autowired
     private final CategoryRepository categoryRepository;
 
         public List<Category> categories() {
+
             return categoryRepository.findByOrderByNameAsc();
         }
 
-//    public Iterable<Category> categories() {
-//        return categoryRepository.findByOrderByNameAsc();
-//    }
+        public Page<Category> paginateCategories(final Pageable pageable) {
 
-        public Page<Category> paginateCategories(Pageable pageable) {
             return categoryRepository.findAll(pageable);
         }
 
-    public Category create (Category category) {
-        // Set<>
+    public Category create(final Category category) {
         categoryRepository.save(category);
         return category;
 
     }
 
-     public void update (Integer id, Category category) {
+     public void update(final Integer id, final Category category) {
         category.setId(id);
         categoryRepository.save(category);
         }
 
-    public void delete (Integer id) {
-//        categoryRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+    public void delete(final Integer id) {
         categoryRepository.deleteById(id);
-
     }
 
-    public Category findById(Integer id) {
+    public Category findById(final Integer id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Invalid category Id:" + id));
     }
 
-    public Iterable<Category> search(String keyword) {
-        return categoryRepository.findByNameContains(keyword);
+    public Iterable<Category> search(final String keyword) {
+
+            return categoryRepository.findByNameContains(keyword);
     }
 
-//    Optional<Category> categoryExists(String name) {
-//        return categoryRepository.findByName(name);
-//
-//    }
 }

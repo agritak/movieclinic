@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class MoviesService {
+public final class MoviesService {
 
     private final MovieRepository movieRepository;
     private final CategoryRepository categoryRepository;
@@ -24,11 +24,14 @@ public class MoviesService {
         return movieRepository.findByOrderByNameAsc();
     }
 
-    public Page<Movie> paginateMovies(Pageable pageable) {
+    public Page<Movie> paginateMovies(
+            final Pageable pageable) {
         return movieRepository.findAll(pageable);
     }
 
-    public Page<Movie> paginateAnyMoviesList(Pageable pageable, List<Movie> movies) {
+    public Page<Movie> paginateAnyMoviesList(
+            final Pageable pageable,
+            final List<Movie> movies) {
         int size = pageable.getPageSize();
         int page = pageable.getPageNumber();
         int firstItem = page * size;
@@ -43,31 +46,39 @@ public class MoviesService {
         return new PageImpl<>(content, pageable, movies.size());
     }
 
-    public Movie findMovieById(Integer id) {
+    public Movie findMovieById(final Integer id) {
         return movieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Invalid movie Id:" + id));
     }
 
-    void create(FrontMovie frontMovie) {
-        Movie movie = new Movie(frontMovie, findCategoriesById(frontMovie.getCategories()));
+    void create(final FrontMovie frontMovie) {
+        Movie movie = new Movie(frontMovie,
+                findCategoriesById(frontMovie.getCategories()));
         movieRepository.save(movie);
     }
 
-    void update(Integer id, FrontMovie frontMovie) {
+    void update(final Integer id, final FrontMovie frontMovie) {
         Movie movie = findMovieById(id);
-        movie.update(frontMovie, findCategoriesById(frontMovie.getCategories()));
+        movie.update(frontMovie,
+                findCategoriesById(frontMovie.getCategories()));
         movieRepository.save(movie);
     }
 
-    void delete(Integer id) {
+    void delete(final Integer id) {
+
         movieRepository.deleteById(id);
     }
 
-    Optional<Movie> findMovieByNameAndYear(String name, Integer year) {
+    Optional<Movie> findMovieByNameAndYear(
+            final String name,
+            final Integer year) {
         return movieRepository.findByNameAndYear(name, year);
     }
 
-    private Set<Category> findCategoriesById(Set<Integer> ids) {
+    private Set<Category> findCategoriesById(
+            final Set<Integer> ids) {
+
         return categoryRepository.findByIdIn(ids);
     }
 

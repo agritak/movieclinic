@@ -16,23 +16,32 @@ class SearchController {
     private final SearchService searchService;
 
     @GetMapping("admin/search/search-results")
-    String adminSideSearch(@RequestParam(value = "search") String query, Model model) {
+    String adminSideSearch(@RequestParam(
+            value = "search") final String query,
+                                final Model model) {
         model.addAttribute("query", query);
-        model.addAttribute("searchResults", searchService.getSearchBarResults(query));
+        model.addAttribute("searchResults",
+                searchService.getSearchBarResults(query));
         return "search/search-results";
     }
 
     @GetMapping("/search/user-search-results")
-    String userSideSearch(@RequestParam(value = "search", required = false) String query, Movie movie, Model model) {
+    String userSideSearch(@RequestParam(
+            value = "search", required = false) final String query,
+                                                final Movie movie,
+                                                final Model model) {
         model.addAttribute("options", categoriesService.categories());
-        model.addAttribute("query", searchService.getQueryToDisplay(query, movie));
-        model.addAttribute("searchResults", searchService.getUserSearchResults(query, movie));
+        model.addAttribute("query",
+                searchService.getQueryToDisplay(query, movie));
+        model.addAttribute("searchResults",
+                searchService.getUserSearchResults(query, movie));
         return "search/user-search-results";
     }
 
     @GetMapping("/advanced")
-    String showAdvancedSearchForm(Model model) {
-        model.addAttribute("options", categoriesService.categories());
+    String showAdvancedSearchForm(final Model model) {
+        model.addAttribute("options",
+                categoriesService.categories());
         model.addAttribute("movie", new Movie());
         return "search/advanced-search";
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class OmdbDraftsList {
+public final class OmdbDraftsList {
     @JsonProperty("Search")
     private List<OmdbDraft> omdbDrafts;
 }

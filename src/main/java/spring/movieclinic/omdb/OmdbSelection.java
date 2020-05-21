@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 public class OmdbSelection {
     @NotEmpty
-    List<String> movies;
+    private List<String> movies;
 }

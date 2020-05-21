@@ -6,15 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class OmdbConfiguration {
+class OmdbConfiguration {
 
     @Bean
-    public RestTemplate getRestTemplate() {
+    RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
     @Bean
-    public ObjectMapper getObjectMapper() {
+    ObjectMapper getObjectMapper() {
         return new ObjectMapper();
     }
 
