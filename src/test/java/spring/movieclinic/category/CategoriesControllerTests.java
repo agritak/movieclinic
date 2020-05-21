@@ -1,4 +1,4 @@
-package spring.movieclinic;
+package spring.movieclinic.category;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -6,22 +6,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.support.BindingAwareConcurrentModel;
-import spring.movieclinic.category.CategoriesController;
-import spring.movieclinic.category.CategoriesService;
-import spring.movieclinic.category.Category;
-import spring.movieclinic.category.CategoryRepository;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MoviesService;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 
@@ -235,8 +234,8 @@ public class CategoriesControllerTests {
         when(service.findById(id)).thenReturn(category);
         int page = 1;
         int size = 10;
-        Page<Movie> paging = moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.sortMoviesByName());
-        when(moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.sortMoviesByName())).thenReturn(paging);
+        Page<Movie> paging = moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.getMovies());
+        when(moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.getMovies())).thenReturn(paging);
 
         String actual = categoriesController.showCategory(id, 1, 10, model);
 

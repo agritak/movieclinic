@@ -17,7 +17,6 @@ import spring.movieclinic.movie.MoviesService;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-
 @Controller
 @AllArgsConstructor
 @RequestMapping
@@ -27,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public String index(@RequestParam(defaultValue = "1") Integer page,
-                        @RequestParam(defaultValue = "25") Integer size,
+                        @RequestParam(defaultValue = "20") Integer size,
                         @RequestParam(defaultValue = "year") String sort,
                         Model model) {
         Page<Movie> paging = moviesService.paginateMovies(
@@ -37,8 +36,12 @@ public class UserController {
     }
 
     @GetMapping("/categories")
-    public String showCategories(Model model) {
-        model.addAttribute("categories", categoriesService.categories());
+    public String showCategories(@RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "5") Integer size,
+                                 Model model) {
+        Page<Category> paging = categoriesService.paginateCategories(
+                PageRequest.of(page - 1, size, Sort.by("name")));
+        model.addAttribute("paging", paging);
         return "user/user-categories";
     }
 
@@ -49,7 +52,7 @@ public class UserController {
                                Model model) {
         Category category = categoriesService.findById(categoryId);
         Page<Movie> paging = moviesService.paginateAnyMoviesList(
-                PageRequest.of(page - 1, size), category.sortMoviesByName());
+                PageRequest.of(page - 1, size), category.getMovies());
         model.addAttribute("category", category);
         model.addAttribute("paging", paging);
         return "user/user-category";

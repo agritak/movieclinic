@@ -22,7 +22,7 @@ public class MoviesController {
 
     @GetMapping
     public String showList(@RequestParam(defaultValue = "1") Integer page,
-                           @RequestParam(defaultValue = "10") Integer size,
+                           @RequestParam(defaultValue = "5") Integer size,
                            @RequestParam(defaultValue = "name") String sort,
                            Model model) {
         Page<Movie> paging = moviesService.paginateMovies(PageRequest.of(page - 1, size, Sort.by(sort)));

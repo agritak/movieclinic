@@ -1,24 +1,25 @@
 package spring.movieclinic.movie;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import spring.movieclinic.category.Category;
-import spring.movieclinic.model.BaseEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @Entity
-@Table(name = "movies")
 @NoArgsConstructor
-public class Movie extends BaseEntity {
+@Table(name = "movies")
+public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(unique = true)
-    public String name;
+
+    private String name;
 
     private String description;
 
@@ -51,4 +52,10 @@ public class Movie extends BaseEntity {
         this.setPictureURL(frontMovie.getPictureURL());
         this.setTrailerURL(frontMovie.getTrailerURL());
     }
+
+
+    public boolean isNew() {
+        return this.id == null;
+    }
+
 }

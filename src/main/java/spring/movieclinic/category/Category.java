@@ -1,35 +1,32 @@
 package spring.movieclinic.category;
 
-import lombok.Getter;
-import lombok.Setter;
-import spring.movieclinic.model.BaseEntity;
+import lombok.Data;
 import spring.movieclinic.movie.Movie;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@Setter
-@Getter
+
+@Data
 @Entity
 @Table(name = "categories")
-public class Category extends BaseEntity {
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(unique = true)
     @NotBlank(message = "Name is mandatory")
-    public String name;
+    private String name;
 
     @NotBlank(message = "Description is mandatory")
     @Size(max = 500, message = "the maximum number of characters is 500")
     private String description;
 
+    @OrderBy("name")
     @ManyToMany(mappedBy = "categories")
     private Set<Movie> movies = new HashSet<>();
 
@@ -41,14 +38,6 @@ public class Category extends BaseEntity {
     public String toString() {
         return this.getName();
     }
-
-    public List<Movie> sortMoviesByName() {
-        return this.movies.stream()
-                .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
-                .collect(Collectors.toList());
-    }
-
-
 }
 
 

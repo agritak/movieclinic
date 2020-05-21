@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.category.CategoryRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +25,8 @@ public class MoviesService {
         return movieRepository.findAll(pageable);
     }
 
-    public Page<Movie> paginateAnyMoviesList(Pageable pageable, List<Movie> movies) {
+    public Page<Movie> paginateAnyMoviesList(Pageable pageable, Collection<Movie> movies) {
+        List<Movie> list = new ArrayList<>(movies);
         int size = pageable.getPageSize();
         int page = pageable.getPageNumber();
         int firstItem = page * size;
@@ -38,9 +36,9 @@ public class MoviesService {
             content = Collections.emptyList();
         } else {
             int toIndex = Math.min(firstItem + size, movies.size());
-            content = movies.subList(firstItem, toIndex);
+            content = list.subList(firstItem, toIndex);
         }
-        return new PageImpl<>(content, pageable, movies.size());
+        return new PageImpl<>(content, pageable, list.size());
     }
 
     public Movie findMovieById(Integer id) {
