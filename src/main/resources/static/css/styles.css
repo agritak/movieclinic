@@ -4,6 +4,10 @@
 font-size: 30px;
 }
 
+.navbar, .container {
+    min-width: 1080px;
+}
+
 .navbar-default .navbar-nav > li > a:hover {
     color: #333;
     background-color: #e6e6e6;
@@ -26,12 +30,24 @@ font-size: 30px;
 
 .btn-add {
     float: right;
-    margin: 19px 15px 0 0;
+    margin: 0 15px 0 0;
 }
 
-/* paging */
-.paging-centered {
-    text-align: center;
+.btn-omdb-search {
+    border-radius: 0 4px 4px 0;
+    float: right;
+    padding: 6px 13px;
+}
+
+.search-bar {
+    display: inline-block;
+    width: 92%;
+    border-radius: 4px 0 0 4px;
+}
+
+.btn-omdb {
+    float: right;
+    margin: 3px;
 }
 
 /* forms */
@@ -44,7 +60,6 @@ font-size: 30px;
 /* style for movies, categories tables */
 
 .heading {
-    display: inline-block;
     margin-bottom: 30px;
 }
 
@@ -85,8 +100,7 @@ a:active, a:hover {
     display: inline-block;
     width: 190px;
     min-height: 345px;
-    margin-left: 18px;
-    margin-top: 10px;
+    margin: 10px;
     vertical-align: top;
     text-align: center;
 }
@@ -109,12 +123,51 @@ a:active, a:hover {
     font-weight: bold;
 }
 
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
+/* table */
+
+.table-poster {
+    width: 100px;
 }
+
+input[type="checkbox"] {
+    margin: 4px 0 0 8px;
+}
+
+/* movie-view */
+#movie-view {
+    width: 850px;
+    margin: 40px auto;
+}
+
+.movie-view-poster {
+    width: 300px;
+    float: left;
+    margin: 25px auto;
+}
+
+.movie-view-poster img {
+    width: 300px;
+}
+
+.movie-view-info {
+    margin: 10px;
+    width: 500px;
+    float: right;
+    text-align: justify;
+}
+
+.movie-view-plot {
+    margin-top: 20px;
+}
+
+/* random styles where needed */
+
+.content-centered {
+    text-align: center;
+}
+
+
+
 
 
 

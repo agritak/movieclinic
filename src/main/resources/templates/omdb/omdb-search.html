@@ -7,12 +7,12 @@
 <div th:replace="~{fragments/navbar :: navbar-cms}"></div>
 <div th:replace="~{fragments/input-form :: omdb-search-form}"></div>
 <div id="movies">
-    <h3 align="center" th:if="${#lists.isEmpty(movies)}">no movies found</h3>
+    <h3 class="content-centered" th:if="${#lists.isEmpty(movies)}">no movies found</h3>
     <div th:if="${!#lists.isEmpty(movies)}">
-        <h3>Movies found:</h3>
         <form method="post" th:action="@{/admin/omdb/save}">
-            <button class="btn btn-primary" type="submit">Add</button>
-            <button class="btn btn-primary" type="reset">Reset</button>
+            <button class="btn btn-primary btn-omdb" type="submit">Add</button>
+            <button class="btn btn-primary btn-omdb" type="reset">Reset</button>
+            <h3 class="heading">Movies found:</h3>
             <table class="table table-hover table-striped table-responsive-md">
                 <thead>
                 <tr>
@@ -29,7 +29,7 @@
                     <td>
                         <a target="_blank"
                            th:href="${movie.poster}" th:if="${!#strings.isEmpty(movie.poster)}">
-                            <img th:src="${movie.poster}" width="100px"/>
+                            <img class="table-poster" th:src="${movie.poster}"/>
                         </a>
                     </td>
                     <td th:text="${movie.title}"></td>

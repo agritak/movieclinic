@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-    <div class="paging-centered">
+    <div class="content-centered">
         <ul class="pagination" th:each="i : ${#numbers.sequence(1, paging.totalPages)}"
             th:if="${paging.totalPages gt 1}">
             <li th:if="${i == 1 && paging.number gt 0}">

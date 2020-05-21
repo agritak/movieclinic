@@ -4,7 +4,7 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar-user}"></div>
 <div id="movies">
-    <div th:each="category : ${categories}">
+    <div th:each="category : ${paging}">
         <div class="category" th:unless="${#lists.isEmpty(category.movies)}">
             <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}">
                 <h2 class="category-name" th:text="${category.name}">Category</h2>
@@ -18,6 +18,29 @@
             </div>
         </div>
     </div>
+    <div class="content-centered">
+        <ul class="pagination" th:each="i : ${#numbers.sequence(1, paging.totalPages)}"
+            th:if="${paging.totalPages gt 1}">
+            <li th:if="${i == 1 && paging.number gt 0}">
+                <a aria-label="Previous"
+                   data-toggle="tooltip"
+                   th:href="@{/categories (size=${paging.size}, page=${paging.number})}"
+                   title="Previous Page">&laquo;</a>
+            </li>
+            <li th:class="${i == paging.number + 1} ? 'active'">
+                <a th:href="@{/categories (size=${paging.size}, page=${i})}"
+                   th:text=${i}>
+                </a>
+            </li>
+            <li th:if="${i == paging.totalPages && paging.number lt paging.totalPages - 1}">
+                <a aria-label="Next"
+                   data-toggle="tooltip"
+                   th:href="@{/categories (size=${paging.size}, page=${paging.number + 2})}"
+                   title="Next Page">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</div>
 </div>
 </body>
 </html>

@@ -7,13 +7,13 @@
 <div th:replace="~{fragments/navbar :: navbar-cms}"></div>
 
 <div id="movies">
-    <h2 class="heading">Categories</h2>
     <a class="btn btn-primary btn-add" href="/admin/categories/new"
        aria-label="Add" title="Add New Category" data-toggle="tooltip">
         <i class="fas fa-plus ml-2"></i>
     </a>
+    <h2 class="heading">Categories</h2>
     <div th:insert="fragments/category-table :: category-table(${paging.content})"></div>
-    <div class="paging-centered">
+    <div class="content-centered">
         <ul class="pagination" th:if="${paging.totalPages gt 1}"
             th:each="i : ${#numbers.sequence(1, paging.totalPages)}">
             <li th:if="${i == 1 && paging.number gt 0}">

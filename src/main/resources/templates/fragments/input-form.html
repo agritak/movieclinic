@@ -31,13 +31,14 @@
         <div class="form-centered">
             <form th:action="@{/admin/omdb/search}" th:method="get">
                 <h3 class="form-group">Find movie by title:</h3>
-                <div class="form-group">
-                    <input class="form-control" name="title"
-                           placeholder="Movie Title" required type="text">
-                </div>
-                <button class="btn btn-primary" type="submit">
+                <button class="btn btn-primary btn-omdb-search" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
+                <div class="form-group">
+                    <input class="form-control search-bar" name="title"
+                           placeholder="Movie Title" required type="text">
+                </div>
+
             </form>
         </div>
     </div>

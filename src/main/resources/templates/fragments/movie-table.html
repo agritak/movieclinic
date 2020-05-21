@@ -18,7 +18,7 @@
             <td>
                 <a target="_blank"
                    th:href="${movie.pictureURL}" th:if="${!#strings.isEmpty(movie.pictureURL)}">
-                    <img th:src="${movie.pictureURL}" width="100px"/>
+                    <img class="table-poster" th:src="${movie.pictureURL}"/>
                 </a>
             </td>
             <td th:text="${movie.name}"></td>
@@ -33,9 +33,8 @@
             </td>
 
             <td>
-                <div target="_blank"
-                     th:if="${!#strings.isEmpty(movie.trailerURL)}">
-                    <a th:href="${movie.trailerURL}" class="btn btn-primary">
+                <div th:if="${!#strings.isEmpty(movie.trailerURL)}">
+                    <a class="btn btn-primary" target="_blank" th:href="${movie.trailerURL}">
                         <i class="far fa-play-circle ml-2"></i>
                     </a>
                 </div>
