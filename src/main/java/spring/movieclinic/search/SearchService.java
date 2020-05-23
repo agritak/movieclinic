@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 class SearchService {
 
     private final MovieRepository movieRepository;
-    private final String[] stopWords = new String[]{"a", "an", "and", "as", "at", "be", "by", "if", "in","is",
+    private final String[] stopWords = new String[]{"a", "an", "and", "as", "at", "be", "by", "if", "in", "is",
                                                     "no", "of", "on", "or", "the", "to"};
 
     List<Movie> getSearchBarResults(String query) {
@@ -37,8 +37,8 @@ class SearchService {
     }
 
     String checkForStopWords(String trimmedQuery) {
-        for(String word:stopWords) {
-            if(trimmedQuery.equals(word)) {
+        for (String word:stopWords) {
+            if (trimmedQuery.equals(word)) {
                 return "";
             }
         }
@@ -46,27 +46,27 @@ class SearchService {
     }
 
     String advancedSearchQuery(Movie movie) {
-        return (!movie.getName().isEmpty() ? "Title: " + movie.getName() + " " : "") +
-                (movie.getYear() != null ? "Year: " + movie.getYear() + " " : "") +
-                (!movie.getCategories().isEmpty()? "Category: " +
-                        movie.getCategories()
+        return (!movie.getName().isEmpty() ? "Title: " + movie.getName() + " " : "")
+                + (movie.getYear() != null ? "Year: " + movie.getYear() + " " : "")
+                + (!movie.getCategories().isEmpty() ? "Category: "
+                + movie.getCategories()
                                 .stream()
                                 .map(Category::getName)
-                                .collect(Collectors.joining(", ")) + " " : "") +
-                (!movie.getDescription().isEmpty()? "Description: " + movie.getDescription() : "");
+                                .collect(Collectors.joining(", ")) + " " : "")
+                + (!movie.getDescription().isEmpty()? "Description: " + movie.getDescription() : "");
     }
 
     List<Movie> getAdvancedSearchResults(Movie movie) {
-        return checkForEmptySearch(movie) ?
-                Collections.emptyList() :
-                advancedSearchResultsWhenInputNotEmpty(movie);
+        return checkForEmptySearch(movie)
+                ? Collections.emptyList()
+                : advancedSearchResultsWhenInputNotEmpty(movie);
     }
 
     boolean checkForEmptySearch(Movie movie) {
-        return checkQueryIfNotValid(movie.getName()) &&
-                movie.getYear() == null &&
-                movie.getCategories().isEmpty() &&
-                checkQueryIfNotValid(movie.getDescription());
+        return checkQueryIfNotValid(movie.getName())
+                && movie.getYear() == null
+                && movie.getCategories().isEmpty()
+                && checkQueryIfNotValid(movie.getDescription());
     }
 
     List<Movie> advancedSearchResultsWhenInputNotEmpty(Movie movie) {
@@ -91,15 +91,15 @@ class SearchService {
 
     List<Movie> getResultsWhenListOfFoundNotEmpty(Movie movie, List<Movie> listOfFound) {
 
-        return movie.getCategories().isEmpty()  ?
-                listOfFound.stream().distinct().collect(Collectors.toList()) :
+        return movie.getCategories().isEmpty()
+                ? listOfFound.stream().distinct().collect(Collectors.toList()) :
                 getResultsWhenCategoriesNotEmpty(movie, listOfFound);
     }
 
     List<Movie> getResultsWhenCategoriesNotEmpty(Movie movie, List<Movie> listOfFound) {
-        return movie.getCategories().size() == 1 ?
-                listOfFound :
-                getMostRelevantWhenMultipleCategories(movie, listOfFound);
+        return movie.getCategories().size() == 1
+                ? listOfFound
+                : getMostRelevantWhenMultipleCategories(movie, listOfFound);
     }
 
     List<Movie> getMostRelevantWhenMultipleCategories(Movie movie, List<Movie> listOfFound) {

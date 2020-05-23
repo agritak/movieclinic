@@ -4,7 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import spring.movieclinic.movie.Movie;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -32,10 +39,6 @@ public class Category {
     @OrderBy("name")
     @ManyToMany(mappedBy = "categories")
     private Set<Movie> movies = new HashSet<>();
-
-    //metodi, kas uztaisa hashset
-    //if movies = null; create hashset
-
 
     @Override
     public String toString() {
