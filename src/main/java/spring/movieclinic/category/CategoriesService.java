@@ -16,13 +16,15 @@ public class CategoriesService {
     @Autowired
     private final CategoryRepository categoryRepository;
 
-        public List<Category> categories() {
-            return categoryRepository.findByOrderByNameAsc();
-        }
+    public List<Category> categories() {
+        return categoryRepository.findByOrderByNameAsc();
 
-        public Page<Category> paginateCategories(Pageable pageable) {
-            return categoryRepository.findAll(pageable);
-        }
+    }
+
+    public Page<Category> paginateCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
+
+    }
 
     public Category create(Category category) {
         categoryRepository.save(category);
@@ -30,10 +32,11 @@ public class CategoriesService {
 
     }
 
-     public void update(Integer id, Category category) {
+    public void update(Integer id, Category category) {
         category.setId(id);
         categoryRepository.save(category);
-        }
+
+    }
 
     public void delete(Integer id) {
         categoryRepository.deleteById(id);

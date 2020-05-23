@@ -29,7 +29,7 @@ public class CategoriesController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "name") String sort,
                         Model model) {
-                Page<Category> paging = categoriesService.paginateCategories(PageRequest.of(page - 1, size, Sort.by(sort)));
+        Page<Category> paging = categoriesService.paginateCategories(PageRequest.of(page - 1, size, Sort.by(sort)));
         model.addAttribute("paging", paging);
         return "categories/categories-list";
     }

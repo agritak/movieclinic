@@ -6,9 +6,9 @@ import spring.movieclinic.category.Category;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MovieRepository;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -19,8 +19,8 @@ class SearchService {
                                                     "no", "of", "on", "or", "the", "to"};
 
     List<Movie> getSearchBarResults(String query) {
-        return checkQueryIfNotValid(query) ? Collections.emptyList() :
-                movieRepository.findByNameContains(query.trim());
+        return checkQueryIfNotValid(query) ? Collections.emptyList()
+                : movieRepository.findByNameContains(query.trim());
     }
 
     String getQueryToDisplay(String query, Movie movie) {
@@ -53,7 +53,7 @@ class SearchService {
                                 .stream()
                                 .map(Category::getName)
                                 .collect(Collectors.joining(", ")) + " " : "")
-                + (!movie.getDescription().isEmpty()? "Description: " + movie.getDescription() : "");
+                + (!movie.getDescription().isEmpty() ? "Description: " + movie.getDescription() : "");
     }
 
     List<Movie> getAdvancedSearchResults(Movie movie) {
@@ -73,9 +73,9 @@ class SearchService {
 
         List<Movie> listOfFound = getDerivedQueryMethodResults(movie);
 
-        return listOfFound.isEmpty() ?
-                Collections.emptyList() :
-                getResultsWhenListOfFoundNotEmpty(movie, listOfFound);
+        return listOfFound.isEmpty()
+                ? Collections.emptyList()
+                : getResultsWhenListOfFoundNotEmpty(movie, listOfFound);
     }
 
     List<Movie> getDerivedQueryMethodResults(Movie movie) {
