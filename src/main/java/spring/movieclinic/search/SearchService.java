@@ -8,6 +8,7 @@ import spring.movieclinic.movie.MovieRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -98,14 +99,13 @@ class SearchService {
     List<Movie> getResultsWhenCategoriesNotEmpty(Movie movie, List<Movie> listOfFound) {
         return movie.getCategories().size() == 1 ?
                 listOfFound :
-                getMostRelevantWhenMultipleCategories(listOfFound);
+                getMostRelevantWhenMultipleCategories(movie, listOfFound);
     }
 
-    List<Movie> getMostRelevantWhenMultipleCategories(List<Movie> listOfFound) {
+    List<Movie> getMostRelevantWhenMultipleCategories(Movie movie, List<Movie> listOfFound) {
         return listOfFound
                 .stream()
-                .filter(movie -> Collections.frequency(listOfFound, movie) > 1)
-                .sorted(Comparator.comparing(movie -> Collections.frequency(listOfFound, movie)).reversed())
+                .filter(mov -> Collections.frequency(listOfFound, mov) == movie.getCategories().size())
                 .distinct()
                 .collect(Collectors.toList());
     }
