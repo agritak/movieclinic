@@ -33,24 +33,14 @@ class SearchControllerTest {
     @Mock
     private CategoriesService categoriesService;
 
-    @Mock
-    private MoviesService moviesService;
-
     @InjectMocks
     private SearchController searchController;
 
 
     @Test
     void adminSideSearch() {
-
-        int page = 1;
-        int size = 5;
         String query = "life";
         Model model = new BindingAwareConcurrentModel();
-
-        Pageable pageable = PageRequest.of(page - 1, size);
-        List<Movie> movies = Lists.newArrayList(new Movie());
-        Page<Movie> paging = new PageImpl<>(movies);
 
         List<Movie> expected = asList(
                 movie(1, "Life is Beautiful"),
@@ -58,15 +48,13 @@ class SearchControllerTest {
         );
 
         when(searchService.getSearchBarResults(query)).thenReturn(expected);
-        when(moviesService.paginateAnyMoviesList(pageable, expected)).thenReturn(paging);
 
-        String actual = searchController.adminSideSearch(page, size, query, model);
+        String actual = searchController.adminSideSearch(query, model);
 
         assertThat(actual).isEqualTo("search/search-results");
-        assertThat(model.getAttribute("paging")).isEqualTo(paging);
+        assertThat(model.getAttribute("searchResults")).isEqualTo(expected);
         verify(searchService).getSearchBarResults(query);
-        verify(moviesService).paginateAnyMoviesList(pageable, expected);
-        verifyNoMoreInteractions(searchService, moviesService);
+        verifyNoMoreInteractions(searchService);
     }
 
     @Test
