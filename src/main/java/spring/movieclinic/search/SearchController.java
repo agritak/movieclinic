@@ -16,17 +16,11 @@ class SearchController {
 
     private final CategoriesService categoriesService;
     private final SearchService searchService;
-    private final MoviesService moviesService;
 
     @GetMapping("admin/search/search-results")
-    String adminSideSearch(@RequestParam(defaultValue = "1") Integer page,
-                           @RequestParam(defaultValue = "5") Integer size,
-                           @RequestParam(value = "search") String query,
-                           Model model) {
+    String adminSideSearch(@RequestParam(value = "search") String query, Model model) {
         model.addAttribute("query", query);
-        model.addAttribute("paging", moviesService.paginateAnyMoviesList(
-                PageRequest.of(page - 1, size),
-                searchService.getSearchBarResults(query)));
+        model.addAttribute("searchResults", searchService.getSearchBarResults(query));
         return "search/search-results";
     }
 
