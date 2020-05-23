@@ -152,8 +152,6 @@ class SearchServiceTest {
         assertThat(actual).isEqualTo(trimmedQuery);
     }
 
-    /////////
-
     @Test
     void advancedSearchQuery_whenNameIsNotEmpty() {
 
@@ -217,7 +215,6 @@ class SearchServiceTest {
     void advancedSearchQuery_whenCategoriesIsEmpty() {
 
         Movie movie = movie("", null, Collections.emptySet(), "");
-        String actual = searchService.advancedSearchQuery(movie);
 
         assertThat(searchService.advancedSearchQuery(movie)).isEqualTo("");
     }
@@ -359,9 +356,11 @@ class SearchServiceTest {
                 movie(1, "Life is Beautiful"),
                 movie(3, "A Bug's Life"));
 
+        List<Movie> expected = listOfFound.stream().distinct().collect(Collectors.toList());
+
         List<Movie> actual = searchService.getResultsWhenListOfFoundNotEmpty(movie, listOfFound);
 
-        assertThat(actual).isEqualTo(listOfFound);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -410,6 +409,7 @@ class SearchServiceTest {
         List<Movie> listOfFound = asList(
                 movie(1, "Life is Beautiful"),
                 movie(3, "A Bug's Life"));
+
         List<Movie> sortedListOfFound = listOfFound.stream()
                 .filter(mov -> Collections.frequency(listOfFound, mov) > 1)
                 .sorted(Comparator.comparing(mov -> Collections.frequency(listOfFound, mov)).reversed())
@@ -422,15 +422,54 @@ class SearchServiceTest {
     }
 
     @Test
-    void getMostRelevantWhenMultipleCategories() {
+    void getMostRelevantWhenMultipleCategories_whenCategoriesSizeEqualsTwo() {
 
-        List<Movie> listOfFound = asList(
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+        categorySet.add(category(2, "Animation"));
+
+        Movie movie = movie("", null, categorySet, "");
+
+        List<Movie> sortedRepetitions  = asList(
+                movie(1, "Life is Beautiful"),
+                movie(2, "Life is Beautiful"),
+                movie(3, "A Bug's Life"),
+                movie(4, "Guardians of the Galaxy"),
+                movie(5, "A Bug's Life"));
+
+        List<Movie> expected = asList(
                 movie(1, "Life is Beautiful"),
                 movie(3, "A Bug's Life"));
 
-        List<Movie> actual = searchService.getMostRelevantWhenMultipleCategories(listOfFound);
+        List<Movie> actual = searchService.getMostRelevantWhenMultipleCategories(movie, sortedRepetitions);
 
-        assertThat(actual).isEqualTo(new ArrayList<>());
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void getMostRelevantWhenMultipleCategories_whenCategoriesSizeEqualsThree() {
+
+        Set<Category> categorySet = new HashSet<>();
+        categorySet.add(category(1, "Adventure"));
+        categorySet.add(category(2, "Animation"));
+        categorySet.add(category(3, "Comedy"));
+
+        Movie movie = movie("", null, categorySet, "");
+
+        List<Movie> sortedRepetitions  = asList(
+                movie(1, "Life is Beautiful"),
+                movie(2, "Life is Beautiful"),
+                movie(3, "A Bug's Life"),
+                movie(4, "Guardians of the Galaxy"),
+                movie(5, "A Bug's Life"),
+                movie(6, "Life is Beautiful"));
+
+        List<Movie> expected = Collections.singletonList(
+                movie(1, "Life is Beautiful"));
+
+        List<Movie> actual = searchService.getMostRelevantWhenMultipleCategories(movie, sortedRepetitions);
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     private Movie movie(Integer id , String name) {
