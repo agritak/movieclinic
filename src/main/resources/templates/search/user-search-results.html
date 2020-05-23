@@ -7,13 +7,15 @@
 <div id="movies">
     <div class="row">
         <div class="col-md-12 my-5">
-            <h1>Search results for:</h1>
-            <h2>'<span th:text="${query}"></span>'</h2>
             <div th:if="${#lists.isEmpty(searchResults)}">
-                <h2>No movies found! Try again!</h2>
+                <h1 class="form-centered heading">Search results for:</h1>
+                <h2 class="form-centered heading">'<span th:text="${query}"></span>'</h2>
+                <h2 class="form-centered heading">No movies found! Try again!</h2>
                 <div th:insert="fragments/advanced-search-form :: advanced-search-form(${movie})"></div>
             </div>
             <div th:unless="${#lists.isEmpty(searchResults)}">
+                <h1>Search results for:</h1>
+                <h2 class="heading">'<span th:text="${query}"></span>'</h2>
                 <div th:each="movie : ${searchResults}">
                     <div class="card mb-3" style="padding:20px">
                         <div class="row no-gutters">
