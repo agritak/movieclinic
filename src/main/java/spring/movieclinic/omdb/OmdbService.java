@@ -7,12 +7,7 @@ import spring.movieclinic.category.CategoryRepository;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MovieRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +28,7 @@ public class OmdbService {
         List<OmdbOption> selected = form
                 .getMovies()
                 .stream()
-                .map(o -> omdbConverter.fromBase64(o, OmdbOption.class))
+                .map(base64 -> omdbConverter.fromBase64(base64, OmdbOption.class))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());

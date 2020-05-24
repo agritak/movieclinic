@@ -20,9 +20,10 @@ public class OmdbOption {
     private String base64Movie;
 
     public OmdbOption(OmdbMovie omdbMovie) {
+        String plot = omdbMovie.getPlot();
         this.setId(omdbMovie.getId());
         this.setTitle(omdbMovie.getTitle());
-        this.setPlot(omdbMovie.getPlot());
+        this.setPlot(plot != null && plot.equals("N/A") ? "" : plot);
         this.setYear(omdbMovie.getYear());
         this.setGenre(omdbMovie.getGenre());
         this.setPoster(omdbMovie.getPoster());

@@ -12,7 +12,7 @@
                 <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/movies' ? 'active':''}"><a
                         th:href="@{/admin/movies}">Movies</a></li>
                 <li th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/omdb') ? 'active':''}"><a
-                        th:href="@{/admin/omdb/find}">Search Movie in Database</a></li>
+                        th:href="@{/admin/omdb/find}">Import movie from Omdb</a></li>
             </ul>
             <form class="navbar-form navbar-right" th:action="@{/admin/search/search-results}">
                 <div class="form-group">

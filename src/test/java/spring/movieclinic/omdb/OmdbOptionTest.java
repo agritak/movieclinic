@@ -28,12 +28,33 @@ public class OmdbOptionTest {
         omdbMovie.setId("12ht");
         omdbMovie.setTitle("Interstellar");
         omdbMovie.setYear(2014);
+        omdbMovie.setPlot("Plot Test");
 
         OmdbOption omdbOption = new OmdbOption(omdbMovie);
 
         assertThat(omdbOption).isEqualToIgnoringGivenFields(omdbMovie, "exists", "base64Movie");
         assertThat(omdbOption.getExists()).isFalse();
         assertThat(omdbOption.getBase64Movie()).isNull();
+    }
+
+    @Test
+    public void constructorTest_plotNA() {
+        OmdbMovie omdbMovie = new OmdbMovie();
+        omdbMovie.setPlot("N/A");
+
+        OmdbOption omdbOption = new OmdbOption(omdbMovie);
+
+        assertThat(omdbOption.getPlot()).isEmpty();
+    }
+
+    @Test
+    public void constructorTest_plotIsNull() {
+        OmdbMovie omdbMovie = new OmdbMovie();
+        omdbMovie.setPlot(null);
+
+        OmdbOption omdbOption = new OmdbOption(omdbMovie);
+
+        assertThat(omdbOption.getPlot()).isNull();
     }
 
     @Test
@@ -50,5 +71,4 @@ public class OmdbOptionTest {
         assertThat(movie.getPictureURL()).isEqualTo(option.getPoster());
         assertThat(movie.getTrailerURL()).isNull();
     }
-
 }

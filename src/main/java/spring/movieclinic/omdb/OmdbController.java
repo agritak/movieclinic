@@ -24,7 +24,6 @@ public class OmdbController {
         return "omdb/omdb-form";
     }
 
-    // /omdb/search?title=
     @GetMapping("omdb/search")
     public String searchForMovies(@RequestParam String title, Model model) {
         model.addAttribute("movies", omdbService.findMovies(title));

@@ -105,7 +105,7 @@ a:active, a:hover {
     text-align: center;
 }
 
-.movie img.poster {
+.movie img.poster, img.error-poster {
     border: 2px solid #ddd;
     border-radius: 5px;
     padding: 2px;
@@ -158,6 +158,27 @@ input[type="checkbox"] {
 
 .movie-view-plot {
     margin-top: 20px;
+}
+
+/* error page */
+#error {
+    width: 1080px;
+    margin: 65px auto;
+}
+
+.error-title {
+    margin: 10px;
+}
+
+a.error-logo {
+    font-size: 30px;
+    color: #777;
+    text-decoration:none;
+}
+
+a:hover.error-logo {
+    color: #333;
+    text-decoration:none;
 }
 
 /* random styles where needed */
