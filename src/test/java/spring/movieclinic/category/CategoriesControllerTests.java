@@ -16,10 +16,9 @@ import org.springframework.validation.support.BindingAwareConcurrentModel;
 import spring.movieclinic.movie.Movie;
 import spring.movieclinic.movie.MoviesService;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -48,15 +47,13 @@ public class CategoriesControllerTests {
 
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
 
-        Page<Category> expectedCategories = service.paginateCategories(pageable);
+        Page<Category> expectedCategories = service.categories(pageable);
 
         String actual = categoriesController.index(1, 10, sort, model);
 
         assertThat(actual).isEqualTo("categories/categories-list");
-
         assertThat(model.getAttribute("paging")).isEqualTo(expectedCategories);
 
-      //  verify(repository).findByNameContains(sort);
         verifyNoMoreInteractions(repository);
     }
 
@@ -73,7 +70,7 @@ public class CategoriesControllerTests {
          Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
        //  Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        Page<Category> expectedCategories = service.paginateCategories(pageable);
+        Page<Category> expectedCategories = service.categories(pageable);
 
         // List<Category> expectedCategories = asList(category(1, "action"));
         when(repository.findAll(pageable)).thenReturn(expectedCategories);
@@ -102,127 +99,143 @@ public class CategoriesControllerTests {
     @Test
     public void addCategory() {
         Integer id = 1;
-        Category category = category(id, "action");
-        List<Category> expectedCategories = asList(category, category(2, "comedy"));
-        Model model = mock(Model.class);
+        String action = "action";
+        Category category = category(id, action);
         BindingResult bindingResult = mock(BindingResult.class);
 
-        when(service.categories()).thenReturn(expectedCategories);
-        String actual = categoriesController.addCategory(category, bindingResult, model);
+        when(service.findByName(action)).thenReturn(Optional.empty());
 
-     //   assertThat(actual).isEqualTo("categories/categories-list");
+        String actual = categoriesController.addCategory(category, bindingResult);
 
-        assertThat(actual).isEqualTo("redirect:/categories");
+        assertThat(actual).isEqualTo("redirect:/admin/categories");
 
         verify(service).create(category);
-        verify(service).categories();
+        verify(service).findByName(action);
         verifyNoMoreInteractions(service);
-
-        verify(model).addAttribute("categories", expectedCategories);
-
     }
 
     @Test
     public void addCategory_withValidationErrors() {
         Integer id = 1;
-        Category category = category(id, "action");
-
-        Model model = mock(Model.class);
+        String action = "action";
+        Category category = category(id, action);
         BindingResult bindingResult = mock(BindingResult.class);
 
+        when(service.findByName(action)).thenReturn(Optional.empty());
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String actual = categoriesController.addCategory(category, bindingResult, model);
+        String actual = categoriesController.addCategory(category, bindingResult);
 
-        assertThat(actual).isEqualTo("categories/create-category.html");
+        assertThat(actual).isEqualTo("categories/create-category");
 
+        verify(service).findByName(action);
         verify(bindingResult).hasErrors();
-        verifyNoInteractions(repository, model);
+        verifyNoMoreInteractions(service, bindingResult);
+    }
 
+    @Test
+    public void addCategory_categoryExists() {
+        String action = "action";
+        Category category = category(null, action);
+
+        BindingResult result = mock(BindingResult.class);
+
+        when(service.findByName(action)).thenReturn(Optional.of(category));
+        when(result.hasErrors()).thenReturn(true);
+
+        String actual = categoriesController.addCategory(category, result);
+
+        assertThat(actual).isEqualTo("categories/create-category");
+
+        verify(service).findByName(action);
+        verify(result).rejectValue("name", "duplicate", "Category with this name already exists.");
+        verify(result).hasErrors();
+        verifyNoMoreInteractions(result, service);
     }
 
     @Test
     public void showUpdateForm() {
         Model model = new BindingAwareConcurrentModel();
         Integer id = 1;
-
         Category category = category(id, "action");
 
         when(service.findById(id)).thenReturn(category);
 
         String actual = categoriesController.showUpdateForm(id, model);
 
-       // assertThat(actual).isEqualTo("categories/update-categories");
-
+        assertThat(actual).isEqualTo("categories/update-categories");
         assertThat(model.getAttribute("category")).isEqualTo(category);
 
         verify(service).findById(id);
-
+        verifyNoMoreInteractions(service);
     }
 
     @Test
     public void updateCategory() {
         Integer id = 1;
-        Category category = category(id, "action");
-        List<Category> expectedCategories = asList(category, category(2, "comedy"));
-        Model model = mock(Model.class);
+        String action = "action";
+        Category category = category(id, action);
         BindingResult bindingResult = mock(BindingResult.class);
 
+        when(service.findByName(action)).thenReturn(Optional.empty());
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(service.categories()).thenReturn(expectedCategories);
 
-        String actual = categoriesController.updateCategory(id, category, bindingResult, model);
+        String actual = categoriesController.updateCategory(id, category, bindingResult);
 
-     //   assertThat(actual).isEqualTo("categories/categories-list");
-        assertThat(actual).isEqualTo("redirect:/categories");
+        assertThat(actual).isEqualTo("redirect:/admin/categories");
 
         verify(bindingResult).hasErrors();
         verify(service).update(id, category);
-        verify(service).categories();
         verifyNoMoreInteractions(service);
-
-
-        verify(model).addAttribute("categories", expectedCategories);
-
     }
 
     @Test
     public void updateCategory_withValidationErrors() {
         Integer id = 1;
         Category category = category(id, "action");
-        Model model = mock(Model.class);
         BindingResult bindingResult = mock(BindingResult.class);
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String actual = categoriesController.updateCategory(id, category, bindingResult, model);
+        String actual = categoriesController.updateCategory(id, category, bindingResult);
 
         assertThat(actual).isEqualTo("categories/update-categories");
 
         verify(bindingResult).hasErrors();
-        verifyNoInteractions(repository, model);
+        verifyNoInteractions(repository);
+    }
 
+    @Test
+    public void updateCategory_categoryExists() {
+        String action = "action";
+        Integer id = 1;
+        Category category = category(id, action);
+
+        BindingResult result = mock(BindingResult.class);
+
+        when(service.findByName(action)).thenReturn(Optional.of(category));
+        when(result.hasErrors()).thenReturn(true);
+
+        String actual = categoriesController.updateCategory(id, category, result);
+
+        assertThat(actual).isEqualTo("categories/update-categories");
+
+        verify(service).findByName(action);
+        verify(result).rejectValue("name", "duplicate", "Category with this name already exists.");
+        verify(result).hasErrors();
+        verifyNoMoreInteractions(result, service);
     }
 
     @Test
     public void deleteCategory() {
         Integer id = 1;
-        Category category = category(id, "action");
-        List<Category> expectedCategories = asList(category, category(2, "comedy"));
-        Model model = mock(Model.class);
 
-        when(service.categories()).thenReturn(expectedCategories);
+        String actual = categoriesController.deleteCategory(id);
 
-        String actual = categoriesController.deleteCategory(id, model);
-
-        assertThat(actual).isEqualTo("categories/categories-list");
+        assertThat(actual).isEqualTo("redirect:/admin/categories");
 
         verify(service).delete(id);
-        verify(service).categories();
         verifyNoMoreInteractions(service);
-
-        verify(model).addAttribute("categories", service.categories());
-
     }
 
     @Test
@@ -234,8 +247,8 @@ public class CategoriesControllerTests {
         when(service.findById(id)).thenReturn(category);
         int page = 1;
         int size = 10;
-        Page<Movie> paging = moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.getMovies());
-        when(moviesService.paginateAnyMoviesList(PageRequest.of(page - 1, size), category.getMovies())).thenReturn(paging);
+        Page<Movie> paging = moviesService.moviesAscByCategoryId(id, PageRequest.of(page - 1, size));
+        when(moviesService.moviesAscByCategoryId(id, PageRequest.of(page - 1, size))).thenReturn(paging);
 
         String actual = categoriesController.showCategory(id, 1, 10, model);
 

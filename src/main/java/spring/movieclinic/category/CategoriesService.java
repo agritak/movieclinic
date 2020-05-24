@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class CategoriesService {
 
     }
 
-    public Page<Category> paginateCategories(Pageable pageable) {
+    public Page<Category> categories(Pageable pageable) {
         return categoryRepository.findAll(pageable);
 
     }
@@ -46,6 +47,10 @@ public class CategoriesService {
     public Category findById(Integer id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+    }
+
+    public Optional<Category> findByName(String name) {
+        return categoryRepository.findByName(name);
     }
 
     public Iterable<Category> search(String keyword) {

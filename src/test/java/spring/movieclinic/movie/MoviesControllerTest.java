@@ -61,14 +61,14 @@ public class MoviesControllerTest {
         Page<Movie> paging = new PageImpl<>(list);
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
 
-        when(moviesService.paginateMovies(pageable)).thenReturn(paging);
+        when(moviesService.movies(pageable)).thenReturn(paging);
 
         String actual = moviesController.showList(page, size, sort, model);
 
         assertThat(actual).isEqualTo("movies/movies-list");
         assertThat(model.getAttribute("paging")).isEqualTo(paging);
 
-        verify(moviesService).paginateMovies(pageable);
+        verify(moviesService).movies(pageable);
         verifyNoMoreInteractions(moviesService);
     }
 
@@ -121,7 +121,7 @@ public class MoviesControllerTest {
         assertThat(model.getAttribute("options")).isEqualTo(categories);
 
         verify(moviesService).findMovieByNameAndYear(any(String.class), any(Integer.class));
-        verify(result).rejectValue("name", "duplicate", "this movie already exists");
+        verify(result).rejectValue("name", "duplicate", "This movie already exists.");
         verify(result).hasErrors();
         verify(categoriesService).categories();
         verifyNoMoreInteractions(result, categoriesService);
@@ -199,7 +199,7 @@ public class MoviesControllerTest {
         assertThat(model.getAttribute("options")).isEqualTo(categories);
 
         verify(moviesService).findMovieByNameAndYear(any(String.class), any(Integer.class));
-        verify(result).rejectValue("name", "duplicate", "this movie already exists");
+        verify(result).rejectValue("name", "duplicate", "This movie already exists.");
         verify(result).hasErrors();
         verify(categoriesService).categories();
         verifyNoMoreInteractions(moviesService, result, categoriesService);

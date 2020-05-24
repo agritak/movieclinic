@@ -2,15 +2,11 @@ package spring.movieclinic.movie;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spring.movieclinic.category.Category;
 import spring.movieclinic.category.CategoryRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,24 +22,12 @@ public class MoviesService {
         return movieRepository.findByOrderByNameAsc();
     }
 
-    public Page<Movie> paginateMovies(Pageable pageable) {
+    public Page<Movie> movies(Pageable pageable) {
         return movieRepository.findAll(pageable);
     }
 
-    public Page<Movie> paginateAnyMoviesList(Pageable pageable, Collection<Movie> movies) {
-        List<Movie> list = new ArrayList<>(movies);
-        int size = pageable.getPageSize();
-        int page = pageable.getPageNumber();
-        int firstItem = page * size;
-        List<Movie> content;
-
-        if (movies.size() < firstItem) {
-            content = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(firstItem + size, movies.size());
-            content = list.subList(firstItem, toIndex);
-        }
-        return new PageImpl<>(content, pageable, list.size());
+    public Page<Movie> moviesAscByCategoryId(Integer id, Pageable pageable) {
+        return movieRepository.findMoviesByCategoryIdSortByNameAsc(id, pageable);
     }
 
     public Movie findMovieById(Integer id) {

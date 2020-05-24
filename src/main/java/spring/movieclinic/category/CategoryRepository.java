@@ -5,16 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import spring.movieclinic.movie.Movie;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface CategoryRepository extends PagingAndSortingRepository<Category, Integer> {
+public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
-    //extends CrudRepository<Category, Integer>
     List<Category> findByNameContains(String name);
 
     List<Category> findByOrderByNameAsc();
@@ -28,7 +25,6 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     Page<Category> findAll(Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM categories WHERE id = ?")
+    @Query("DELETE FROM Category c WHERE c.id = :id")
     void deleteById(Integer id);
-
 }

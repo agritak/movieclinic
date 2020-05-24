@@ -63,14 +63,14 @@ public class MoviesServiceTest {
     }
 
     @Test
-    public void paginateMovies() {
+    public void movies() {
         Pageable pageable = mock(Pageable.class);
         List<Movie> list = Collections.emptyList();
         Page<Movie> expected = new PageImpl<>(list);
 
         when(movieRepository.findAll(pageable)).thenReturn(expected);
 
-        Page<Movie> actual = moviesService.paginateMovies(pageable);
+        Page<Movie> actual = moviesService.movies(pageable);
 
         assertThat(actual).isEqualTo(expected);
 
@@ -79,40 +79,23 @@ public class MoviesServiceTest {
     }
 
     @Test
-    public void paginateAnyMoviesList() {
+    public void moviesAscByCategoryId() {
         Pageable pageable = mock(Pageable.class);
-        List<Movie> movies = Arrays.asList(movie, newMovie);
+        List<Movie> list = Collections.emptyList();
+        Page<Movie> expected = new PageImpl<>(list);
+        Integer id = 1;
 
-        when(pageable.getPageSize()).thenReturn(10);
-        when(pageable.getPageNumber()).thenReturn(0);
+        when(movieRepository.findMoviesByCategoryIdSortByNameAsc(id, pageable)).thenReturn(expected);
 
-        Page<Movie> paging = moviesService.paginateAnyMoviesList(pageable, movies);
+        Page<Movie> actual = moviesService.moviesAscByCategoryId(id, pageable);
 
-        assertThat(paging.getTotalPages()).isEqualTo(1);
-        assertThat(paging.getTotalElements()).isEqualTo(2);
-        assertThat(paging.getContent()).containsOnly(movie, newMovie);
+        assertThat(actual).isEqualTo(expected);
 
-        verify(pageable).getPageSize();
-        verify(pageable).getPageNumber();
+        verify(movieRepository).findMoviesByCategoryIdSortByNameAsc(id, pageable);
+        verifyNoMoreInteractions(movieRepository);
     }
 
-    @Test
-    public void paginateAnyMoviesList_noContent() {
-        Pageable pageable = mock(Pageable.class);
-        List<Movie> movies = Arrays.asList(movie, newMovie);
 
-        when(pageable.getPageSize()).thenReturn(10);
-        when(pageable.getPageNumber()).thenReturn(1);
-
-        Page<Movie> paging = moviesService.paginateAnyMoviesList(pageable, movies);
-
-        assertThat(paging.getTotalPages()).isEqualTo(1);
-        assertThat(paging.getTotalElements()).isEqualTo(2);
-        assertThat(paging.getContent()).isEmpty();
-
-        verify(pageable).getPageSize();
-        verify(pageable).getPageNumber();
-    }
 
     @Test
     public void findMovieById() {

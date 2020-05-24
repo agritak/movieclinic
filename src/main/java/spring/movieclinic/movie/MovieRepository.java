@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import spring.movieclinic.category.Category;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +37,16 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Integ
     Page<Movie> findAll(Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM movies WHERE id = ?")
+    @Query("DELETE FROM Movie m WHERE m.id = :id")
     void deleteById(Integer id);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM movies m " +
+                    "INNER JOIN movie_category m_c " +
+                    "ON m_c.movie_id = m.id " +
+                    "INNER JOIN categories c " +
+                    "ON c.id = m_c.category_id " +
+                    "WHERE c.id = :id " +
+                    "ORDER BY m.name")
+    Page<Movie> findMoviesByCategoryIdSortByNameAsc(Integer id, Pageable pageable);
 }

@@ -49,14 +49,14 @@ public class UserControllerTest {
         Page<Movie> paging = new PageImpl<>(list);
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(DESC, sort));
 
-        when(moviesService.paginateMovies(pageable)).thenReturn(paging);
+        when(moviesService.movies(pageable)).thenReturn(paging);
 
         String actual = userController.index(page, size, sort, model);
 
         assertThat(actual).isEqualTo("user/user-home");
         assertThat(model.getAttribute("paging")).isEqualTo(paging);
 
-        verify(moviesService).paginateMovies(pageable);
+        verify(moviesService).movies(pageable);
         verifyNoMoreInteractions(moviesService);
     }
 
@@ -70,14 +70,14 @@ public class UserControllerTest {
         Page<Category> paging = new PageImpl<>(list);
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sort));
 
-        when(categoriesService.paginateCategories(pageable)).thenReturn(paging);
+        when(categoriesService.categories(pageable)).thenReturn(paging);
 
         String actual = userController.showCategories(page, size, model);
 
         assertThat(actual).isEqualTo("user/user-categories");
         assertThat(model.getAttribute("paging")).isEqualTo(paging);
 
-        verify(categoriesService).paginateCategories(pageable);
+        verify(categoriesService).categories(pageable);
         verifyNoMoreInteractions(categoriesService);
     }
 
@@ -94,7 +94,7 @@ public class UserControllerTest {
         Page<Movie> paging = new PageImpl<>(list);
 
         when(categoriesService.findById(id)).thenReturn(category);
-        when(moviesService.paginateAnyMoviesList(pageable, category.getMovies())).thenReturn(paging);
+        when(moviesService.moviesAscByCategoryId(id, pageable)).thenReturn(paging);
 
         String actual = userController.showCategory(id, page, size, model);
 
@@ -103,7 +103,7 @@ public class UserControllerTest {
         assertThat(model.getAttribute("category")).isEqualTo(category);
 
         verify(categoriesService).findById(id);
-        verify(moviesService).paginateAnyMoviesList(pageable, category.getMovies());
+        verify(moviesService).moviesAscByCategoryId(id, pageable);
         verifyNoMoreInteractions(categoriesService, moviesService);
     }
 

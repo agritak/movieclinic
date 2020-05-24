@@ -4,14 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import spring.movieclinic.movie.Movie;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -28,12 +21,12 @@ public class Category {
     private Integer id;
 
     @Column(unique = true)
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Name is mandatory.")
     @EqualsAndHashCode.Include
     private String name;
 
-    @NotBlank(message = "Description is mandatory")
-    @Size(max = 500, message = "the maximum number of characters is 500")
+    @NotBlank(message = "Description is mandatory.")
+    @Size(max = 500, message = "The maximum number of characters is 500.")
     private String description;
 
     @OrderBy("name")
@@ -43,6 +36,10 @@ public class Category {
     @Override
     public String toString() {
         return this.getName();
+    }
+
+    public boolean isNew() {
+        return this.id == null;
     }
 }
 

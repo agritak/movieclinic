@@ -51,7 +51,7 @@ public class CategoriesServiceTests {
         Category category = category(1, "action");
         Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category));
         when(repository.findAll(pageable)).thenReturn(categoryPage);
-        service.paginateCategories(pageable);
+        service.categories(pageable);
         Page<Category> categories = repository.findAll(pageable);
         assertEquals(categories.getNumberOfElements(), 1);
    }
@@ -107,19 +107,35 @@ public class CategoriesServiceTests {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.findById(id))
-                        .isEqualToComparingFieldByField(new IllegalArgumentException("Invalid user Id:" + id));
+                .isEqualToComparingFieldByField(new IllegalArgumentException("Invalid user Id:" + id));
 
         verify(repository).findById(id);
+    }
+
+    @Test
+    public void findByName() {
+        String action = "action";
+        Category category = category(1, action);
+        Optional<Category> expected = Optional.of(category);
+
+        when(repository.findByName(action)).thenReturn(Optional.of(category));
+
+        Optional<Category> actual = service.findByName(action);
+
+        assertThat(actual).isEqualTo(expected);
+
+        verify(repository).findByName(action);
+        verifyNoMoreInteractions(repository);
     }
 
 
     @Test
     public void search() {
-    String name = "foo";
+        String name = "foo";
 
-    List<Category> expectedCategories = asList(category(1, "action"), category(2, "comedy"));
+        List<Category> expectedCategories = asList(category(1, "action"), category(2, "comedy"));
 
-    when(repository.findByNameContains(name)).thenReturn(expectedCategories);
+        when(repository.findByNameContains(name)).thenReturn(expectedCategories);
 
     service.search(name);
 

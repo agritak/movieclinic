@@ -29,7 +29,7 @@ public class UserController {
                         @RequestParam(defaultValue = "20") Integer size,
                         @RequestParam(defaultValue = "year") String sort,
                         Model model) {
-        Page<Movie> paging = moviesService.paginateMovies(
+        Page<Movie> paging = moviesService.movies(
                 PageRequest.of(page - 1, size, Sort.by(DESC, sort)));
         model.addAttribute("paging", paging);
         return "user/user-home";
@@ -39,7 +39,7 @@ public class UserController {
     public String showCategories(@RequestParam(defaultValue = "1") Integer page,
                                  @RequestParam(defaultValue = "5") Integer size,
                                  Model model) {
-        Page<Category> paging = categoriesService.paginateCategories(
+        Page<Category> paging = categoriesService.categories(
                 PageRequest.of(page - 1, size, Sort.by("name")));
         model.addAttribute("paging", paging);
         return "user/user-categories";
@@ -51,8 +51,8 @@ public class UserController {
                                @RequestParam(defaultValue = "20") Integer size,
                                Model model) {
         Category category = categoriesService.findById(categoryId);
-        Page<Movie> paging = moviesService.paginateAnyMoviesList(
-                PageRequest.of(page - 1, size), category.getMovies());
+        Page<Movie> paging = moviesService.moviesAscByCategoryId(categoryId,
+                PageRequest.of(page - 1, size));
         model.addAttribute("category", category);
         model.addAttribute("paging", paging);
         return "user/user-category";
