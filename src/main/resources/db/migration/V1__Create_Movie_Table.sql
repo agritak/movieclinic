@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS movies(
     year INT NOT NULL,
     picture_url VARCHAR(200),
     trailer_url VARCHAR(200),
-    UNIQUE KEY uk_movies (name, year)
+    UNIQUE KEY uk_movies (name, year),
+    INDEX (year)
     );
