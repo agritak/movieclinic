@@ -35,7 +35,8 @@
                         th:replace="~{fragments/input-form :: textarea-validated ('Description', 'description')}"></textarea>
                 <input th:replace="~{fragments/input-form :: input-validated ('number', 'Year', 'year')}"/>
                 <input th:replace="~{fragments/input-form :: input-validated ('url', 'Poster URL', 'pictureURL')}"/>
-                <div align="center" class="form-group col-md-12" th:if="${!frontMovie.new}">
+                <div align="center" class="form-group col-md-12"
+                     th:if="${!frontMovie.new && !#strings.isEmpty(frontMovie.pictureURL)}">
                     <a target="_blank" th:href="${frontMovie.pictureURL}">
                         <img th:src="${frontMovie.pictureURL}" width="170px"/>
                     </a>
