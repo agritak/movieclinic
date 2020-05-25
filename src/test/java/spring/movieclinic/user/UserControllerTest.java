@@ -118,7 +118,7 @@ public class UserControllerTest {
         String actual = userController.showMovie(id, model);
 
         assertThat(model.getAttribute("movie")).isEqualTo(movie);
-        assertThat(actual).isEqualTo("user/user-movie");
+        assertThat(actual).isEqualTo("user/user-movie-trailer");
 
         verify(moviesService).findMovieById(id);
         verifyNoMoreInteractions(moviesService);

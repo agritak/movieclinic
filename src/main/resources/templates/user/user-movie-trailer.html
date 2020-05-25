@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/head :: head ('Movie')"></div>
+<body>
+<div th:replace="~{fragments/navbar :: navbar-user}"></div>
+
+<div id="movie-user-view">
+    <h2 th:text="|${movie.name} (${movie.year})|"></h2>
+    <span th:each="category : ${movie.categories}">
+        <a th:href="@{/categories/{categoryId}(categoryId=${category.id})}"
+           th:text="${category.name} + ' '">Categories
+        </a>
+    </span>
+    <div th:if="${!#strings.isEmpty(movie.pictureURL) || !#strings.isEmpty(movie.trailerURL)}">
+        <div class="movie-user-poster">
+            <a target="_blank"
+               th:href="${movie.pictureURL}">
+                <img height="321" th:src="${movie.pictureURL}" width="225px">
+            </a>
+        </div>
+        <div class="movie-user-trailer">
+            <iframe allowfullscreen height="325" th:src="${movie.trailerURL}" width="572"></iframe>
+        </div>
+    </div>
+    <div class="movie-user-description">
+        <p th:text="${movie.description}"></p>
+    </div>
+</div>
+</body>
+</html>

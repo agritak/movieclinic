@@ -68,7 +68,7 @@ public class CategoriesController {
                                  @Valid Category category, BindingResult result) {
         Optional<Category> optional = categoriesService.findByName(category.getName());
         if (StringUtils.hasLength(category.getName()) && optional.isPresent()
-                && optional.get().getId().equals(id)) {
+                && !optional.get().getId().equals(id)) {
             result.rejectValue("name", "duplicate", "Category with this name already exists.");
         }
         if (result.hasErrors()) {
